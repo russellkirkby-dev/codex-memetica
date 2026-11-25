@@ -3,7 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Memetic Tree of Life</title>
+<title>Memetic Tree of Life · Interactive 3D Kabbalah Tree of Life and Qliphoth · Codex Memetica</title>
+<meta name="description" content="An interactive 3D Tree of Life: the ten Sephiroth and 22 paths of the Memetic Qabalah on the face, the Qliphoth on the reverse. Correspondences, Liber 777 colour scales, a Thelemic layer and animated diagrams, from Codex Memetica by Russell and Helen Kirkby.">
+<meta name="author" content="Russell Kirkby and Helen Kirkby">
+<link rel="canonical" href="https://russellkirkby-dev.github.io/codex-memetica/">
+<meta name="theme-color" content="#04050a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Codex Memetica">
+<meta property="og:title" content="The Memetic Tree of Life · an interactive 3D Kabbalah Tree">
+<meta property="og:description" content="Turn the Tree: the Sephiroth on the face, the Qliphoth on the reverse. Click any sphere or path to read its correspondences. From Codex Memetica by Russell and Helen Kirkby.">
+<meta property="og:url" content="https://russellkirkby-dev.github.io/codex-memetica/">
+<meta property="og:image" content="https://russellkirkby-dev.github.io/codex-memetica/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Memetic Tree of Life: ten glowing spheres joined by coloured paths on a night background">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"The Memetic Tree of Life","url":"https://russellkirkby-dev.github.io/codex-memetica/","applicationCategory":"EducationalApplication","operatingSystem":"Any (web browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"NZD"},"description":"An interactive 3D Kabbalah Tree of Life with the Sephiroth on the face and the Qliphoth on the reverse, with correspondences, Liber 777 colour scales, a Thelemic layer and animated diagrams.","inLanguage":"en","image":"https://russellkirkby-dev.github.io/codex-memetica/og.png","author":[{"@type":"Person","name":"Russell Kirkby"},{"@type":"Person","name":"Helen Kirkby"}],"isBasedOn":{"@type":"Book","name":"Codex Memetica: Super-Meme Theory, Memetaphysics and Magick","author":[{"@type":"Person","name":"Russell Kirkby"},{"@type":"Person","name":"Helen Kirkby"}]},"keywords":"Tree of Life, Kabbalah, Qabalah, Qliphoth, Sephiroth, Hermetic Qabalah, Thelema, Liber 777, tarot, memetics, Codex Memetica"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -105,6 +119,7 @@ body.rear #idx .num,body.rear #idx .hb{color:var(--blood)}
 @media(max-width:700px){#hint{bottom:74px;font-size:15px}}
 #cap{position:fixed;left:max(3vw,16px);top:calc(max(2.5vh,14px) + 190px);font:600 14px/1.5 Cinzel,serif;letter-spacing:.08em;color:#dfe9ff;text-shadow:0 0 12px #6aa0ff;opacity:0;transition:opacity .4s;pointer-events:none;text-align:left;max-width:min(300px,26vw)}
 #cap.on{opacity:1}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 #load{position:fixed;inset:0;display:grid;place-items:center;font:600 14px Cinzel,serif;letter-spacing:.1em;color:var(--mute);transition:opacity .8s}
 #load.gone{opacity:0;pointer-events:none}
 .tag{font:13px/1.25 "Cormorant Garamond",serif;color:var(--ink);background:rgba(6,6,12,.78);border:1px solid var(--line);border-radius:8px;padding:5px 9px;max-width:290px;white-space:normal;pointer-events:none;opacity:0;animation:tagin .6s .55s forwards}
@@ -158,6 +173,44 @@ body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important
 </style>
 </head>
 <body>
+<section id="about" class="sr"><h2>The Memetic Tree of Life: an interactive 3D Kabbalah Tree of Life</h2>
+<p>An interactive three-dimensional Tree of Life from <i>Codex Memetica: Super-Meme Theory, Memetaphysics and Magick</i> by Russell and Helen Kirkby. The ten Sephiroth and twenty-two paths of the Memetic Qabalah sit on the face of the Tree; the Qliphoth, the Tree of Death, sit on the reverse. Drag to turn the Tree, and click any sphere or path to read its entry, correspondences and the four Liber 777 colour scales. A Thelemic base layer follows Aleister Crowley's Liber 777, and animated diagrams show the Lightning Flash, the Serpent of Wisdom, the Three Pillars, the Four Worlds, the Parts of the Soul and the Geometric Figures. Above Kether stand the three veils of negative existence: Ain, Ain Soph and Ain Soph Aur.</p>
+<h3>The Sephiroth and their Qliphoth</h3><ul>
+<li><b>1. Kether — The Crown</b>: Kether is the first emanation from Ain Soph Aur: the monad, primordial point, and seed of archetypes. In the Microplex it is the True Self in unity with the Soulplex and the Macroplex; in the Macroplex it is the Self of God. The manuscript stresses its androgynous unity: “Kether is in Malkuth and Malkuth is in Kether.” Shadow: Thaumiel (Dual Contending Forces).</li>
+<li><b>2. Chokmah — Wisdom</b>: Chokmah is the first extension of Kether’s point: the line, the first graspable extension toward matter, and the Supernal Father. In the memetic Tree it is Life—the continuity of consciousness and experience—and, together with Binah’s Knowledge of Death, establishes the tension from which lower consciousness emerges. Shadow: Ghagiel (Hinderers).</li>
+<li><b>3. Binah — Understanding</b>: Binah is the third emanation, the Great Mother and primordial ocean of the Abyss. The triangle made by Kether, Chokmah, and Binah completes the Supernal Triad. In the Memetic Qabalah it is Knowledge of Death: the terminating counterpoint to Chokmah’s Life and Experience. Shadow: Satariel (Concealers).</li>
+<li><b>4. Chesed — Mercy</b>: Chesed is Mercy, Majesty, and Temperance: the cooling water reflected from Binah below the Abyss. Its Jupiterian rulership and judgment balance the force of Geburah; the manuscript describes the pair as the “silk glove” and the “iron fist.” Shadow: Gha’agsheklah (Breakers in Pieces).</li>
+<li><b>5. Geburah — Strength</b>: Geburah is Strength, Severity, Justice, and Fear. In the manuscript it is the fire of Chokmah’s Universal Will brought below the Abyss as impulse. Unbalanced, it becomes force without patience; balanced with Chesed, it is disciplined power. Shadow: Golachab (Burners).</li>
+<li><b>6. Tiphareth — Beauty</b>: Tiphareth is Beauty, the solar centre of the Soulplex, and the Ego-Self. It reflects the light of Kether into human consciousness and is where the Anthropic Primes converge. Its balance of intellect, passion, imagination, might, and mercy gives rise to True Will. Shadow: Thagiriron (Disputers).</li>
+<li><b>7. Netzach — Victory</b>: Netzach is Victory and Passion: the Soulplex’s emotional processor, which joins ideas and sensory material to meaning. It is the final reflection of Chokmah’s primordial fire through Geburah and Tiphareth. The manuscript associates it with love, ethics, sex, relationships, and honour. Shadow: A’arab Zaraq (Dispersing Ravens).</li>
+<li><b>8. Hod — Splendor</b>: Hod is Splendor and Intellect. Its Mercury/Hermes/Thoth complex analyses the material of Yesod’s imagination, combining and recombining memetic quanta and complexes into usable maps of the world. The manuscript describes it as the processor of the Soulplex. Shadow: Samael (Deceivers).</li>
+<li><b>9. Yesod — The Foundation</b>: Yesod is the Foundation: Imagination, the memetic combustion chamber of the mind, and the workbench of the Soulplex. It reflects Kether’s light down the middle pillar through Tiphareth. The manuscript treats it as the gate to the astral plane: a neutral domain that contains both madness and purity. Shadow: Gamaliel (Obscene Ones).</li>
+<li><b>10. Malkuth — The Kingdom</b>: Malkuth is the Kingdom, the final and densest Sephira: manifestation, physical reality, and Instinct. In the Microplex it encompasses environmental factors, DNA, nutrients, blood, flesh, bones, and—through its ascent to Yesod—the nervous system. In the Macroplex it gives tangible form to the divine as the sum of the elements plus Spirit. Shadow: Lilith (Woman / Queen of Night and Dreams).</li>
+<li><b>11. Daath — The Hidden Sephira</b>: Daath is a supplemental reference rather than one of the ten Sephiroth. The manuscript calls it the Hidden or sometimes False Sephira: the gap between ideal and actual, real and unreal, language and direct gnosis. Shadow: .</li>
+</ul><h3>The twenty-two paths</h3><ul>
+<li>Path of Aleph — Ox: Atu 0, The Fool.</li>
+<li>Path of Beth — House: Atu I, The Magus.</li>
+<li>Path of Gimel — Camel: Atu II, The Priestess.</li>
+<li>Path of Daleth — Door: Atu III, The Empress.</li>
+<li>Path of He — Window: Atu XVII, The Star.</li>
+<li>Path of Vav — Nail: Atu V, The Hierophant.</li>
+<li>Path of Zayin — Sword: Atu VI, The Lovers / Twins.</li>
+<li>Path of Cheth — Fence: Atu VII, The Chariot.</li>
+<li>Path of Teth — Serpent: Atu XI, Lust / Strength.</li>
+<li>Path of Yod — Hand: Atu IX, The Hermit.</li>
+<li>Path of Kaph — Palm of Hand: Atu X, The Wheel of Fortune.</li>
+<li>Path of Lamed — Ox Goad: Atu VIII, Adjustment / Justice.</li>
+<li>Path of Mem — Water: Atu XII, The Hanged Man.</li>
+<li>Path of Nun — Fish: Atu XIII, Death.</li>
+<li>Path of Samekh — Prop: Atu XIV, Art.</li>
+<li>Path of Ayin — Eye: Atu XV, The Devil.</li>
+<li>Path of Pe — Mouth: Atu XVI, The Tower.</li>
+<li>Path of Tzaddi — Mouth: Atu IV, The Emperor.</li>
+<li>Path of Qoph — Back of the Head: Atu XVIII, The Moon.</li>
+<li>Path of Resh — Head: Atu XIX, The Sun.</li>
+<li>Path of Shin — Tooth: Atu XX, The Aeon / Angel.</li>
+<li>Path of Tau — Cross: Atu XXI, The Universe.</li>
+</ul></section>
 <div id="stage"></div>
 <div id="labels"></div>
 <header>
