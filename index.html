@@ -99,6 +99,10 @@ body.rear #pb .heb{color:var(--blood)}
 #idx .hb{font:500 18px "Noto Serif Hebrew",serif;color:var(--gold);width:1.4em;flex:none}
 body.rear #idx .num,body.rear #idx .hb{color:var(--blood)}
 #idx .foot{max-width:1100px;margin:30px auto 0;color:var(--mute);font-style:italic;font-size:15px}
+#hint{position:fixed;left:50%;bottom:92px;transform:translate(-50%,6px);display:flex;align-items:center;gap:8px;font:italic 16px "Cormorant Garamond",serif;color:var(--mute);opacity:0;transition:opacity 1s,transform 1s;pointer-events:none;white-space:nowrap;text-shadow:0 0 10px #000}
+#hint.on{opacity:.85;transform:translate(-50%,0)}
+#hint svg{color:var(--gold);opacity:.8}
+@media(max-width:700px){#hint{bottom:74px;font-size:15px}}
 #cap{position:fixed;left:50%;top:max(12vh,80px);transform:translateX(-50%);font:600 15px Cinzel,serif;letter-spacing:.08em;color:#dfe9ff;text-shadow:0 0 12px #6aa0ff;opacity:0;transition:opacity .4s;pointer-events:none;text-align:center;max-width:90vw}
 #cap.on{opacity:1}
 #load{position:fixed;inset:0;display:grid;place-items:center;font:600 14px Cinzel,serif;letter-spacing:.1em;color:var(--mute);transition:opacity .8s}
@@ -171,6 +175,7 @@ body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important
  <button id="bReset">Reset</button>
 </nav>
 <div id="cap" aria-live="polite"></div>
+<div id="hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 12a8 8 0 0 1 14.5-4.6"/><path d="M18.9 3.6v4h-4"/><path d="M20 12a8 8 0 0 1-14.5 4.6"/><path d="M5.1 20.4v-4h4"/></svg><span id="hintT">Drag to turn the Tree · click any sphere</span></div>
 <div id="dia" class="menu" role="menu" aria-label="Diagrams from the Codex">
  <button data-o="flash">Lightning Flash</button><button data-o="serpent">Serpent of Wisdom</button><button data-o="elements">Elements Reflected</button>
  <button data-o="pillars">Three Pillars</button><button data-o="worlds">Four Worlds</button><button data-o="soul">Parts of the Soul</button><button data-o="figures">Geometric Figures</button>
@@ -533,7 +538,8 @@ function hiTarget(k){if(!k)return null;if(k[0]==='q')return meshes['s'+k.slice(1
 function setHi(k,v){if(k&&k[0]==='v'){const Rg=RINGS[VORDER.indexOf(+k.slice(1))];if(Rg)Rg.m.material.color.copy(Rg.base0).multiplyScalar(1+v*2.6);return;}const m=hiTarget(k);if(!m)return;if(m.material.uniforms)m.material.uniforms.uHi.value=v;if(m.ring)m.ring.material.uniforms.uHi.value=v;}
 function pick(e){const r=renderer.domElement.getBoundingClientRect();ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);const h=ray.intersectObjects(pickables,false)[0];return h?keyOf(h):null;}
 renderer.domElement.addEventListener('pointermove',e=>{if(down)return;const k=pick(e);if(k!==hov){if(hov&&hov!==sel)setHi(hov,0);hov=k;if(k&&k!==sel)setHi(k,.6);renderer.domElement.style.cursor=k?'pointer':'grab';}});
-renderer.domElement.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
+renderer.domElement.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};if(anim&&anim.sway)anim=null;touched();});
+renderer.domElement.addEventListener('wheel',()=>{if(anim&&anim.sway)anim=null;touched();},{passive:true});
 let lastTap={k:undefined,t:0,was:null};
 function tap(k){const now=performance.now();
  if(now-lastTap.t<380&&k===lastTap.k&&(sel||zoomed)&&(k===null||lastTap.was===k)){lastTap={k:undefined,t:0,was:null};closePanel();return;}
@@ -625,6 +631,19 @@ renderer.setAnimationLoop(now=>{
 });
 try{if(localStorage.getItem('tol-base')==='t')applyBase('t',false);}catch(e){}
 $('load').classList.add('gone');
+/* ---------- discoverability: a sway on arrival, a quiet hint ---------- */
+function sway(amp=.42,dur=4600){if(RM||anim||sel||zoomed)return;const tg=controls.target.clone();const sp=new THREE.Spherical().setFromVector3(camera.position.clone().sub(tg));const th0=sp.theta;
+ anim={sway:true,t0:performance.now(),dur,step(k){sp.theta=th0+Math.sin(k*Math.PI*2)*Math.sin(k*Math.PI)*amp;camera.position.setFromSpherical(sp).add(tg);camera.lookAt(tg);}};}
+let lastTouch=performance.now(),nudged=false,hinted=false;
+try{hinted=localStorage.getItem('tol-hinted')==='1';}catch(e){}
+const hint=$('hint');if(matchMedia('(pointer:coarse)').matches)$('hintT').textContent='Swipe to turn the Tree · tap any sphere';
+function hideHint(){if(!hint.classList.contains('on'))return;hint.classList.remove('on');try{localStorage.setItem('tol-hinted','1');}catch(e){}}
+function touched(){lastTouch=performance.now();hideHint();}
+document.addEventListener('click',e=>{if(e.target.closest('.lbl,.gl,button'))touched();},true);
+addEventListener('keydown',touched);
+setTimeout(()=>sway(),1100);
+if(!hinted){setTimeout(()=>{if(performance.now()-lastTouch>1000)hint.classList.add('on');},1600);setTimeout(hideHint,11000);}
+setInterval(()=>{if(!nudged&&performance.now()-lastTouch>30000&&!sel&&!zoomed&&!ovlName&&!document.hidden){nudged=true;sway(.3,4200);}},2000);
 }
 </script>
 </body>
