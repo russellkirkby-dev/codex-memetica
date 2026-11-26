@@ -175,6 +175,7 @@ body.zin .gl .ts,.gl.focus .ts,.gl:hover .ts,body.hasfocus .gl:not(.dim) .ts{dis
 .pls{pointer-events:auto;cursor:pointer;font:400 calc(25px*var(--ls,1)) "Segoe UI Symbol","Noto Sans Symbols","Noto Sans Symbols 2","DejaVu Sans",sans-serif;color:#fff;line-height:1;
  text-shadow:0 0 2px #000,0 0 4px #000,0 0 10px rgba(0,0,0,.85);transition:opacity .5s}
 .pls.r{color:#ffd9d9}
+body.ovfig .pls{opacity:0!important;pointer-events:none}
 #tip{position:fixed;z-index:30;pointer-events:none;max-width:300px;padding:6px 10px;background:rgba(8,8,14,.94);border:1px solid var(--line);border-radius:8px;font:14px/1.35 "Cormorant Garamond",serif;color:var(--ink);opacity:0;transition:opacity .15s;transform:translate(14px,14px)}
 #tip.on{opacity:1}#tip b{font:600 12px Cinzel,serif;letter-spacing:.06em;color:var(--gold)}
 #leg{position:fixed;right:max(3vw,16px);bottom:84px;width:min(360px,calc(100vw - 32px));background:rgba(8,8,14,.86);border:1px solid var(--line);border-radius:12px;padding:12px 40px 12px 14px;display:none;font-size:15px;line-height:1.45;backdrop-filter:blur(8px)}
@@ -620,7 +621,7 @@ function band(x,y,w,h,col,a=.16,vert=false){const m=new THREE.Mesh(new THREE.Pla
  m.position.set(x,y,-.05);m.renderOrder=2;ovl.add(m);return m.material.uniforms.uA;}
 function otag(html,x,y,z=.9,cx=.5){const el=document.createElement('div');el.className='ov';el.innerHTML=html;const o=new CSS2DObject(el);o.center.set(cx,.5);o.position.set(x,y,z);ovl.add(o);return el;}
 function legend(t,b,src){$('legT').textContent=t;$('legB').innerHTML=b+(src?`<div class="src">${src}</div>`:'');$('leg').classList.add('on');}
-function clearOverlay(){if(ovlName==='figures')for(let n=1;n<=10;n++)meshes['s'+n].material.userData.dimT=0;dropCSS(ovl);if(fl){fl=null;flash.visible=false;}cap.classList.remove('on');ovl.traverse(o=>{if(o.geometry)o.geometry.dispose();});ovlStep=null;ovlName=null;$('leg').classList.remove('on');document.querySelectorAll('#dia button').forEach(b=>b.removeAttribute('aria-current'));}
+function clearOverlay(){document.body.classList.remove('ovfig');if(ovlName==='figures')for(let n=1;n<=10;n++)meshes['s'+n].material.userData.dimT=0;dropCSS(ovl);if(fl){fl=null;flash.visible=false;}cap.classList.remove('on');ovl.traverse(o=>{if(o.geometry)o.geometry.dispose();});ovlStep=null;ovlName=null;$('leg').classList.remove('on');document.querySelectorAll('#dia button').forEach(b=>b.removeAttribute('aria-current'));}
 $('legX').onclick=clearOverlay;
 const ease=k=>k<0?0:k>1?1:1-Math.pow(1-k,3);
 function runFlash(){fl={t0:performance.now()+1300};flash.visible=true;flashU.uP.value=0;flashU.uF.value=1;}
@@ -674,7 +675,7 @@ const OV={
   const t0=performance.now()+1200,D=RM?.05:.75;
   ovlStep=now=>{const t=(now-t0)/1000;us.forEach((g,i)=>{const k=(t-i*D)/D;g.forEach((u,j)=>u.uP.value=ease(k*1.6-j/g.length*.6));if(k>.3)tags[i].forEach(e=>e.style.opacity=1);});};
   legend('The Prime Anthropic Spheres',`The Supernal Triad (Tiers 1–3: Unity/Self, Knowledge of Life, Knowledge of Death) creates the tension necessary for consciousness and relates to the super-memes of the Zodiac. Above the Abyss there is no duality; Self and Other are One. Below it, the Veil encloses the prime anthropic memeplexes, 4 to 9, with the Ego-Self at the heart of the Soulplex. Imagination is the memetic combustion chamber that feeds Intellect and Passion. Instinct, 10, borders the Physical Plane: the body, the senses, DNA.`,'Codex Memetica · Anthropic Primes · Image 4');},
- figures(){const NS={2:1,3:1,4:1,5:2,6:2,7:3,8:3,9:4,10:3};const us=[];
+ figures(){document.body.classList.add('ovfig');const NS={2:1,3:1,4:1,5:2,6:2,7:3,8:3,9:4,10:3};const us=[];
   const G=[];
   for(let n=1;n<=10;n++){const p=POS[n];meshes['s'+n].material.userData.dimT=.6;const g=new THREE.Group();g.userData.c=new THREE.Vector3(p[0],p[1],0);ovl.add(g);G.push(g);
    if(n===1){us.push(flat(ell(0,0,.075,.075,16),'#0b0703',.06,-.01,true,g));us.push(flat(ell(0,0,.07,.07,16),'#c9a453',.04,0,true,g));continue;}
