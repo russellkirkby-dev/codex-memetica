@@ -166,6 +166,9 @@ body.zin .gl .ts,.gl.focus .ts,.gl:hover .ts,body.hasfocus .gl:not(.dim) .ts{dis
 .gl.empty{display:none}
 .lbl .y{font-family:"Segoe UI Symbol","Noto Sans Symbols","Noto Sans Symbols 2","DejaVu Sans",sans-serif;font-weight:400}
 .lbl.noname b:empty,.lbl span:empty{display:none}
+.pls{pointer-events:auto;cursor:pointer;font:400 calc(25px*var(--ls,1)) "Segoe UI Symbol","Noto Sans Symbols","Noto Sans Symbols 2","DejaVu Sans",sans-serif;color:#fff;line-height:1;
+ text-shadow:0 0 2px #000,0 0 4px #000,0 0 10px rgba(0,0,0,.85);transition:opacity .5s}
+.pls.r{color:#ffd9d9}
 #tip{position:fixed;z-index:30;pointer-events:none;max-width:300px;padding:6px 10px;background:rgba(8,8,14,.94);border:1px solid var(--line);border-radius:8px;font:14px/1.35 "Cormorant Garamond",serif;color:var(--ink);opacity:0;transition:opacity .15s;transform:translate(14px,14px)}
 #tip.on{opacity:1}#tip b{font:600 12px Cinzel,serif;letter-spacing:.06em;color:var(--gold)}
 #leg{position:fixed;right:max(3vw,16px);bottom:84px;width:min(360px,calc(100vw - 32px));background:rgba(8,8,14,.86);border:1px solid var(--line);border-radius:12px;padding:12px 40px 12px 14px;display:none;font-size:15px;line-height:1.45;backdrop-filter:blur(8px)}
@@ -386,7 +389,7 @@ const rearFS=`varying vec2 vU;uniform float uT,uHi,uDim;${NOISE}void main(){floa
 const TUN={1:['Amprodias'],2:['Baratchial'],3:['Gargophias'],4:['Dagadgiel','Dagdagiel in Grant'],5:['Hemethterith'],6:['Uriens'],7:['Zamradiel'],8:['Characith'],9:['Temphioth'],10:['Yamatu'],11:['Kurgasiax'],12:['Lafcursiax'],13:['Malkunofat'],14:['Niantiel'],15:['Saksaksalim'],16:["A'ano'nin"],17:['Parfaxitas'],18:['Tzuflifu'],19:['Qulielfi'],20:['Raflifu'],21:['Shalicu'],22:['Thantifaxath']};
 const QORD={5:['Bahimiron','the Bestial','black and brown; vast beasts like hippopotami and elephants, crushed flat as if their hides were stretched over a giant beetle'],6:['Adimiron','the Bloody','blood thinned with water, dull yellow and grey; lion-lizards'],7:['Tzalalimiron','the Clangers','clear blood, bronze and crimson; savage dogs with triangular heads'],8:['Shichiriron','the Black','black; demon-faced blends of reptile, insect and shellfish, like crab and lobster'],9:['Shalehbiron','the Flaming','fiery yellow; merciless wolves and jackals'],10:['Tzaphiriron','the Scratchers','the colours of earth; corpses half alive and half decayed'],12:["A'abiriron",'the Clayey','the colours of cloud; grey, bloated goblins'],14:['Necheshthiron','the Brazen','copper; fiendish insects with human heads'],15:['Nachashiron','the Snakey','serpent colours; dog-headed serpents'],16:['Dagdagiron','the Fishy','reddish and gleaming; vast, flat, devouring fish'],18:["Ba'airiron",'the Flock','dull and black; dragon-lions'],19:['Nashimiron','the Malignant Women','stagnant, gleaming water-blue; near-skeletal women joined to the bodies of serpents and fish']};
 const TUNNOTE='According to Kenneth Grant’s Typhonian tradition, as each Sphere on the Tree of Life has a corresponding Shell, so too does each path have a corresponding Tunnel on the reverse side of the Tree. These are the Tunnels of Set. Each guarded by a Typhonian Demon who represents the untamed chthonic forces of the unconscious. They represents ego-wants, paraphilias and other neurosis.';
-const pathGlyphs=[],LBL=[],FRONT={},PGL=[],SGL=[];
+const pathGlyphs=[],LBL=[],FRONT={},PGL=[],SGL=[],PLS={};
 PATHS.forEach(p=>{
  const [a,b]=p.con;const A=POS[a],B=POS[b];
  for(const side of [1,-1]){
@@ -405,6 +408,7 @@ for(let n=1;n<=11;n++){
  for(const side of [1,-1]){
   const el=document.createElement('div');el.className='lbl '+(side>0?'f':'r');
   SGL.push([side,n,el]);el.dataset.k=(n===11?'d':side>0?'s':'q')+n;
+  {const pe=document.createElement('div');pe.className='pls '+(side>0?'f':'r');pe.addEventListener('click',e=>{e.stopPropagation();tap((n===11?'d':(side>0?'s':'q'))+n)});const po=new CSS2DObject(pe);po.position.set(POS[n][0],POS[n][1],side*(R+.05));scene.add(po);PLS[n+(side>0?'f':'r')]=pe;LBL.push(['s'+n,pe]);}
   const kind=n===11?'d':(side>0?'s':'q');
   el.addEventListener('click',e=>{e.stopPropagation();tap(kind+n)});
   if(side>0)FRONT[n]=el;LBL.push(['s'+n,el]);const o=new CSS2DObject(el);o.position.set(POS[n][0],POS[n][1]-R-.32,side*.4);scene.add(o);
@@ -564,7 +568,7 @@ const MEANING=n=>n===18?'Fish-hook':PATHS.find(x=>x.n===n).meaning;
 const SPL={m:{1:'♇',2:'♆',3:'♄',4:'♃',5:'♂',6:'☉',7:'♀',8:'☿',9:'☽',10:'⊕',11:'♅'},t:{3:'♄',4:'♃',5:'♂',6:'☉',7:'♀',8:'☿',9:'☽'}};
 const atuOf=p=>base==='t'?TH.paths[p.n].tags[0][1].split(' · '):[p.atu,p.tarot.split(' / ')[0]];
 function relabel(){const t=base==='t',sp=SPL[t?'t':'m'];
- SGL.forEach(([side,n,el])=>{const s=SPH[n];const pl=LS.splanet&&sp[n]?`<i class="y">${sp[n]}${VS}</i> `:'';
+ SGL.forEach(([side,n,el])=>{const s=SPH[n];const pl='';const pg=PLS[n+(side>0?'f':'r')];pg.textContent=LS.splanet&&sp[n]?sp[n]+VS:'';pg.style.display=pg.textContent?'':'none';pg.dataset.tip=sp[n]?`<b>${sp[n]}${VS} ${s.planet||'Uranus'}</b><br>${side>0?s.name:(n<11?s.q.name+' · shell of '+s.name:'Daath')}`:'';
   const num=LS.snum&&n<11?n:'';const nm=LS.sname?(side>0?s.name:(n<11?s.q.name:'Daath')):'';
   const b=[pl+(num!==''?num:''),nm].filter(x=>x!=='').join(num!==''&&nm?' · ':' ');
   const sub=LS.sprime?(side>0?(n<11?(t?TH.spheres[n].sub:s.prime):(t?'Knowledge · the Abyss':'the hidden Sephira')):(n<11?s.q.meaning:'gate to the Qliphoth')):'';
@@ -585,7 +589,7 @@ labm.addEventListener('change',e=>{const i=e.target.closest('input[data-l]');if(
 labm.addEventListener('click',e=>{const b=e.target.closest('button[data-p]');if(!b)return;const p=b.dataset.p;LS=p==='default'?{...LDEF}:Object.fromEntries(Object.keys(LDEF).map(k=>[k,p==='all'?1:0]));relabel();});
 addEventListener('pointerdown',e=>{if(!e.target.closest('#labm,#bLbl'))closeLab();});
 const tip=$('tip');
-addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const el=e.target.closest&&e.target.closest('.lbl[data-tip],.gl[data-tip]');if(!el){tip.classList.remove('on');return;}tip.innerHTML=el.dataset.tip;tip.classList.add('on');});
+addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const el=e.target.closest&&e.target.closest('.lbl[data-tip],.gl[data-tip],.pls[data-tip]');if(!el){tip.classList.remove('on');return;}tip.innerHTML=el.dataset.tip;tip.classList.add('on');});
 addEventListener('pointermove',e=>{if(tip.classList.contains('on')){tip.style.left=Math.min(e.clientX,innerWidth-320)+'px';tip.style.top=Math.min(e.clientY,innerHeight-90)+'px';}});
 
 /* ---------- diagrams (overlays) ---------- */
