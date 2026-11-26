@@ -310,7 +310,7 @@ body.thelemic #dia .memonly{display:none}
 </div>
 <div id="dia" class="menu" role="menu" aria-label="Diagrams from the Codex">
  <button data-o="flash">Lightning Flash</button><button data-o="serpent">Serpent of Wisdom</button><button data-o="elements">Elements Reflected</button>
- <button data-o="pillars">Three Pillars</button><button data-o="worlds">Four Worlds</button><button data-o="soul">Parts of the Soul</button><button data-o="figures">Geometric Figures</button><button data-o="primes" class="memonly">Prime Anthropic Spheres</button><button data-o="cmothers" class="cubeonly">The Three Mothers</button><button data-o="czodiac" class="cubeonly">The Zodiac round the Cube</button><button data-o="ctrip" class="cubeonly">The Four Triplicities</button><button data-o="cdoubles" class="cubeonly">The Seven Doubles</button><button data-o="cmonths" class="cubeonly">The Months</button>
+ <button data-o="pillars">Three Pillars</button><button data-o="worlds">Four Worlds</button><button data-o="soul">Parts of the Soul</button><button data-o="figures">Geometric Figures</button><button data-o="primes" class="memonly">Prime Anthropic Spheres</button><button data-o="cmothers" class="cubeonly">The Three Mothers</button><button data-o="czodiac" class="cubeonly">The Zodiac round the Cube</button><button data-o="ctrip" class="cubeonly">The Four Triplicities</button><button data-o="cdoubles" class="cubeonly">The Seven Doubles</button><button data-o="cmonths" class="cubeonly">The Months</button><button data-o="cnet" class="cubeonly">Unfold the Cube</button>
 </div>
 <div id="leg" aria-live="polite"><button id="legX" aria-label="Clear diagram">×</button><b id="legT"></b><div id="legB"></div></div>
 <aside id="panel" aria-label="Details" aria-hidden="true">
@@ -537,6 +537,13 @@ function buildCube(){for(const k in CUBEM){cubeG.remove(CUBEM[k]);const i=cubePi
   else{const [a,b]=cubeSeg(n);m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(a,b),20,CAXIS[n]?.045:.065,10,false),mat);}
   m.userData={kind:'p',n};cubeG.add(m);cubePick.push(m);CUBEM[n]=m;});}
 buildCube();
+/* the trump of each double letter, faintly on its face */
+const CFCARD={2:1,3:2,4:3,11:10,17:16,20:19};const texL=new THREE.TextureLoader();const CARDTEX={};
+const cardTex=k=>CARDTEX[k]||(CARDTEX[k]=(()=>{const t=texL.load(`cards/m${String(k).padStart(2,'0')}.jpg`);t.colorSpace=THREE.SRGBColorSpace;return t;})());
+const cardMat=k=>new THREE.MeshBasicMaterial({map:cardTex(k),color:new THREE.Color(.62,.6,.56),transparent:true,opacity:.2,depthWrite:false,side:THREE.DoubleSide});
+function faceCard(n,parentPos){const f=CFACE[n];const m=new THREE.Mesh(new THREE.PlaneGeometry(1.62,2.7),cardMat(CFCARD[n]));const nrm=new THREE.Vector3(f[0],f[1],f[2]);
+ m.position.copy(cv(f).multiplyScalar(1.004));const up=Math.abs(f[1])?new THREE.Vector3(0,0,-f[1]):new THREE.Vector3(0,1,0);m.up.copy(up);m.lookAt(m.position.clone().add(nrm));return m;}
+Object.keys(CFCARD).forEach(n=>{const m=faceCard(+n);m.renderOrder=-1;cubeG.add(m);});
 /* corner nodes and direction words */
 [[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1]].forEach(c=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.09,16,12),new THREE.MeshBasicMaterial({color:'#e8d3a0'}));m.position.copy(cv(c));cubeG.add(m);});
 const CDIR=[];[['Above',[0,2.6,0]],['Below',[0,-2.6,0]],['East',[2.15,0,0]],['West',[-2.15,0,0]],['North',[0,0,-2.15]],['South',[0,0,2.15]]].forEach(([t,p])=>{const el=document.createElement('div');el.className='cdir';el.textContent=t;const o=new CSS2DObject(el);o.position.copy(cv(p));cubeG.add(o);CDIR.push(o);});
@@ -723,7 +730,7 @@ function band(x,y,w,h,col,a=.16,vert=false){const m=new THREE.Mesh(new THREE.Pla
  m.position.set(x,y,-.05);m.renderOrder=2;ovl.add(m);return m.material.uniforms.uA;}
 function otag(html,x,y,z=.9,cx=.5){const el=document.createElement('div');el.className='ov';el.innerHTML=html;const o=new CSS2DObject(el);o.center.set(cx,.5);o.position.set(x,y,z);ovl.add(o);return el;}
 function legend(t,b,src){$('legT').textContent=t;$('legB').innerHTML=b+(src?`<div class="src">${src}</div>`:'');$('leg').classList.add('on');}
-function clearOverlay(){if(typeof covl!=='undefined'){dropCSS(covl);cubeUndim();}document.body.classList.remove('ovfig');if(ovlName==='figures')for(let n=1;n<=10;n++)meshes['s'+n].material.userData.dimT=0;dropCSS(ovl);if(fl){fl=null;flash.visible=false;}cap.classList.remove('on');ovl.traverse(o=>{if(o.geometry)o.geometry.dispose();});ovlStep=null;ovlName=null;$('leg').classList.remove('on');document.querySelectorAll('#dia button').forEach(b=>b.removeAttribute('aria-current'));}
+function clearOverlay(){if(typeof covl!=='undefined'){if(typeof cnetRestore==='function'&&cnetRestore)cnetRestore();dropCSS(covl);cubeUndim();}document.body.classList.remove('ovfig');if(ovlName==='figures')for(let n=1;n<=10;n++)meshes['s'+n].material.userData.dimT=0;dropCSS(ovl);if(fl){fl=null;flash.visible=false;}cap.classList.remove('on');ovl.traverse(o=>{if(o.geometry)o.geometry.dispose();});ovlStep=null;ovlName=null;$('leg').classList.remove('on');document.querySelectorAll('#dia button').forEach(b=>b.removeAttribute('aria-current'));}
 $('legX').onclick=clearOverlay;
 const ease=k=>k<0?0:k>1?1:1-Math.pow(1-k,3);
 function runFlash(){fl={t0:performance.now()+1300};flash.visible=true;flashU.uP.value=0;flashU.uF.value=1;}
@@ -831,6 +838,33 @@ Object.assign(OV,{
   const t0=performance.now()+400;ovlStep=now=>{tg.forEach((el,i)=>{if(now-t0>i*(RM?0:260))el.style.opacity=1;});};
   legend('The Months','The Sepher Yetzirah gives each simple letter a month of the Hebrew year, beginning with Nisan in spring under Aries. On the Cube the months follow their signs round the twelve edges, from Nisan at the north-east to Adar at the south-below edge.'+sepNote);}
 });
+
+let cnetRestore=null;
+function edgesOfFace(f){return Object.entries(CSLOT).filter(([k,e])=>e.every(p=>(f[0]&&p[0]===f[0])||(f[1]&&p[1]===f[1])||(f[2]&&p[2]===f[2]))).map(([k])=>k);}
+OV.cnet=function(){
+ /* rotate the Cube square to the viewer first */
+ creset=null;const y0=cyaw,p0=cpitch,t0=performance.now();const yT=Math.round(y0/(2*Math.PI))*2*Math.PI;
+ const root=new THREE.Group();covl.add(root);
+ const hide=[...Object.values(CUBEM),...cubeG.children.filter(o=>o.isMesh&&!Object.values(CUBEM).includes(o))];hide.forEach(o=>o.visible=false);
+ PATHS.forEach(p=>PGLO['f'+p.n].o.visible=false);CDIR.forEach(o=>o.visible=false);
+ cnetRestore=()=>{hide.forEach(o=>o.visible=true);PATHS.forEach(p=>PGLO['f'+p.n].o.visible=true);CDIR.forEach(o=>o.visible=true);cnetRestore=null;};
+ const H=CH;const FACES={2:[0,1,0],3:[0,-1,0],4:[1,0,0],11:[-1,0,0],17:[0,0,-1],20:[0,0,1]};
+ const piv={20:{p:[0,0,0],par:null},4:{p:[H,0,H],par:20,ax:'y',a:-Math.PI/2},17:{p:[H,0,-H],par:4,ax:'y',a:-Math.PI/2},11:{p:[-H,0,H],par:20,ax:'y',a:Math.PI/2},2:{p:[0,H,H],par:20,ax:'x',a:Math.PI/2},3:{p:[0,-H,H],par:20,ax:'x',a:-Math.PI/2}};
+ const G={};[20,4,17,11,2,3].forEach(n=>{const d=piv[n];const g=new THREE.Group();const wp=new THREE.Vector3(...d.p);G[n]={g,wp,d};if(d.par){const P=G[d.par];g.position.copy(wp.clone().sub(P.wp));P.g.add(g);}else{g.position.copy(wp);root.add(g);}});
+ const loc=(n,v)=>v.clone().sub(G[n].wp);
+ const panelMat=new THREE.MeshBasicMaterial({color:'#0b0b14',transparent:true,opacity:.62,side:THREE.DoubleSide,depthWrite:false});
+ [20,4,17,11,2,3].forEach(n=>{const f=FACES[n],c=cv(f),nrm=new THREE.Vector3(...f);const g=G[n].g;
+  const pl=new THREE.Mesh(new THREE.PlaneGeometry(2*H*.985,2*H*.985),panelMat);pl.position.copy(loc(n,c));pl.lookAt(pl.position.clone().add(nrm));g.add(pl);
+  const card=faceCard(n);card.material.opacity=.92;card.position.copy(loc(n,cv(f).multiplyScalar(1.006)));g.add(card);
+  const p=PATHS.find(x=>x.n===n);const tl=document.createElement('div');tl.className='ov cov';tl.innerHTML=`${HEB[p.letter]} ${p.letter}<span>${CFACE[n][3]}</span>`;const to=new CSS2DObject(tl);to.position.copy(loc(n,cv(f).multiplyScalar(1.03).add(new THREE.Vector3(0,f[1]?0:-1.68,f[1]?1.68*f[1]:0))));g.add(to);
+  edgesOfFace(f).forEach(k=>{const e=CSLOT[k];const a=cv(e[0]),b=cv(e[1]);const inward=c.clone().sub(a.clone().add(b).multiplyScalar(.5)).setLength(.1);
+   const q=PATHS.find(x=>CEDGE[x.n]&&edgeOf(x.n)===k);const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(loc(n,a.clone().add(inward).add(nrm.clone().multiplyScalar(.02))),loc(n,b.clone().add(inward).add(nrm.clone().multiplyScalar(.02)))),12,.055,8,false),meshes['p'+q.n].material);g.add(m);
+   const el=document.createElement('div');el.className='ov cov cz';el.textContent=HEB[q.letter];const o=new CSS2DObject(el);o.position.copy(loc(n,a.clone().add(b).multiplyScalar(.5).add(inward.clone().multiplyScalar(3.2)).add(nrm.clone().multiplyScalar(.05))));g.add(o);});});
+ const order=[[2,3],[4,11],[17]],D=RM?.05:1.1;
+ ovlStep=now=>{const t=(now-t0)/1000;const k0=ease(t/.9);cyaw=y0+(yT-y0)*k0;cpitch=p0*(1-k0);applyCubeRot();
+  order.forEach((grp,i)=>grp.forEach(n=>{const d=G[n].d;const k=ease((t-1-i*D)/D);G[n].g.rotation[d.ax]=d.a*k;}));};
+ animateTo(0,fitDist()*1.22,HOME.clone().add(new THREE.Vector3(H*1.0,0,0)),2600);
+ legend('The Cube unfolded','Opened out flat, the six faces of the Cube make a cross of six squares: Above and Below either side of the South face, with West, South, East and North in a row. Each face shows its double letter and trump, framed by its four edges. Each edge borders two faces, so every simple letter appears twice. Tau, the centre, has no face of its own.'+sepNote);};
 const dia=$('dia');function closeDia(){dia.classList.remove('open');$('bDia').setAttribute('aria-expanded','false');}
 $('bDia').onclick=e=>{e.stopPropagation();closeCol();closeLab();const o=dia.classList.toggle('open');$('bDia').setAttribute('aria-expanded',String(o));};
 dia.addEventListener('click',e=>{const b=e.target.closest('button[data-o]');if(b)chooseOverlay(b.dataset.o);});
