@@ -478,7 +478,7 @@ addEventListener('resize',resize);resize();
 camera.position.set(0,TY,fitDist());controls.update();
 
 /* ---------- turning ---------- */
-let anim=null,rear=false;
+let anim=null,rear=false,fig='tree';
 function animateTo(az,dist,tgt,dur=1600){const tg=controls.target.clone();const v=camera.position.clone().sub(tg);const sp=new THREE.Spherical().setFromVector3(v);
  const s0={r:sp.radius,th:sp.theta,ph:sp.phi},s1={r:dist??sp.radius,th:az,ph:Math.PI/2};
  let d=s1.th-s0.th;d=Math.atan2(Math.sin(d),Math.cos(d));if(Math.abs(Math.abs(d)-Math.PI)<.01)d=Math.PI;s1.th=s0.th+d;
@@ -497,7 +497,7 @@ function setFocus(kind,n){
  LBL.forEach(([k,el])=>{el.classList.toggle('dim',!!keep&&!keep.has(k));el.classList.toggle('focus',k===fk);});document.body.classList.toggle('hasfocus',!!keep);
 }
 let zoomed=false;const HOME=new THREE.Vector3(0,TY,0);
-function resetView(r,dur=1100){zoomed=false;setFocus(null);if(typeof clearTags==='function'){clearTags();lastF=null;}animateTo(r?Math.PI:0,fitDist(),HOME,dur);}
+function resetView(r,dur=1100){zoomed=false;setFocus(null);if(typeof clearTags==='function'){clearTags();lastF=null;}animateTo(r?Math.PI:0,fitDist()*(fig==='cube'?.82:1),HOME,dur);}
 const nbr=n=>n===11?[1,2,3,4,5,6]:PATHS.filter(p=>p.con.includes(n)).map(p=>p.con[0]===n?p.con[1]:p.con[0]);
 function focus(kind,n,toRear){
  let c,pts;
@@ -517,7 +517,7 @@ function focus(kind,n,toRear){
 }
 
 /* ---------- the Cube of Space (Paul Foster Case, after the Sepher Yetzirah) ---------- */
-let fig='tree';const CH=2.35;const cubeG=new THREE.Group();cubeG.position.set(0,TY,0);cubeG.rotation.set(.5,-.72,0);cubeG.visible=false;scene.add(cubeG);
+const CH=2.35;const cubeG=new THREE.Group();cubeG.position.set(0,TY,0);cubeG.rotation.set(.5,-.72,0);cubeG.visible=false;scene.add(cubeG);
 const CSLOT={NE:[[1,-1,-1],[1,1,-1]],SE:[[1,-1,1],[1,1,1]],NW:[[-1,-1,-1],[-1,1,-1]],SW:[[-1,-1,1],[-1,1,1]],EA:[[1,1,-1],[1,1,1]],EB:[[1,-1,-1],[1,-1,1]],WA:[[-1,1,-1],[-1,1,1]],WB:[[-1,-1,-1],[-1,-1,1]],NA:[[-1,1,-1],[1,1,-1]],NB:[[-1,-1,-1],[1,-1,-1]],SA:[[-1,1,1],[1,1,1]],SB:[[-1,-1,1],[1,-1,1]]};
 const SNAME={NE:'the north-east edge',SE:'the south-east edge',NW:'the north-west edge',SW:'the south-west edge',EA:'the east-above edge',EB:'the east-below edge',WA:'the west-above edge',WB:'the west-below edge',NA:'the north-above edge',NB:'the north-below edge',SA:'the south-above edge',SB:'the south-below edge'};
 const CEDGE={5:'NE',6:'SE',7:'EA',8:'EB',9:'NA',10:'NB',12:'NW',14:'SW',15:'WA',16:'WB',18:'SA',19:'SB'};
@@ -547,10 +547,10 @@ const _up=new THREE.Vector3(0,1,0);
 function setBar(m,a,b,rad){const d=b.clone().sub(a),L=Math.max(d.length(),.001);m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(_up,d.normalize());m.scale.set(rad,L,rad);}
 let morph=null;let TREE_OBJ=null;
 function treeVis(v){TREE_OBJ.forEach(o=>o.visible=v);}
-function labelsToCube(on){PATHS.forEach(p=>{const f=PGLO['f'+p.n],r=PGLO['r'+p.n];if(on){cubeG.updateMatrixWorld();f.o.position.copy(cubeLabelPos(p.n).applyMatrix4(cubeG.matrixWorld));r.o.visible=false;}else{f.o.position.copy(f.home);r.o.visible=true;}});}
+function labelsToCube(on){PATHS.forEach(p=>{const f=PGLO['f'+p.n],r=PGLO['r'+p.n];if(on){if(f.o.parent!==cubeG)cubeG.add(f.o);f.o.position.copy(cubeLabelPos(p.n));r.o.visible=false;}else{if(f.o.parent!==scene)scene.add(f.o);f.o.position.copy(f.home);r.o.visible=true;}});}
 function setFig(f,save=true){if(f===fig||morph)return;ev('figure: '+f);
  if(sel)closePanel();clearOverlay();closeIdx();closeDia();if(rear)setSide(false);
- const toCube=f==='cube';fig=f;document.body.classList.toggle('cube',toCube);
+ const toCube=f==='cube';fig=f;document.body.classList.toggle('cube',toCube);controls.enableRotate=!toCube;if(toCube){cyaw=CUBE0.yaw;cpitch=CUBE0.pitch;cvy=cvp=0;applyCubeRot();}
  document.querySelectorAll('.figsw button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===f)));
  if(save)try{localStorage.setItem('tol-fig',f);}catch(e){}
  $('subLbl').textContent=subText();
@@ -570,6 +570,18 @@ function setFig(f,save=true){if(f===fig||morph)return;ev('figure: '+f);
    else{treeVis(true);labelsToCube(false);PGL.forEach(([side,p])=>{PGLO[(side>0?'f':'r')+p.n].o.visible=true;});}
    cap.textContent=toCube?'The Cube of Space · Paul Foster Case, after the Sepher Yetzirah':'The Tree of Life';cap.classList.add('on');clearTimeout(setFig.t);setFig.t=setTimeout(()=>cap.classList.remove('on'),3200);}};
  animateTo(0,toCube?fitDist()*.82:fitDist(),HOME,1700);}
+
+/* cube turntable: horizontal drag spins about the cube's own vertical, vertical drag tilts (clamped) */
+const CUBE0={yaw:-.72,pitch:.5};let cyaw=CUBE0.yaw,cpitch=CUBE0.pitch,cvy=0,cvp=0,cdrag=null,creset=null;
+function applyCubeRot(){cubeG.rotation.set(cpitch,cyaw,0,'XYZ');}
+renderer.domElement.addEventListener('pointerdown',e=>{if(fig!=='cube'||e.button!==0)return;cdrag={x:e.clientX,y:e.clientY,id:e.pointerId,t:performance.now()};cvy=cvp=0;creset=null;});
+addEventListener('pointermove',e=>{if(!cdrag||e.pointerId!==cdrag.id)return;const dx=e.clientX-cdrag.x,dy=e.clientY-cdrag.y;cdrag.x=e.clientX;cdrag.y=e.clientY;
+ const k=.0085;cyaw+=dx*k;cpitch=THREE.MathUtils.clamp(cpitch+dy*k,-1.45,1.45);cvy=dx*k;cvp=dy*k;applyCubeRot();});
+addEventListener('pointerup',e=>{if(cdrag&&e.pointerId===cdrag.id)cdrag=null;});addEventListener('pointercancel',()=>{cdrag=null;});
+function cubeStep(){if(fig!=='cube'||morph)return;
+ if(creset){const k=Math.min((performance.now()-creset.t0)/900,1),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;cyaw=creset.y0+(CUBE0.yaw-creset.y0)*e;cpitch=creset.p0+(CUBE0.pitch-creset.p0)*e;applyCubeRot();if(k>=1)creset=null;return;}
+ if(!cdrag&&(Math.abs(cvy)>1e-4||Math.abs(cvp)>1e-4)){cyaw+=cvy;cpitch=THREE.MathUtils.clamp(cpitch+cvp,-1.45,1.45);cvy*=.92;cvp*=.92;applyCubeRot();}}
+function resetCube(){const y=((cyaw-CUBE0.yaw)%(2*Math.PI)+3*Math.PI)%(2*Math.PI)-Math.PI;cyaw=CUBE0.yaw+y;creset={t0:performance.now(),y0:cyaw,p0:cpitch};cvy=cvp=0;animateTo(0,fitDist()*.82,HOME,900);}
 function subText(){const b=base==='g'?'Golden Dawn':base==='t'?'Thelemic':'Codex Memetica';if(fig==='cube')return `The Cube of Space · ${b} attributions${base==='g'?'':' · He and Tzaddi exchanged'}`;return base==='g'?'Golden Dawn base — the Sephiroth on the face, the Qliphoth on the reverse':base==='t'?'Thelemic base from Liber 777 — the Sephiroth on the face, the Qliphoth on the reverse':'Codex Memetica — the Sephiroth on the face, the Qliphoth on the reverse';}
 function cubeInfo(n){const p=PATHS.find(x=>x.n===n);let kind,where;
  if(CAXIS[n]){kind='Mother letter';where='the inner axis '+CAXIS[n][2]+', through the centre';}
@@ -588,7 +600,7 @@ $('bTurn').onclick=()=>{ev(rear?'turn: to the Sephiroth':'turn: to the Qliphoth'
 $('bReset').onclick=()=>{clearOverlay();closeIdx();closeDia();closeCol();closeCred();if(corrOn)setCorr(false);
  closeLab();LS={...LDEF};relabel();
  if(scheme!=='flash'){scheme='flash';applyColours();try{localStorage.setItem('tol-scale','flash');}catch(e){}}
- if(sel)closePanel();setSide(false);resetView(false);if(fig==='cube')setFig('tree');};
+ if(sel)closePanel();if(fig==='cube'){resetCube();return;}setSide(false);resetView(false);};
 
 
 /* ---------- flash ---------- */
@@ -990,7 +1002,7 @@ renderer.setAnimationLoop(now=>{
  T.value=RM?0:clock.getElapsedTime();
  if(anim){zGoal=null;const k=Math.min((now-anim.t0)/anim.dur,1);anim.step(k);if(k>=1)anim=null;}else{zoomStep();controls.update();}
  setSide(fig==='tree'&&camera.position.z-controls.target.z<0);
- if(morph)morph(now);
+ if(morph)morph(now);cubeStep();
  flashStep(now);
  if(ovlStep)ovlStep(now);
  baseStep();
@@ -1005,7 +1017,7 @@ document.querySelectorAll('.figsw button').forEach(b=>b.onclick=()=>setFig(b.dat
 try{if(localStorage.getItem('tol-fig')==='cube')setTimeout(()=>setFig('cube',false),600);}catch(e){}
 $('load').classList.add('gone');
 /* ---------- discoverability: a sway on arrival, a quiet hint ---------- */
-function sway(amp=.42,dur=4600){if(RM||anim||sel||zoomed)return;const tg=controls.target.clone();const sp=new THREE.Spherical().setFromVector3(camera.position.clone().sub(tg));const th0=sp.theta;
+function sway(amp=.42,dur=4600){if(RM||anim||sel||zoomed||fig==='cube')return;const tg=controls.target.clone();const sp=new THREE.Spherical().setFromVector3(camera.position.clone().sub(tg));const th0=sp.theta;
  anim={sway:true,t0:performance.now(),dur,step(k){sp.theta=th0+Math.sin(k*Math.PI*2)*Math.sin(k*Math.PI)*amp;camera.position.setFromSpherical(sp).add(tg);camera.lookAt(tg);}};}
 let lastTouch=performance.now(),nudged=false,hinted=false;
 try{hinted=localStorage.getItem('tol-hinted')==='1';}catch(e){}
