@@ -91,6 +91,7 @@ body.d3 #wax{visibility:visible;pointer-events:auto;cursor:grab}body.d3 #wax:act
  <button id="bGen" title="Play the Genesis: from the ALL to the ego point">▶ Genesis</button>
  <button id="bAsc" title="Play the Ascent: from the ego point back to the ALL">◀ Ascent</button>
  <button id="bPause" title="Pause (space)">❚❚</button>
+ <button id="bRestart" title="Start again from the beginning">⟲ Restart</button>
  <button id="bPrev" title="Previous stage (←)">‹</button>
  <button id="bNext" title="Next stage (→)">›</button>
  <span class="sep"></span>
@@ -390,6 +391,7 @@ function setMode(m){if(m===mode)return;if(in3D())return exit3D(()=>setMode(m));m
  closePanel();buildDots();t=0;render();play(1);ev('mode: '+m);}
 $('bGen').onclick=()=>play(1);$('bAsc').onclick=()=>play(-1);
 $('bPause').onclick=()=>{if(playing)playing=false;else play(lastDir||1);};
+$('bRestart').onclick=()=>{if(in3D())return exit3D(()=>{stopAt=null;t=0;render();play(1);});stopAt=null;t=0;render();play(1);};
 $('bPrev').onclick=()=>stepTo(Math.ceil(t-1e-6)-1);$('bNext').onclick=()=>stepTo(Math.floor(t+1e-6)+1);
 $('bWhy').onclick=()=>showInfo('why');$('b3d').onclick=()=>{if(document.body.classList.contains('d3'))exit3D();else enter3D(true);};$('bPan').onclick=()=>setMode('pan');$('bSig').onclick=()=>setMode('sig');
 addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();$('bPause').click();}else if(e.key==='ArrowRight')$('bNext').click();else if(e.key==='ArrowLeft')$('bPrev').click();else if(e.key==='Escape')closePanel();});
