@@ -144,7 +144,13 @@ body.rear .tag{border-color:rgba(208,50,63,.35)}
 body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important}
 @media(min-width:701px){body.panel nav.bar{left:calc((100vw - 430px)/2)}}
 .tag,.ov,#pb .cdl dd{font-variant-emoji:text}
-#bCorr[aria-pressed=true]{border-color:rgba(216,180,106,.6);color:var(--gold)}
+.bsep{display:block;align-self:center;width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
+#pb .ctog{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:italic 14px "Cormorant Garamond",serif;color:var(--mute);cursor:pointer;width:max-content}
+#pb .ctog input{accent-color:#d8b46a;width:15px;height:15px;margin:0}#pb .ctog:hover{color:var(--ink)}
+@media(max-width:700px){#pb .ctog{display:none}}
+#pb .cdl.sc dt,#pb .cdl.sc dd{cursor:pointer}#pb .cdl.sc .on{color:var(--gold)}
+#pb .scn{margin:-6px 0 12px;font:italic 13px "Cormorant Garamond",serif;color:var(--mute)}
+#pb .dchips button{font-size:12px}
 .menu{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);display:none;flex-direction:column;min-width:230px;padding:6px;background:rgba(8,8,14,.92);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(8px)}
 .menu.open{display:flex}
 .menu button{text-align:left;border-radius:8px;min-height:40px}
@@ -263,11 +269,10 @@ body.thelemic #dia .memonly{display:none}
 </header>
 <nav class="bar" aria-label="Tree controls">
  <button class="primary" id="bTurn">Turn to the Qliphoth</button><script>if(innerWidth<=700)document.getElementById("bTurn").textContent="Qliphoth"</script>
- <button id="bCorr" aria-pressed="false" title="Correspondences (C)">Correspondences</button>
- <button id="bDia" aria-expanded="false">Diagrams</button>
+ <button id="bIdx" aria-expanded="false">Index</button><i class="bsep" aria-hidden="true"></i>
+ <button id="bLbl" aria-expanded="false">Labels</button><i class="bsep" aria-hidden="true"></i>
  <button id="bCol" aria-expanded="false">Colours</button>
- <button id="bIdx" aria-expanded="false">Index</button>
- <button id="bLbl" aria-expanded="false">Labels</button>
+ <button id="bDia" aria-expanded="false">Diagrams</button><i class="bsep" aria-hidden="true"></i>
  <button id="bReset">Reset</button>
 </nav>
 <div id="cap" aria-live="polite"></div>
@@ -549,12 +554,10 @@ function showTags(kind,n,dist,r){
  });
  document.body.classList.add('corrshow');
 }
-function setCorr(on){corrOn=on;$('bCorr').setAttribute('aria-pressed',String(on));
+function setCorr(on){corrOn=on;try{localStorage.setItem('tol-corr',on?'1':'0');}catch(e){}document.querySelectorAll('#pb .ctog input').forEach(i=>i.checked=on);
  if(on&&lastF&&sel)showTags(lastF.kind,lastF.n,lastF.dist,lastF.r);else clearTags();
- if(on&&!sel){cap.textContent='Correspondences on · click a sphere or path';cap.classList.add('on');clearTimeout(setCorr.t);setCorr.t=setTimeout(()=>cap.classList.remove('on'),2600);}
- if(on&&innerWidth<=700){cap.textContent='On a phone, correspondences appear in the panel';cap.classList.add('on');clearTimeout(setCorr.t);setCorr.t=setTimeout(()=>cap.classList.remove('on'),2600);}
 }
-$('bCorr').onclick=()=>setCorr(!corrOn);
+try{if(localStorage.getItem('tol-corr')==='1')corrOn=true;}catch(e){}
 
 
 /* ---------- label layers ---------- */
@@ -744,8 +747,22 @@ addEventListener('pointerdown',e=>{if(!e.target.closest('#colm,#bCol'))closeCol(
 function closeCred(){$('cred').classList.remove('open');$('crB').setAttribute('aria-expanded','false');}
 $('crB').onclick=e=>{e.stopPropagation();const o=$('cred').classList.toggle('open');$('crB').setAttribute('aria-expanded',String(o));};
 addEventListener('keydown',e=>{if(e.key==='Escape')closeCred();});
+
+const SHAPE={1:'Point',2:'Line',3:'Triangle',4:'Square',5:'Pentagram',6:'Hexagram',7:'Heptagram',8:'Octagram',9:'Enneagram',10:'Decagram'};
+function diaChips(kind,n){const c=[];const add=(o,t)=>c.push(`<button data-o="${o}">${t}</button>`);
+ if(kind==='s'){add('flash','Lightning Flash · step '+n);
+  add('pillars',[2,4,7].includes(n)?'Pillar of Mercy':[3,5,8].includes(n)?'Pillar of Severity':'Middle Pillar');
+  add('worlds',n<=3?'Atziluth':n<=6?'Briah':n<=9?'Yetzirah':'Assiah');
+  add('elements',[1,6,9].includes(n)?'Air reflected':[2,5,7].includes(n)?'Fire reflected':[3,4,8].includes(n)?'Water reflected':'Earth');
+  add('soul',{1:'Yechidah',2:'Chiah',3:'Neschamah',10:'Nephesch'}[n]||'Ruach');
+  add('figures','Figure · '+SHAPE[n]);
+  if(base!=='t')add('primes',n<=3?'Prime Anthropic · Supernal Complex':n===10?'Prime Anthropic · Physical Plane':n===6?'Prime Anthropic · the Soulplex':'Prime Anthropic · within the Veil');}
+ else if(kind==='p'){const ord=[...PATHS].sort((a,b)=>b.n-a.n).findIndex(x=>x.n===n)+1;add('serpent','Serpent of Wisdom · scale '+ord+' of 22');}
+ else if(kind==='d'){if(base!=='t')add('primes','Prime Anthropic · the Unknown');add('worlds','The Four Worlds');}
+ else if(kind==='v'){add('flash','Lightning Flash · its source');}
+ return c.length?`<h3>On the Tree</h3><div class="chips dchips">${c.join('')}</div>`:'';}
 function scalesDL(kind,n){const key=kind==='p'?pathKey(n):n;const rows=[['King','king','Atziluth'],['Queen','queen','Briah'],['Prince','prince','Yetzirah'],['Princess','princess','Assiah']];
- return `<h3>The four colour scales · Liber 777</h3><dl class="cdl">${rows.map(([l,k,w])=>{const e=SC[k][key];return `<dt>${l} · ${w}</dt><dd>${e.cols.map(c=>`<span class="sw" style="background:${c}"></span>`).join('')}${esc(e.name)}</dd>`;}).join('')}</dl>${kind==='p'&&base==='t'&&(n===5||n===18)?'<p class="note">Thoth exchange applied: the colours follow the card and its sign.</p>':''}`;}
+ return `<h3>The four colour scales · Liber 777</h3><p class="scn">Click a scale to colour the whole Tree in it.</p><dl class="cdl sc">${rows.map(([l,k,w])=>{const e=SC[k][key];const on=scheme===k?' class="on"':'';return `<dt data-s="${k}"${on}>${l} · ${w}</dt><dd data-s="${k}"${on}>${e.cols.map(c=>`<span class="sw" style="background:${c}"></span>`).join('')}${esc(e.name)}</dd>`;}).join('')}</dl>${kind==='p'&&base==='t'&&(n===5||n===18)?'<p class="note">Thoth exchange applied: the colours follow the card and its sign.</p>':''}`;}
 
 
 /* ---------- picking ---------- */
@@ -815,6 +832,7 @@ function open(kind,n,noFocus){
   let head;if(kind==='p'){const p=PATHS.find(x=>x.n===n),tp=TH.paths[n].tags;head=`<span class="heb">${HEB[p.letter]}</span><h2>${p.letter}</h2><p class="ep">${esc(tp[0][1])}</p><p>${esc(tp[1][1])}.</p>`;k=`Path ${n+10} · Liber 777 · ${tp[2][1]}`;}
   else{const ts=TH.spheres[n],s=SPH[n];head=`<h2>${s.name}</h2><p class="ep">${esc(ts.title)}${n<11?' · '+esc(ts.tags[0][1]):''}</p>`;k=n<11?`Sephira ${n} · Liber 777`:'The Abyss';}
   h=head+corrDL(kind==='d'?'d':kind,n,'t','Thelemic correspondences · Liber 777')+'<h3>In the Memetic Qabalah</h3>'+strip;}
+ if(kind!=='q'&&kind!=='pr'){const dc=diaChips(kind,n),di=h.lastIndexOf('<details');h=di>=0?h.slice(0,di)+dc+h.slice(di):h+dc;}h=`<label class="ctog"><input type="checkbox"${corrOn?' checked':''}>Show correspondences on the Tree</label>`+h;
  pk.textContent=k;pb.innerHTML=h;pb.scrollTop=0;
  panel.classList.add('open');panel.setAttribute('aria-hidden','false');document.body.classList.add('panel');
  if(!panelOff&&innerWidth>700){panelOff=panel.offsetWidth;resize();}
@@ -822,7 +840,10 @@ function open(kind,n,noFocus){
  if(!noFocus)focus(kind,n,wantRear);
  closeIdx();
 }
-pb.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)open(b.dataset.k,+b.dataset.n);});
+pb.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b){open(b.dataset.k,+b.dataset.n);return;}
+ const o=e.target.closest('button[data-o]');if(o){chooseOverlay(o.dataset.o);return;}
+ const sc=e.target.closest('[data-s]');if(sc){const y=pb.scrollTop;setScheme(sc.dataset.s);pb.scrollTop=y;return;}});
+pb.addEventListener('change',e=>{if(e.target.closest('.ctog'))setCorr(e.target.checked);});
 function closePanel(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');document.body.classList.remove('panel');if(sel)setHi(sel,0);sel=null;if(panelOff||sheetOff){panelOff=0;sheetOff=0;resize();}resetView(rear);}
 $('pClose').onclick=closePanel;
 
