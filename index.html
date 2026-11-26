@@ -175,6 +175,7 @@ body.zin .gl .ts,.gl.focus .ts,.gl:hover .ts,body.hasfocus .gl:not(.dim) .ts{dis
 .pls{pointer-events:auto;cursor:pointer;font:400 calc(25px*var(--ls,1)) "Segoe UI Symbol","Noto Sans Symbols","Noto Sans Symbols 2","DejaVu Sans",sans-serif;color:#fff;line-height:1;
  text-shadow:0 0 2px #000,0 0 4px #000,0 0 10px rgba(0,0,0,.85);transition:opacity .5s}
 .pls.r{color:#ffd9d9}
+.pls.f.lt{color:#1a1208;text-shadow:0 0 2px rgba(255,250,235,.9),0 0 6px rgba(255,250,235,.7)}
 body.ovfig .pls{opacity:0!important;pointer-events:none}
 #tip{position:fixed;z-index:30;pointer-events:none;max-width:300px;padding:6px 10px;background:rgba(8,8,14,.94);border:1px solid var(--line);border-radius:8px;font:14px/1.35 "Cormorant Garamond",serif;color:var(--ink);opacity:0;transition:opacity .15s;transform:translate(14px,14px)}
 #tip.on{opacity:1}#tip b{font:600 12px Cinzel,serif;letter-spacing:.06em;color:var(--gold)}
@@ -586,7 +587,7 @@ function relabel(){const t=base==='t',sp=SPL[t?'t':'m'];
   el.dataset.tip=side>0?`<b>${HEB[p.letter]} ${p.letter} · ${MEANING(n)}</b><br>Path ${n+10} · value ${GEM[n]} · ${PSYM[n]}${VS} ${PSYN[n]}<br>Atu ${an} · ${at}`:`<b>Tunnel of Set ${n+10} · ${TUN[n][0]}</b><br>beneath ${HEB[p.letter]} ${p.letter} · ${at}`;});
  document.querySelectorAll('#labm input').forEach(i=>i.checked=!!LS[i.dataset.l]);
  const isDef=Object.keys(LDEF).every(k=>!!LS[k]===!!LDEF[k]);$('bLbl').classList.toggle('mod',!isDef);
- try{localStorage.setItem('tol-labels',JSON.stringify(LS));}catch(e){}}
+ try{localStorage.setItem('tol-labels',JSON.stringify(LS));}catch(e){}try{plsTone();}catch(e){}}
 const labm=$('labm');function closeLab(){labm.classList.remove('open');$('bLbl').setAttribute('aria-expanded','false');}
 $('bLbl').onclick=e=>{e.stopPropagation();closeDia();closeCol();const o=labm.classList.toggle('open');$('bLbl').setAttribute('aria-expanded',String(o));};
 labm.addEventListener('change',e=>{const i=e.target.closest('input[data-l]');if(i){LS[i.dataset.l]=i.checked?1:0;relabel();}});
@@ -725,11 +726,13 @@ function specOf(e){const c=e.cols.map(x=>C(x));const g=i=>c[i]||c[c.length-1];
  if(e.pat==='fleck')return {q:0,p:2,c:[c[0],g(1),c[2]||g(1),c[3]||g(1),C('#e0b84a')]};
  if(e.pat==='ray')return {q:0,p:3,c:[c[0],c[1],c[2]||c[0],c[0],C('#e0b84a')]};
  return {q:0,p:0,c:[c[0],c[0],c[0],c[0],C('#e0b84a')]};}
+function plsTone(){for(let n=1;n<=10;n++){const c=(tgtCol['s'+n]&&tgtCol['s'+n][0])||meshes['s'+n].material.uniforms.uA.value,pe=PLS[n+'f'];if(!c||!pe)continue;const L=.2126*c.r+.7152*c.g+.0722*c.b;pe.classList.toggle('lt',L>.3||n===1);}}
 function applyColours(){const t=base==='t';
  for(let n=1;n<=10;n++){let sp;
   if(scheme==='neutral'){if(t)sp={q:0,p:0,c:Array(5).fill(C(TH.spheres[n].col))};else if(n===10)sp={q:1,p:0,c:[...MEMQ.map(x=>C(x)),C('#e0b84a')]};else sp={q:0,p:0,c:Array(5).fill(MEMCOL[n])};}
   else sp=specOf(SC[scheme==='flash'?'queen':scheme][n]);
   const u=meshes['s'+n].material.uniforms;u.uQ.value=sp.q;u.uPat.value=sp.p;tgtCol['s'+n]=sp.c.map(x=>x.clone());}
+ plsTone();
  PATHS.forEach(p=>{const u=meshes['p'+p.n].material.uniforms;let c1,c2,c3,pt=0;
   if(scheme==='neutral'){c1=new THREE.Color(.82,.68,.44);c2=c3=c1;}
   else{const e=SC[scheme==='flash'?'king':scheme][pathKey(p.n)],c=e.cols.map(x=>C(x).multiplyScalar(.92));c1=c[0];
@@ -877,6 +880,7 @@ renderer.setAnimationLoop(now=>{
  composer.render();lr.render(scene,camera);
 });
 try{if(localStorage.getItem('tol-base')==='t')applyBase('t',false);const sc=localStorage.getItem('tol-scale');if(sc&&SCN[sc])setScheme(sc);}catch(e){}
+plsTone();
 $('load').classList.add('gone');
 /* ---------- discoverability: a sway on arrival, a quiet hint ---------- */
 function sway(amp=.42,dur=4600){if(RM||anim||sel||zoomed)return;const tg=controls.target.clone();const sp=new THREE.Spherical().setFromVector3(camera.position.clone().sub(tg));const th0=sp.theta;
