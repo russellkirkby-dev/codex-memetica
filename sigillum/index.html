@@ -33,13 +33,13 @@ a{color:var(--gold)}
 #stage{position:fixed;inset:54px 0 150px 0;display:flex;align-items:center;justify-content:center}
 #svg{width:100%;height:100%;max-width:100%;overflow:visible}
 #svg text{font-family:Cinzel,serif}
-.glyph{font-family:'Noto Sans Symbols','Segoe UI Symbol','DejaVu Sans',sans-serif}
-.heb{font-family:'Noto Serif Hebrew','Times New Roman',serif;font-weight:600}
+#svg .glyph{font-family:'Noto Sans Symbols','Segoe UI Symbol','DejaVu Sans',sans-serif}
+#svg .heb{font-family:'Noto Serif Hebrew','Times New Roman',serif;font-weight:600}
 .hit{cursor:pointer}
 .hit.on:hover{filter:url(#hov)}
 #cap{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);width:min(820px,92vw);text-align:center;font-size:20px;line-height:1.35;min-height:2.7em;color:var(--ink);text-shadow:0 1px 6px #000;transition:opacity .5s}
 #cap b{font-family:Cinzel,serif;font-weight:600;font-size:.82em;letter-spacing:.08em;color:var(--gold);margin-right:.4em}
-#bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;z-index:4}
+#bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);width:max-content;max-width:96vw;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;z-index:4}
 #bar button{font:400 13px Cinzel,serif;letter-spacing:.06em;color:var(--ink);background:#0b0a12dd;border:1px solid #3a3446;border-radius:18px;padding:8px 14px;cursor:pointer}
 #bar button:hover{border-color:var(--gold)}
 #bar button.act{border-color:var(--gold);color:#fff;box-shadow:0 0 10px #d8b96855}
@@ -94,6 +94,7 @@ a{color:var(--gold)}
  <span class="sep"></span>
  <button id="bPan" class="act" title="The Memetic Sigillum">Pantacle</button>
  <button id="bSig" title="The Sigil of the Supreme Memeplex">Sigil</button>
+ <button id="bWhy" title="Why the Sigil follows this order" hidden>Why this order?</button>
 </nav>
 <div id="tip"></div>
 <aside id="panel" aria-live="polite"><button class="x" aria-label="Close">×</button><div id="pc"></div></aside>
@@ -103,7 +104,7 @@ a{color:var(--gold)}
 <p>The Memetic Sigillum is the pantacle of Codex Memetica: Super-Meme Theory, Memetaphysics and Magick by Russell Kirkby and Helen Nhieu. Its outer edge carries the four letters of the Tetragrammaton, Yod, He, Vav and He, attributed to Fire, Water, Air and Earth. Behind it stands the triangle of the three alchemical principles, Mercury, Sulphur and Salt, labelled with the three super-memetic conditions: Universal, Self-Evident and Consistent.</p>
 <p>Three coloured rings carry the twelve a priori super-memes as the signs of the zodiac. Tier 1, the Cardinal signs: Energy (Aries), the Now (Cancer), Geometry (Libra) and the Four Forces (Capricorn). Tier 2, the Fixed signs: Motion (Leo), Space-Time (Scorpio), Prime Numbers (Aquarius) and Mass (Taurus). Tier 3, the Mutable signs: Vector (Sagittarius), Causation (Pisces), Duality (Gemini) and Matter (Virgo). Each ring begets the ring within.</p>
 <p>The red circle is the Anthropic Threshold between the a priori super-memes and the a posteriori Anthropic Primes. Within it the Hexagram of the Macroplex carries the seven planets; the Pentagram of the Microplex carries the four elements and Spirit; the circle around the Pentagram is the Veil; and the small red circle at the centre is the ego point-of-view.</p>
-<p>The Sigil of the Supreme Memeplex, divined by Frater NOX, is drawn by joining the twelve super-memes on the zodiac in the order of their birth.</p>
+<p>The Sigil of the Supreme Memeplex, divined by Frater NOX, is drawn by joining the twelve super-memes on the zodiac in the order of their birth. It passes through the three qualities in turn, Cardinal, Fixed and Mutable, which answer to the three Mother letters Shin, Aleph and Mem, the alchemical principles Sulphur, Mercury and Salt, the conditions Self-Evident, Universal and Consistent, and the Pillars of Mercy, the Middle Pillar and the Pillar of Severity. Within each quality the elements come in the order Fire, Water, Air, Earth, so the figure spells the Tetragrammaton three times; between the qualities the line leaps by a quincunx from Earth to Fire.</p>
 </section>
 <script>
 'use strict';
@@ -151,9 +152,9 @@ const PLAN=[ // angle, glyph, planet, sphere n, sphere name, prime
  [150,'♂','Mars',5,'Geburah','Severity']
 ];
 const COND=[ // triangle corners
- {a:90,cond:'Universal',pr:'Mercury',els:'Water + Air',act:'Active + Passive',sp:'Slow',t:2,q:'Fixed',pot:'Medium'},
- {a:-30,cond:'Self-Evident',pr:'Sulphur',els:'Air + Fire',act:'Active + Active',sp:'Fast',t:1,q:'Cardinal',pot:'Potency'},
- {a:210,cond:'Consistent',pr:'Salt',els:'Earth + Water',act:'Passive + Passive',sp:'Static',t:3,q:'Mutable',pot:'Result'}
+ {a:90,mo:'א Aleph',pil:'Middle Pillar',cond:'Universal',pr:'Mercury',els:'Water + Air',act:'Active + Passive',sp:'Slow',t:2,q:'Fixed',pot:'Medium'},
+ {a:-30,mo:'ש Shin',pil:'Pillar of Mercy',cond:'Self-Evident',pr:'Sulphur',els:'Air + Fire',act:'Active + Active',sp:'Fast',t:1,q:'Cardinal',pot:'Potency'},
+ {a:210,mo:'מ Mem',pil:'Pillar of Severity',cond:'Consistent',pr:'Salt',els:'Earth + Water',act:'Passive + Passive',sp:'Static',t:3,q:'Mutable',pot:'Result'}
 ];
 
 /* ---------- symbols drawn as paths ---------- */
@@ -311,20 +312,47 @@ C.lab=SM.map((s,i)=>{const a=signAng(s[1]);const p=pt(RS+78,a);const G=g(C.wheel
  el('text',{x:f(p[0]),y:f(p[1]-2),'text-anchor':'middle','font-size':18,'font-weight':600,fill:'#111'},G,s[0]);
  el('text',{x:f(p[0]),y:f(p[1]+19),'text-anchor':'middle','font-size':14,fill:'#555'},G,'T'+s[3]+' · '+s[2]);return G;});
 C.P=SM.map(s=>pt(RS,signAng(s[1])-15));
-C.num=SM.map((s,i)=>{const p=pt(RS+28,signAng(s[1])-15);return el('text',{x:f(p[0]),y:f(p[1]+10),'text-anchor':'middle','font-size':27,'font-weight':600,fill:'#c8101a'},C.wheel,String(i+1));});
-C.dot=SM.map((s,i)=>el('circle',{cx:f(C.P[i][0]),cy:f(C.P[i][1]),r:8,fill:'#c8101a'},C.wheel));
-C.line=g(S);C.seg=SM.map((s,i)=>{const a=C.P[i],b=C.P[(i+1)%12];return drawable(el('path',{d:`M${f(a[0])},${f(a[1])} L${f(b[0])},${f(b[1])}`,stroke:'#d0161f','stroke-width':7,'stroke-linecap':'round'},C.line));});
+// the three Mothers (King scale colours: Shin scarlet, Aleph pale yellow, Mem deep blue)
+const MOTH=[
+ {heb:'ש',name:'Shin',el:'Fire',q:'Cardinal',pr:'Sulphur',cond:'Self-Evident',pil:'the Pillar of Mercy',col:'#d0161f'},
+ {heb:'א',name:'Aleph',el:'Air',q:'Fixed',pr:'Mercury',cond:'Universal',pil:'the Middle Pillar',col:'#c08d0c'},
+ {heb:'מ',name:'Mem',el:'Water',q:'Mutable',pr:'Salt',cond:'Consistent',pil:'the Pillar of Severity',col:'#1c5aa6'}];
+const ELN={fire:['Fire','י','Yod'],water:['Water','ה','He'],air:['Air','ו','Vav'],earth:['Earth','ה','final He']};
+const LEAP=k=>k%4===3;
+C.ghost=g(S);C.gh=MOTH.map((m,ti)=>{const a=C.P[ti*4+3],b=C.P[ti*4];return el('path',{d:`M${f(a[0])},${f(a[1])} L${f(b[0])},${f(b[1])}`,stroke:m.col,'stroke-width':4,'stroke-dasharray':'10 12',fill:'none',opacity:0},C.ghost);});
+C.num=SM.map((s,i)=>{const p=pt(RS+28,signAng(s[1])-15);return el('text',{x:f(p[0]),y:f(p[1]+10),'text-anchor':'middle','font-size':27,'font-weight':600,fill:MOTH[s[3]-1].col},C.wheel,String(i+1));});
+C.dot=SM.map((s,i)=>el('circle',{cx:f(C.P[i][0]),cy:f(C.P[i][1]),r:8,fill:MOTH[s[3]-1].col},C.wheel));
+C.line=g(S);C.seg=SM.map((s,i)=>{const a=C.P[i],b=C.P[(i+1)%12];const lp=LEAP(i);
+ return drawable(el('path',{d:`M${f(a[0])},${f(a[1])} L${f(b[0])},${f(b[1])}`,stroke:lp?'#2a2530':MOTH[s[3]-1].col,'stroke-width':lp?5:7,'stroke-linecap':'round'},C.line));});
+C.name=g(S);C.nl=SM.map((s,i)=>{const p=pt(RS-50,signAng(s[1])-15);return el('text',{x:f(p[0]),y:f(p[1]+14),'text-anchor':'middle','font-size':42,fill:MOTH[s[3]-1].col,stroke:'#f4efe3','stroke-width':7,'paint-order':'stroke',class:'heb',opacity:0},C.name,ELN[s[4]][1]);});
+C.mid=MOTH.map(m=>el('text',{x:0,y:44,'text-anchor':'middle','font-size':150,fill:m.col,class:'heb',opacity:0},S,m.heb));
 C.img=el('image',{href:'sigil.png',x:-300,y:-300,width:600,height:600,style:'mix-blend-mode:multiply'},S);
+function segCap(i){const A=SM[i],B=SM[(i+1)%12],ea=ELN[A[4]],eb=ELN[B[4]],M=MOTH[A[3]-1];
+ if(!LEAP(i))return [`${i+1} → ${i+2}`,`${A[0]} to ${B[0]}: ${ea[0]} to ${eb[0]}, ${ea[2]} to ${eb[2]}, within the ${M.q} cross of ${M.heb} ${M.name}.`];
+ const N=MOTH[B[3]-1];return [`${i+1} → ${(i+1)%12+1} · the leap`,`${A[0]} (Earth, final He) to ${B[0]} (Fire, Yod): a quincunx of 150°. The ${M.q} square is left open, and the line ${i===11?'returns to the Cardinal signs, closing the figure':'passes to the '+N.q+' signs'}.`];}
 const SIG=[['The Wheel','The twelve super-memes stand on the zodiac, each numbered in the order of its birth: the four Cardinal roots first, then the Fixed, then the Mutable.']]
- .concat(SM.map((s,i)=>{const n=SM[(i+1)%12];return [`${i+1} → ${(i+1)%12+1}`,`${s[0]} (${s[2]}, Tier ${s[3]}) to ${n[0]} (${n[2]}, Tier ${n[3]})${i===11?', closing the figure.':'.'}`];}))
- .concat([['The Sigil','Joined in the order of their birth, the twelve trace the Sigil of the Supreme Memeplex, divined by Frater NOX.']]);
+ .concat(SM.map((s,i)=>segCap(i)))
+ .concat(MOTH.map((m,ti)=>{const four=SM.slice(ti*4,ti*4+4).map(x=>x[0]);return [`${m.heb} ${m.name}`,`The ${m.q} cross: ${m.pr}, ${m.cond}, ${m.pil}. ${four[0]}, ${four[1]}, ${four[2]} and ${four[3]}, in the order Fire, Water, Air, Earth: יהוה. Three sides are drawn; the fourth is left open.`];}))
+ .concat([['The Leaps','Three quincunx leaps of 150°, each from Earth to Fire, final He to Yod: the end of one Name becomes the beginning of the next. The crosses turn one way round the wheel; the leaps turn back the other.'],
+  ['The Name','Read in order, the twelve spell יהוה three times, once through each of the three Mothers: ש Shin, א Aleph, מ Mem.'],
+  ['The Sigil','Joined in the order of their birth, the twelve trace the Sigil of the Supreme Memeplex, divined by Frater NOX. As far as the authors know, no other sigil passes through the three qualities in this way.']]);
+const ST=13; // first structure stage
 function renderS(t){
  const p=i=>clamp(t-i);const a=p(0);
  op(C.paper,seg(a,0,.3));draw(C.o,seg(a,0,.5));draw(C.i,seg(a,.15,.6));C.sp.forEach((v,k)=>draw(v,seg(a,.3+k*.05,.75+k*.05)));
  C.zg.forEach((v,k)=>op(v,seg(a,.4+k*.03,.6+k*.03)));C.lab.forEach((v,k)=>op(v,seg(a,.5+k*.03,.7+k*.03)));
  C.num.forEach((v,k)=>op(v,k===0?seg(a,.8,1):seg(p(k),.85,1)));C.dot.forEach((v,k)=>op(v,k===0?seg(a,.8,1):seg(p(k),.85,1)));
  C.seg.forEach((v,k)=>draw(v,seg(p(k+1),0,.9)));
- const r=p(13);C.wheel.style.opacity=1-.88*seg(r,0,.6);C.line.style.opacity=1-seg(r,.3,.9);op(C.img,seg(r,.3,1));
+ // structure: each Mother's cross, then the leaps, then the Name
+ const hl=[0,1,2].map(ti=>seg(p(ST+ti),0,.3)*(1-seg(p(ST+ti+1),0,.3)));
+ const hlLeap=seg(p(ST+3),0,.3)*(1-seg(p(ST+4),0,.3));
+ const any=Math.max(...hl,hlLeap);
+ C.seg.forEach((v,k)=>{const on=LEAP(k)?hlLeap:hl[SM[k][3]-1];v.style.opacity=1-.8*any*(1-on);v.style.strokeWidth=(LEAP(k)?5:7)*(1+.5*on);});
+ C.dot.forEach((v,k)=>{const on=Math.max(hl[SM[k][3]-1],LEAP(k)||LEAP((k+11)%12)?hlLeap:0);v.setAttribute('r',f(8+5*on));});
+ C.gh.forEach((v,ti)=>v.setAttribute('opacity',f(.85*hl[ti])));
+ C.mid.forEach((v,ti)=>v.setAttribute('opacity',f(.3*hl[ti])));
+ const r=p(ST+5);const nm=seg(p(ST+4),0,.6)*(1-seg(r,0,.4));C.nl.forEach((v,k)=>v.setAttribute('opacity',f(nm)));
+ C.wheel.style.opacity=1-.88*seg(r,0,.6);C.line.style.opacity=1-seg(r,.3,.9);op(C.img,seg(r,.3,1));
  C.lab.forEach(v=>{if(r>.2)v.style.pointerEvents='none';});
 }
 
@@ -337,7 +365,7 @@ function caption(){
  if(mode==='pan'){const asc=dir<0||(!playing&&lastDir<0);i=Math.min(N-1,Math.max(0,asc?Math.ceil(t)-1:Math.ceil(t)-1));if(t<=0&&asc){$('cap').innerHTML='<b>The ALL</b> '+ASC[0][1];return;}
   if(i<0)i=0;const src=asc?ASC:GEN;txt=`<b>${src[i][0]}</b> ${src[i][1]}`;}
  else{i=Math.min(L-1,Math.max(0,Math.ceil(t)-1));txt=`<b>${SIG[i][0]}</b> ${SIG[i][1]}`;}
- if($('cap')._t!==txt){$('cap')._t=txt;$('cap').innerHTML=txt;}
+ if($('cap')._t!==txt){$('cap')._t=txt;$('cap').innerHTML=txt.replace(/[\u0590-\u05FF]+/g,m=>'<bdi>'+m+'</bdi>');}
  [...$('dots').children].forEach((d,k)=>{d.className=t>=k+1-1e-6?'done':'';if(k===Math.max(0,Math.ceil(t)-1))d.className+=' cur';});
 }
 let lastDir=1;
@@ -353,12 +381,12 @@ function stepTo(k){k=clamp(k,0,stages());dir=k>=t?1:-1;lastDir=dir;stopAt=k;play
 function updButtons(){$('bGen').classList.toggle('act',playing&&dir>0);$('bAsc').classList.toggle('act',playing&&dir<0);$('bPause').textContent=playing?'❚❚':'▶';}
 function buildDots(){const D=$('dots');D.innerHTML='';for(let k=0;k<stages();k++){const i=document.createElement('i');i.title=(mode==='pan'?GEN:SIG)[k][0];i.onclick=()=>stepTo(k+1);D.appendChild(i);}}
 function setMode(m){if(m===mode)return;mode=m;P.style.display=m==='pan'?'':'none';S.style.display=m==='sig'?'':'none';
- $('bPan').classList.toggle('act',m==='pan');$('bSig').classList.toggle('act',m==='sig');$('bGen').textContent=m==='pan'?'▶ Genesis':'▶ Trace';$('bAsc').textContent=m==='pan'?'◀ Ascent':'◀ Unwind';
+ $('bWhy').hidden=m!=='sig';$('bPan').classList.toggle('act',m==='pan');$('bSig').classList.toggle('act',m==='sig');$('bGen').textContent=m==='pan'?'▶ Genesis':'▶ Trace';$('bAsc').textContent=m==='pan'?'◀ Ascent':'◀ Unwind';
  closePanel();buildDots();t=0;render();play(1);ev('mode: '+m);}
 $('bGen').onclick=()=>play(1);$('bAsc').onclick=()=>play(-1);
 $('bPause').onclick=()=>{if(playing)playing=false;else play(lastDir||1);};
 $('bPrev').onclick=()=>stepTo(Math.ceil(t-1e-6)-1);$('bNext').onclick=()=>stepTo(Math.floor(t+1e-6)+1);
-$('bPan').onclick=()=>setMode('pan');$('bSig').onclick=()=>setMode('sig');
+$('bWhy').onclick=()=>showInfo('why');$('bPan').onclick=()=>setMode('pan');$('bSig').onclick=()=>setMode('sig');
 addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();$('bPause').click();}else if(e.key==='ArrowRight')$('bNext').click();else if(e.key==='ArrowLeft')$('bPrev').click();else if(e.key==='Escape')closePanel();});
 
 /* ---------- info ---------- */
@@ -367,9 +395,9 @@ function row(k,v){return `<tr><td>${k}</td><td>${v}</td></tr>`;}
 function info(k){const[a,b,c]=k.split(':');
  if(a==='all')return{t:'The Supreme Memeplex',s:'The outer circle',h:`<p>The ALL: the One Thing, the universe, within which all things are contained. Its fourfold name is the Tetragrammaton, יהוה, whose letters stand around the edge.</p>`};
  if(a==='heb'){const q=QUAD.find(x=>x.k===b);return{t:`${q.heb} ${q.hn}`,s:'A letter of the Tetragrammaton',h:`<table>${row('Element',q.el)}${row('Figure',q.ht)}${row('Quadrant',q.tiers.map(x=>x[0]).join(', '))}</table><p>The four letters of the Fourfold Name are reflected into the coloured quadrants of the rings.</p>`};}
- if(a==='cond'){const c0=COND[+b];return{t:c0.cond,s:`Alchemical ${c0.pr}`,h:`<table>${row('Principle',c0.pr)}${row('Elements',c0.els)}${row('Nature',c0.act)}${row('Speed',c0.sp)}${row('Tier',`T${c0.t}: ${c0.q} signs`)}${row('Role',c0.pot)}</table><p>The three super-memetic conditions stand on the corners of the partly concealed triangle behind the rings. From them the twelve super-memes are spawned.</p>`};}
+ if(a==='cond'){const c0=COND[+b];return{t:c0.cond,s:`Alchemical ${c0.pr}`,h:`<table>${row('Principle',c0.pr)}${row('Mother letter',c0.mo)}${row('Pillar',c0.pil)}${row('Elements',c0.els)}${row('Nature',c0.act)}${row('Speed',c0.sp)}${row('Tier',`T${c0.t}: ${c0.q} signs`)}${row('Role',c0.pot)}</table><p>The three super-memetic conditions stand on the corners of the partly concealed triangle behind the rings. From them the twelve super-memes are spawned.</p>`};}
  if(a==='sm'){const q=QUAD[+b],T=TIER[+c],m=q.tiers[+c];const beg=+c===0?`<p>${m[0]} begets ${q.tiers[1][0]} and ${q.tiers[2][0]}.</p>`:`<p>Begotten from ${q.tiers[0][0]}.</p>`;
-  return{t:m[0],s:`Super-meme · Tier ${T.n}`,h:`<table>${row('Sign',`${m[1]}${VS} ${m[2]}`)}${row('Element',q.el+' · '+q.heb)}${row('Tier',`T${T.n}: ${T.q}`)}${row('Principle',T.pr)}${row('Condition',T.cond)}</table>${beg}<a class="go" href="${TREE}#p${m[3]}">Show its path on the Tree →</a>`};}
+  return{t:m[0],s:`Super-meme · Tier ${T.n}`,h:`<table>${row('Sign',`${m[1]}${VS} ${m[2]}`)}${row('Element',q.el+' · '+q.heb)}${row('Tier',`T${T.n}: ${T.q}`)}${row('Principle',T.pr)}${row('Condition',T.cond)}${row('Mother letter',['ש Shin','א Aleph','מ Mem'][+c])}</table>${beg}<a class="go" href="${TREE}#p${m[3]}">Show its path on the Tree →</a>`};}
  if(a==='apriori')return{t:'a priori',s:'Outside the Threshold',h:`<p>Everything outside the red circle is a priori: the super-memes are the conditions of existence, and do not depend on human consciousness.</p>`};
  if(a==='thr')return{t:'The Anthropic Threshold',s:'The large red circle',h:`<p>It separates the a priori super-memes from the a posteriori Anthropic Complexes within: the true boundary between the Self and the Other.</p>`};
  if(a==='hex')return{t:'The Hexagram',s:'The Macroplex',h:`<p>The connection to the Macroplex and the planetary forces in relation to human consciousness: the zone in which super-memetic resonance is achieved. These are the universal, self-evident and consistent planetary associations of the Prime Anthropic Memeplex.</p>`};
@@ -377,15 +405,17 @@ function info(k){const[a,b,c]=k.split(':');
  if(a==='pent')return{t:'The Pentagram',s:'The Microplex',h:`<p>The four elements plus one, Spirit: the core of the human Soulplex and the most basic alchemical and memetic code of the human sense-making faculty.</p>`};
  if(a==='veil')return{t:'The Veil',s:'The circle about the Pentagram',h:`<p>A false boundary between Self and Other, to be overcome by the Great Work. In Qabalah it is called the Veil.</p>`};
  if(a==='ego')return{t:'The Ego',s:'The small red circle',h:`<p>The ego point-of-view, at the centre of it all.</p><a class="go" href="${TREE}#s6">Open Tiphareth, the Ego-Self, on the Tree →</a>`};
- if(a==='smb'){const s=SM[+b];return{t:`${+b+1} · ${s[0]}`,s:`${s[1]}${VS} ${s[2]} · Tier ${s[3]}`,h:`<p>Born ${['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth'][+b]} of the twelve super-memes.</p>`};}
+ if(a==='smb'){const i=+b,x=SM[i],M=MOTH[x[3]-1],E=ELN[x[4]];const prev=SM[(i+11)%12],next=SM[(i+1)%12];
+  return{t:`${i+1} · ${x[0]}`,s:`${x[1]}${VS} ${x[2]} · born ${['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth'][i]}`,h:`<table>${row('Element',`${E[0]} · ${E[1]} ${E[2]}`)}${row('Quality',`${M.q} · Tier ${x[3]}`)}${row('Principle',M.pr)}${row('Condition',M.cond)}${row('Mother letter',`${M.heb} ${M.name}`)}${row('Pillar',M.pil.replace('the ',''))}${row('From',`${(i+11)%12+1} ${prev[0]}${LEAP((i+11)%12)?' (a leap)':''}`)}${row('To',`${(i+1)%12+1} ${next[0]}${LEAP(i)?' (a leap)':''}`)}</table>`};}
+ if(a==='why')return{t:'Why this order?',s:'The Sigil of the Supreme Memeplex',h:`<p>The line is not random. It visits the twelve super-memes in the order of their birth, and so passes through the three qualities in turn: the four Cardinal signs, then the four Fixed, then the four Mutable.</p><table>${MOTH.map((m,ti)=>row(`${m.heb} ${m.name}`,`${m.q} · ${m.pr} · ${m.cond} · ${m.pil.replace('the ','')}`)).join('')}</table><p>Within each quality the signs come in the order Fire, Water, Air, Earth: Yod, He, Vav, He. Each cross therefore spells the Name, and the whole figure spells it three times, once through each Mother.</p><p>Each cross is a square with one side left open. In place of the closing side, the line leaps 150°, a quincunx, from Earth to Fire: the final He of one Name becomes the Yod of the next. The crosses turn one way round the wheel; the three leaps turn back the other.</p><p>As far as the authors know, no other sigil passes through the three qualities in this way.</p>`};
  return null;}
 function closePanel(){$('panel').classList.remove('show');}
 $('panel').querySelector('.x').onclick=closePanel;
 const tip=$('tip');
 document.addEventListener('pointerover',e=>{const h=e.target.closest&&e.target.closest('.hit');if(!h||h.style.pointerEvents==='none'){tip.style.opacity=0;return;}const I=info(h.dataset.k);if(!I){tip.style.opacity=0;return;}tip.textContent=I.t;tip.style.opacity=1;});
 document.addEventListener('pointermove',e=>{tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY+12)+'px';});
-document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('.hit');if(!h)return;const I=info(h.dataset.k);if(!I)return;
- $('pc').innerHTML=`<h2>${I.t}</h2><div class="k">${I.s}</div>${I.h}`;$('panel').classList.add('show');tip.style.opacity=0;ev('sigillum open: '+I.t);});
+function showInfo(k){const I=info(k);if(!I)return;$('pc').innerHTML=`<h2>${I.t}</h2><div class="k">${I.s}</div>${I.h}`;$('panel').classList.add('show');tip.style.opacity=0;ev('sigillum open: '+I.t);}
+document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('.hit');if(h)showInfo(h.dataset.k);});
 
 /* ---------- analytics ---------- */
 let gcReady=false;
