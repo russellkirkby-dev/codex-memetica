@@ -1,6 +1,6 @@
 # Codex Memetica — The Memetic Tree of Life
 
-An interactive 3D Tree of Life from *Codex Memetica: Super-Meme Theory, Memetaphysics and Magick* by Russell and Helen Kirkby.
+An interactive 3D Tree of Life from *Codex Memetica: Super-Meme Theory, Memetaphysics and Magick* by Russell Kirkby and Helen Nhieu.
 
 **View it:** https://russellkirkby-dev.github.io/codex-memetica/
 
@@ -12,4 +12,4 @@ An interactive 3D Tree of Life from *Codex Memetica: Super-Meme Theory, Memetaph
 
 Built with [three.js](https://threejs.org). A single self-contained `index.html`.
 
-© Russell and Helen Kirkby. The Liber 777 attributions are from Aleister Crowley, *Magick in Theory and Practice* (1929), Appendix V.
+© Russell Kirkby and Helen Nhieu. The Liber 777 attributions are from Aleister Crowley, *Magick in Theory and Practice* (1929), Appendix V.
