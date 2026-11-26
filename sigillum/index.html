@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sigillum Memetica · the Memetic Sigillum, an animated pantacle · Codex Memetica</title>
+<meta name="description" content="The Memetic Sigillum of Codex Memetica as an animated pantacle: from the ALL through the four elements, the three alchemical principles and the twelve super-memes to the Anthropic Threshold, the Hexagram, the Pentagram, the Veil and the ego point. With the Sigil of the Supreme Memeplex.">
+<meta name="keywords" content="Memetic Sigillum, Sigillum Memetica, pantacle, pentacle, sigil, Supreme Memeplex, super-memes, Tetragrammaton, Hermetic Qabalah, Qabalah, Kabbalah, alchemy, Mercury Sulphur Salt, hexagram, pentagram, Thelema, Codex Memetica">
+<meta name="author" content="Russell Kirkby and Helen Nhieu">
+<link rel="canonical" href="https://russellkirkby-dev.github.io/codex-memetica/sigillum/">
+<meta name="theme-color" content="#04050a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Codex Memetica">
+<meta property="og:title" content="Sigillum Memetica · the Memetic Sigillum, animated">
+<meta property="og:description" content="Watch the Memetic Sigillum build itself, from the ALL to the ego point, and back again. From Codex Memetica by Russell Kirkby and Helen Nhieu.">
+<meta property="og:url" content="https://russellkirkby-dev.github.io/codex-memetica/sigillum/">
+<meta property="og:image" content="https://russellkirkby-dev.github.io/codex-memetica/sigillum/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Memetic Sigillum: a pantacle of coloured rings, a hexagram and a pentagram around a red point">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@600&family=Noto+Sans+Symbols:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#efe6cf;--dim:#a99f86;--gold:#d8b968;--bg:#04050a;--paper:#f4efe3}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:radial-gradient(ellipse at 50% 42%,#14121f 0%,#06070d 60%,#030308 100%);color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif;overflow:hidden}
+a{color:var(--gold)}
+#top{position:fixed;top:0;left:0;right:0;display:flex;align-items:baseline;gap:14px;padding:14px 20px;z-index:5;pointer-events:none}
+#top h1{margin:0;font:600 20px/1.1 Cinzel,serif;letter-spacing:.12em;color:var(--ink)}
+#top .sub{font-style:italic;color:var(--dim);font-size:16px}
+#top a{pointer-events:auto;margin-left:auto;font:400 13px Cinzel,serif;letter-spacing:.08em;text-decoration:none;color:var(--dim);border:1px solid #3a3446;padding:6px 10px;border-radius:16px;background:#0b0a12cc}
+#top a:hover{color:var(--ink);border-color:var(--gold)}
+#stage{position:fixed;inset:54px 0 150px 0;display:flex;align-items:center;justify-content:center}
+#svg{width:100%;height:100%;max-width:100%;overflow:visible}
+#svg text{font-family:Cinzel,serif}
+.glyph{font-family:'Noto Sans Symbols','Segoe UI Symbol','DejaVu Sans',sans-serif}
+.heb{font-family:'Noto Serif Hebrew','Times New Roman',serif;font-weight:600}
+.hit{cursor:pointer}
+.hit.on:hover{filter:url(#hov)}
+#cap{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);width:min(820px,92vw);text-align:center;font-size:20px;line-height:1.35;min-height:2.7em;color:var(--ink);text-shadow:0 1px 6px #000;transition:opacity .5s}
+#cap b{font-family:Cinzel,serif;font-weight:600;font-size:.82em;letter-spacing:.08em;color:var(--gold);margin-right:.4em}
+#bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;z-index:4}
+#bar button{font:400 13px Cinzel,serif;letter-spacing:.06em;color:var(--ink);background:#0b0a12dd;border:1px solid #3a3446;border-radius:18px;padding:8px 14px;cursor:pointer}
+#bar button:hover{border-color:var(--gold)}
+#bar button.act{border-color:var(--gold);color:#fff;box-shadow:0 0 10px #d8b96855}
+#bar .sep{width:1px;height:22px;background:#3a3446;margin:0 4px}
+#dots{position:fixed;left:50%;bottom:60px;transform:translateX(-50%);display:flex;gap:7px}
+#dots i{width:8px;height:8px;border-radius:50%;background:#3a3446;cursor:pointer;display:block}
+#dots i.done{background:#8a7a50}
+#dots i.cur{background:var(--gold);box-shadow:0 0 6px var(--gold)}
+#tip{position:fixed;pointer-events:none;background:#0b0a12ee;border:1px solid #3a3446;border-radius:6px;padding:4px 9px;font-size:15px;opacity:0;transition:opacity .15s;z-index:9;white-space:nowrap}
+#panel{position:fixed;top:64px;right:16px;width:min(360px,92vw);max-height:calc(100% - 240px);overflow:auto;background:#0b0a12ee;border:1px solid #3a3446;border-radius:10px;padding:16px 18px 14px;z-index:6;display:none;font-size:17px;line-height:1.4;box-shadow:0 8px 30px #000a}
+#panel.show{display:block}
+#panel h2{margin:0 0 2px;font:600 17px Cinzel,serif;letter-spacing:.06em;color:var(--gold)}
+#panel .k{color:var(--dim);font-style:italic;margin-bottom:8px}
+#panel table{border-collapse:collapse;margin:8px 0;width:100%}
+#panel td{padding:2px 8px 2px 0;vertical-align:top}
+#panel td:first-child{color:var(--dim);white-space:nowrap}
+#panel .x{position:absolute;top:8px;right:10px;background:none;border:0;color:var(--dim);font-size:22px;cursor:pointer}
+#panel .go{display:inline-block;margin-top:8px;font:400 13px Cinzel,serif;letter-spacing:.06em;text-decoration:none;border:1px solid #3a3446;border-radius:14px;padding:5px 11px}
+#panel .go:hover{border-color:var(--gold)}
+#foot{position:fixed;right:14px;bottom:6px;font-size:12px;color:#6d6578;z-index:3}
+#about{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+@media (max-width:700px){
+ #top{padding:10px 12px;flex-wrap:wrap;gap:4px 10px}#top h1{font-size:16px}#top .sub{display:none}
+ #stage{inset:44px 0 178px 0}
+ #cap{font-size:16.5px;bottom:100px}
+ #dots{bottom:84px}
+ #bar{bottom:10px;gap:6px;width:96vw}#bar button{padding:7px 10px;font-size:12px}#bar .sep{display:none}
+ #panel{top:auto;bottom:0;right:0;left:0;width:100%;max-height:52%;border-radius:12px 12px 0 0}
+ #foot{display:none}
+}
+</style>
+</head>
+<body>
+<header id="top"><h1>Sigillum Memetica</h1><span class="sub">the Memetic Sigillum · an animated pantacle</span><a href="../" id="back">← The Tree of Life</a></header>
+<div id="stage"><svg id="svg" viewBox="-560 -560 1120 1120" role="img" aria-label="The Memetic Sigillum, animated">
+<defs>
+ <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="hov" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#d8b968" flood-opacity=".95"/></filter>
+ <radialGradient id="pap" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#f8f4ea"/><stop offset=".85" stop-color="#efe8d6"/><stop offset="1" stop-color="#e2d8bf"/></radialGradient>
+</defs>
+<g id="P"></g>
+<g id="S"></g>
+</svg></div>
+<div id="cap"></div>
+<div id="dots"></div>
+<nav id="bar">
+ <button id="bGen" title="Play the Genesis: from the ALL to the ego point">▶ Genesis</button>
+ <button id="bAsc" title="Play the Ascent: from the ego point back to the ALL">◀ Ascent</button>
+ <button id="bPause" title="Pause (space)">❚❚</button>
+ <button id="bPrev" title="Previous stage (←)">‹</button>
+ <button id="bNext" title="Next stage (→)">›</button>
+ <span class="sep"></span>
+ <button id="bPan" class="act" title="The Memetic Sigillum">Pantacle</button>
+ <button id="bSig" title="The Sigil of the Supreme Memeplex">Sigil</button>
+</nav>
+<div id="tip"></div>
+<aside id="panel" aria-live="polite"><button class="x" aria-label="Close">×</button><div id="pc"></div></aside>
+<div id="foot">From <i>Codex Memetica</i> by Russell Kirkby and Helen Nhieu</div>
+<section id="about">
+<h2>The Memetic Sigillum</h2>
+<p>The Memetic Sigillum is the pantacle of Codex Memetica: Super-Meme Theory, Memetaphysics and Magick by Russell Kirkby and Helen Nhieu. Its outer edge carries the four letters of the Tetragrammaton, Yod, He, Vav and He, attributed to Fire, Water, Air and Earth. Behind it stands the triangle of the three alchemical principles, Mercury, Sulphur and Salt, labelled with the three super-memetic conditions: Universal, Self-Evident and Consistent.</p>
+<p>Three coloured rings carry the twelve a priori super-memes as the signs of the zodiac. Tier 1, the Cardinal signs: Energy (Aries), the Now (Cancer), Geometry (Libra) and the Four Forces (Capricorn). Tier 2, the Fixed signs: Motion (Leo), Space-Time (Scorpio), Prime Numbers (Aquarius) and Mass (Taurus). Tier 3, the Mutable signs: Vector (Sagittarius), Causation (Pisces), Duality (Gemini) and Matter (Virgo). Each ring begets the ring within.</p>
+<p>The red circle is the Anthropic Threshold between the a priori super-memes and the a posteriori Anthropic Primes. Within it the Hexagram of the Macroplex carries the seven planets; the Pentagram of the Microplex carries the four elements and Spirit; the circle around the Pentagram is the Veil; and the small red circle at the centre is the ego point-of-view.</p>
+<p>The Sigil of the Supreme Memeplex, divined by Frater NOX, is drawn by joining the twelve super-memes on the zodiac in the order of their birth.</p>
+</section>
+<script>
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+const $=id=>document.getElementById(id);
+const rad=a=>a*Math.PI/180;
+const pt=(r,a)=>[r*Math.cos(rad(a)),-r*Math.sin(rad(a))];
+const f=n=>Math.round(n*100)/100;
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const seg=(p,a,b)=>ease(clamp((p-a)/(b-a)));
+function el(tag,attrs,parent,txt){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(txt!=null)e.textContent=txt;(parent||P).appendChild(e);return e;}
+function g(parent,attrs){return el('g',attrs||{},parent);}
+// arc from angle a0 to a1; cw = clockwise on screen (angles decreasing)
+function arcD(r,a0,a1,cw){const s=pt(r,a0),e=pt(r,a1);const large=Math.abs(a1-a0)>180?1:0;return `M${f(s[0])},${f(s[1])} A${r},${r} 0 ${large} ${cw?1:0} ${f(e[0])},${f(e[1])}`;}
+function circD(r){const a=pt(r,90),b=pt(r,-90);return `M${f(a[0])},${f(a[1])} A${r},${r} 0 1 1 ${f(b[0])},${f(b[1])} A${r},${r} 0 1 1 ${f(a[0])},${f(a[1])}`;}
+function polyD(pts,close){return 'M'+pts.map(p=>f(p[0])+','+f(p[1])).join(' L')+(close?' Z':'');}
+// stroke-drawing helper
+const DR=[];function drawable(e){const L=e.getTotalLength();e.style.strokeDasharray=L+' '+L;e.style.strokeDashoffset=L;e._L=L;return e;}
+function draw(e,p){e.style.strokeDashoffset=e._L*(1-p);}
+function op(e,p){e.style.opacity=p;e.classList.toggle('on',p>.6);e.style.pointerEvents=p>.6?'':'none';}
+const VS='︎';
+const P=$('P'),S=$('S');
+
+/* ---------- data ---------- */
+const COL={air:'#e3df4f',fire:'#98bf5e',earth:'#0e0e0e',water:'#7c0606'};
+const TXT={air:'#161616',fire:'#161616',earth:'#ffffff',water:'#ffffff'};
+const QUAD=[ // c = centre angle; clockwise from c+45 to c-45
+ {k:'air',c:90,el:'Air',heb:'ו',hn:'Vav',ht:'Prince · Active · Masculine',sym:'air',tiers:[['Geometry','♎','Libra',12],['Prime Numbers','♒','Aquarius',5],['Duality','♊','Gemini',7]]},
+ {k:'fire',c:0,el:'Fire',heb:'י',hn:'Yod',ht:'King · Active · Masculine',sym:'fire',tiers:[['Energy','♈','Aries',18],['Motion','♌','Leo',9],['Vector','♐','Sagittarius',15]]},
+ {k:'earth',c:-90,el:'Earth',heb:'הּ',hn:'He (final)',ht:'Princess · Passive · Feminine',sym:'earth',tiers:[['The Four Forces','♑','Capricorn',16],['Mass','♉','Taurus',6],['Matter','♍','Virgo',10]]},
+ {k:'water',c:180,el:'Water',heb:'ה',hn:'He',ht:'Queen · Passive · Feminine',sym:'water',tiers:[['The Now','♋','Cancer',8],['Space-Time','♏','Scorpio',14],['Causation','♓','Pisces',19]]}
+];
+const TIER=[
+ {n:1,q:'Cardinal',pr:'Sulphur',cond:'Self-Evident',r0:258,r1:305},
+ {n:2,q:'Fixed (Kerubic)',pr:'Mercury',cond:'Universal',r0:211,r1:258},
+ {n:3,q:'Mutable',pr:'Salt',cond:'Consistent',r0:164,r1:211}
+];
+const PLAN=[ // angle, glyph, planet, sphere n, sphere name, prime
+ [90,'♄','Saturn',3,'Binah','Knowledge of Death'],
+ [30,'♃','Jupiter',4,'Chesed','Temperance'],
+ [-30,'♀','Venus',7,'Netzach','Passion'],
+ [-90,'☽','the Moon',9,'Yesod','Imagination'],
+ [-150,'☿','Mercury',8,'Hod','Intellect'],
+ [150,'♂','Mars',5,'Geburah','Severity']
+];
+const COND=[ // triangle corners
+ {a:90,cond:'Universal',pr:'Mercury',els:'Water + Air',act:'Active + Passive',sp:'Slow',t:2,q:'Fixed',pot:'Medium'},
+ {a:-30,cond:'Self-Evident',pr:'Sulphur',els:'Air + Fire',act:'Active + Active',sp:'Fast',t:1,q:'Cardinal',pot:'Potency'},
+ {a:210,cond:'Consistent',pr:'Salt',els:'Earth + Water',act:'Passive + Passive',sp:'Static',t:3,q:'Mutable',pot:'Result'}
+];
+
+/* ---------- symbols drawn as paths ---------- */
+function elemSym(parent,kind,x,y,s,col){ // alchemical element triangles
+ const up=kind==='fire'||kind==='air',h=s*.87,G=g(parent,{transform:`translate(${f(x)},${f(y)})`});
+ const tri=up?[[0,-h*.6],[s/2,h*.4],[-s/2,h*.4]]:[[0,h*.6],[s/2,-h*.4],[-s/2,-h*.4]];
+ el('path',{d:polyD(tri,true),fill:'none',stroke:col,'stroke-width':2.6,'stroke-linejoin':'round'},G);
+ if(kind==='air')el('line',{x1:-s*.42,y1:h*.02,x2:s*.42,y2:h*.02,stroke:col,'stroke-width':2.6},G);
+ if(kind==='earth')el('line',{x1:-s*.42,y1:-h*.02,x2:s*.42,y2:-h*.02,stroke:col,'stroke-width':2.6},G);
+ return G;}
+function sulphur(parent,x,y,s){const G=g(parent,{transform:`translate(${x},${y})`});
+ el('path',{d:polyD([[0,-s*.75],[s*.42,-s*.05],[-s*.42,-s*.05]],true),fill:'none',stroke:'#111','stroke-width':2.8,'stroke-linejoin':'round'},G);
+ el('line',{x1:0,y1:-s*.05,x2:0,y2:s*.75,stroke:'#111','stroke-width':2.8},G);
+ el('line',{x1:-s*.3,y1:s*.33,x2:s*.3,y2:s*.33,stroke:'#111','stroke-width':2.8},G);return G;}
+function salt(parent,x,y,s){const G=g(parent,{transform:`translate(${x},${y})`});
+ el('circle',{r:s*.45,fill:'none',stroke:'#111','stroke-width':2.8},G);el('line',{x1:-s*.45,y1:0,x2:s*.45,y2:0,stroke:'#111','stroke-width':2.8},G);return G;}
+
+/* ---------- build the pantacle ---------- */
+const R0=505,R1=415,RB=312,RT=164,RH=157,RV=RH/2;
+const B={};
+B.paper=el('circle',{r:540,fill:'url(#pap)',filter:'url(#glow)'});
+B.tint=g(P);QUAD.forEach(q=>{const a=pt(R1,q.c+45),b=pt(R1,q.c-45);el('path',{d:`M0,0 L${f(a[0])},${f(a[1])} A${R1},${R1} 0 0 1 ${f(b[0])},${f(b[1])} Z`,fill:COL[q.k],opacity:.22},B.tint);});
+B.c0=drawable(el('path',{d:circD(R0),fill:'none',stroke:'#0c0c0c','stroke-width':15}));
+B.c1=drawable(el('path',{d:circD(R1),fill:'none',stroke:'#0c0c0c','stroke-width':12}));
+B.c0h=el('path',{d:circD(R0),fill:'none',stroke:'transparent','stroke-width':40,class:'hit','data-k':'all'});
+// the One into Two into Four (thin diagonals)
+B.x1=g(P);B.x2=g(P);
+[[B.x1,135],[B.x2,45]].forEach(([G,a])=>{G._a=drawable(el('path',{d:`M0,0 L${pt(R1,a).map(f)}`,stroke:'#222','stroke-width':3.5},G));G._b=drawable(el('path',{d:`M0,0 L${pt(R1,a+180).map(f)}`,stroke:'#222','stroke-width':3.5},G));});
+// Hebrew letters
+B.heb=QUAD.map(q=>{const p=pt(458,q.c);const t=el('text',{x:f(p[0]),y:f(p[1]+18),'text-anchor':'middle','font-size':54,fill:'#0c0c0c',class:'heb hit','data-k':'heb:'+q.k},null,q.heb);return t;});
+// triangle of the three principles
+B.tri=drawable(el('path',{d:polyD([pt(R1,90),pt(R1,-30),pt(R1,210)],true),fill:'none',stroke:'#0c0c0c','stroke-width':9,'stroke-linejoin':'miter'}));
+B.corner=COND.map((c,i)=>{const G=g(P,{class:'hit','data-k':'cond:'+i});
+ let sx,sy,lx,ly;if(c.a===90){sx=0;sy=-372;lx=0;ly=-332;}else{const s=c.a===-30?1:-1;sx=300*s;sy=164;lx=300*s;ly=200;}
+ el('rect',{x:lx-55,y:sy-26,width:110,height:ly-sy+34,fill:'transparent'},G);
+ if(c.pr==='Mercury')el('text',{x:sx,y:sy+12,'text-anchor':'middle','font-size':34,fill:'#111',class:'glyph'},G,'☿'+VS);
+ else if(c.pr==='Sulphur')sulphur(G,sx,sy,30);else salt(G,sx,sy,30);
+ el('text',{x:lx,y:ly,'text-anchor':'middle','font-size':c.a===90?17:18,'font-weight':600,fill:'#111',style:'font-family:"Cormorant Garamond",Georgia,serif'},G,c.cond);return G;});
+// a priori
+B.apri=g(P);[[135,-45],[45,45],[-90,0]].forEach(([a,rot])=>{const p=pt(366,a);el('text',{x:0,y:9,transform:`translate(${f(p[0])},${f(p[1])}) rotate(${rot})`,'text-anchor':'middle','font-size':27,'font-style':'italic','font-weight':600,fill:'#d4141c',style:'font-family:"Cormorant Garamond",Georgia,serif',class:'hit','data-k':'apriori'},B.apri,'a priori');});
+// rings
+B.border=drawable(el('path',{d:circD(RB-3.5),fill:'none',stroke:'#0c0c0c','stroke-width':9}));
+B.band=[[],[],[]];B.lab=[[],[],[]];B.gl=[[],[],[]];B.es=[];
+B.ringG=g(P);B.labG=g(P);B.glG=g(P);
+TIER.forEach((T,ti)=>{const mid=(T.r0+T.r1)/2,w=T.r1-T.r0;
+ QUAD.forEach((q,qi)=>{const[nm,gl,sign]=q.tiers[ti];
+  const b=drawable(el('path',{d:arcD(mid,q.c+45,q.c-45,true),fill:'none',stroke:COL[q.k],'stroke-width':w+.6,class:'hit','data-k':`sm:${qi}:${ti}`},B.ringG));B.band[ti].push(b);
+  const bottom=q.k==='earth';const id=`lp${ti}${qi}`;
+  el('path',{id,d:bottom?arcD(mid+6.5,q.c-40,q.c+40,false):arcD(mid-6.5,q.c+40,q.c-40,true),fill:'none',stroke:'none'},B.labG);
+  const t=el('text',{'font-size':ti===0?19:18,'font-weight':600,fill:TXT[q.k],'letter-spacing':'.03em','pointer-events':'none'},B.labG);
+  const tp=el('textPath',{href:'#'+id,startOffset:'50%','text-anchor':'middle'},t,nm);B.lab[ti].push(t);
+  const p=pt(mid,q.c-45+8.5);const gt=el('text',{x:f(p[0]),y:f(p[1]+9),'text-anchor':'middle','font-size':26,fill:TXT[q.k],class:'glyph','pointer-events':'none'},B.glG,gl+VS);B.gl[ti].push(gt);
+  if(ti===0){const e=pt(mid,q.c+45-8);B.es.push(elemSym(B.glG,q.sym,e[0],e[1],24,TXT[q.k]));}
+ });});
+B.sep=[258,211].map(r=>drawable(el('path',{d:circD(r),fill:'none',stroke:'#8d8d8d','stroke-width':3})));
+B.div=[45,135,225,315].map(a=>drawable(el('path',{d:`M${pt(RT,a).map(f)} L${pt(RB,a).map(f)}`,stroke:'#0c0c0c','stroke-width':12})));
+// threshold
+B.disc=el('circle',{r:RT,fill:'#e4e3e1'});
+B.thr=drawable(el('path',{d:circD(RT),fill:'none',stroke:'#cf111b','stroke-width':9}));
+B.thrh=el('path',{d:circD(RT),fill:'none',stroke:'transparent','stroke-width':22,class:'hit','data-k':'thr'});
+// hexagram
+B.hexU=drawable(el('path',{d:polyD([pt(RH,90),pt(RH,-30),pt(RH,210)],true),fill:'none',stroke:'#0c0c0c','stroke-width':8,'stroke-linejoin':'miter',class:'hit','data-k':'hex'}));
+B.hexD=drawable(el('path',{d:polyD([pt(RH,-90),pt(RH,150),pt(RH,30)],true),fill:'none',stroke:'#0c0c0c','stroke-width':8,'stroke-linejoin':'miter',class:'hit','data-k':'hex'}));
+B.pl=PLAN.map((p,i)=>{const G=g(P,{class:'hit','data-k':'pl:'+i});const q=pt(RH*.665,p[0]);el('circle',{cx:f(q[0]),cy:f(q[1]),r:22,fill:'transparent'},G);
+ el('text',{x:f(q[0]),y:f(q[1]+11),'text-anchor':'middle','font-size':p[1]==='☽'?32:30,fill:'#111',class:'glyph'},G,p[1]+VS);G._c=q;return G;});
+// pentagram + veil + ego
+B.veilFill=el('circle',{r:RV,fill:'#ffffff'});
+B.pent=drawable(el('path',{d:polyD([0,1,2,3,4].map(k=>pt(RV-1,90-144*k)),true),fill:'none',stroke:'#0c0c0c','stroke-width':5.5,'stroke-linejoin':'miter',class:'hit','data-k':'pent'}));
+B.veil=drawable(el('path',{d:circD(RV),fill:'none',stroke:'#0c0c0c','stroke-width':7.5}));
+B.veilh=el('path',{d:circD(RV),fill:'none',stroke:'transparent','stroke-width':16,class:'hit','data-k':'veil'});
+B.ego=g(P,{class:'hit','data-k':'ego'});el('circle',{r:13.5,fill:'#e01b1b',stroke:'#0c0c0c','stroke-width':3.5},B.ego);el('circle',{r:3.6,fill:'#0c0c0c'},B.ego);
+B.egoGlow=el('circle',{r:13.5,fill:'none',stroke:'#ff3b30','stroke-width':3,opacity:0});P.insertBefore(B.egoGlow,B.ego);
+
+/* ---------- stages ---------- */
+const GEN=[
+ ['The ALL','The One Thing, the Supreme Memeplex: the ALL, within which all things are contained.'],
+ ['The Two','The One divides into Two: yin and yang, masculine and feminine, dark and light.'],
+ ['The Four','Each half divides again, giving the four elements, the four letters of the Name: י Fire, ה Water, ו Air, ה Earth.'],
+ ['The Three','The elements recombine as the three alchemical principles, Mercury, Sulphur and Salt: the super-memetic conditions Universal, Self-Evident and Consistent.'],
+ ['Tier 1','Sulphur, Self-Evident: the Cardinal signs. Energy, the Now, Geometry and the Four Forces.'],
+ ['Tier 2','Each ring begets the ring within. Mercury, Universal: the Fixed, Kerubic signs. Motion, Space-Time, Prime Numbers and Mass.'],
+ ['Tier 3','Salt, Consistent: the Mutable signs. Vector, Causation, Duality and Matter. Twelve super-memes, all a priori.'],
+ ['The Threshold','The red circle is the Anthropic Threshold, the true boundary between Self and Other. All within it is a posteriori to consciousness.'],
+ ['The Hexagram','The Macroplex: the planetary forces of the Prime Anthropic Memeplex, the zone in which super-memetic resonance is achieved.'],
+ ['The Pentagram','The Microplex: the four elements plus Spirit, the core of the human Soulplex.'],
+ ['The Veil','The circle about the Pentagram is a false boundary between Self and Other, to be overcome by the Great Work.'],
+ ['The Ego','At the centre, the small red circle: the ego point-of-view. From these associations the Memetic Qabalah is constructed.']
+];
+const ASC=[
+ ['The ALL','Returned to the One Thing: neither different from how we were, nor the same.'],
+ ['The One','The Two are reconciled into the One.'],
+ ['The Two','The four elements fold back into the Two.'],
+ ['The Four','The three principles resolve into the four elements of the Name.'],
+ ['Tier 1','Into the Cardinal roots: Energy, the Now, Geometry and the Four Forces.'],
+ ['Tier 2','Back through the Fixed signs: Motion, Space-Time, Prime Numbers and Mass.'],
+ ['Tier 3','Out through the Mutable signs: Vector, Causation, Duality and Matter.'],
+ ['The Threshold','The Anthropic Threshold is crossed: beyond it nothing depends on consciousness.'],
+ ['The Hexagram','The Macroplex: resonance with the planetary forces.'],
+ ['The Pentagram','The Microplex, the elements and Spirit, is reintegrated.'],
+ ['The Veil','The Veil is crossed: the false boundary between Self and Other dissolves.'],
+ ['The Ego','The ascent begins at the ego point-of-view: the Great Work.']
+];
+const N=GEN.length;
+
+function renderP(t){
+ const p=i=>clamp(t-i);
+ // 0 the ALL
+ const a=p(0);op(B.paper,seg(a,0,.35));op(B.c0h,a>.7?1:0);B.c0h.style.opacity=0;draw(B.c0,seg(a,.1,.7));draw(B.c1,seg(a,.45,1));
+ // 1 two
+ const b=p(1);draw(B.x1._a,seg(b,0,.8));draw(B.x1._b,seg(b,0,.8));
+ // 2 four
+ const c=p(2);draw(B.x2._a,seg(c,0,.5));draw(B.x2._b,seg(c,0,.5));
+ const order=[1,3,0,2];B.heb.forEach((h,i)=>op(h,seg(c,.35+order[i]*.13,.6+order[i]*.13)));
+ // 3 three principles
+ const d=p(3);draw(B.tri,seg(d,0,.65));B.corner.forEach((k,i)=>op(k,seg(d,.55+i*.1,.8+i*.1)));
+ // tiers
+ const e=p(4);draw(B.border,seg(e,0,.5));
+ op(B.tint,seg(c,.1,.6)*(1-seg(e,0,.6)));
+ const xo=1-seg(e,.6,1);B.x1.style.opacity=xo;B.x2.style.opacity=xo;
+ B.div.forEach(v=>draw(v,seg(e,.5,1)));
+ for(let ti=0;ti<3;ti++){const q=p(4+ti);
+  B.band[ti].forEach(v=>{draw(v,seg(q,0,.7));op(v,q>0?1:0);});
+  B.lab[ti].forEach(v=>op(v,seg(q,.5,.9)));B.gl[ti].forEach(v=>op(v,seg(q,.55,.95)));
+  if(ti===0)B.es.forEach(v=>op(v,seg(q,.6,1)));
+  if(ti>0)draw(B.sep[ti-1],seg(q,.3,.9));}
+ // 7 threshold
+ const h=p(7);op(B.apri,seg(h,0,.4));draw(B.thr,seg(h,.2,.85));op(B.disc,seg(h,.5,1));op(B.thrh,h>.9?1:0);B.thrh.style.opacity=0;
+ // 8 hexagram
+ const x=p(8);draw(B.hexU,seg(x,0,.45));draw(B.hexD,seg(x,.3,.75));op(B.hexU,x>0?1:0);op(B.hexD,x>0?1:0);B.pl.forEach((v,i)=>op(v,seg(x,.6+i*.05,.8+i*.05)));
+ // 9 pentagram
+ const y=p(9);op(B.veilFill,seg(y,0,.4));draw(B.pent,seg(y,.1,.9));op(B.pent,y>0?1:0);
+ // 10 veil
+ const z=p(10);draw(B.veil,seg(z,0,.8));op(B.veilh,z>.9?1:0);B.veilh.style.opacity=0;
+ // 11 ego
+ const w=p(11);const s=seg(w,0,.5);op(B.ego,s);B.ego.setAttribute('transform',`scale(${f(.2+.8*s+.25*Math.sin(Math.PI*seg(w,.3,.8)))})`);
+ B.egoGlow.style.opacity=.9*(1-seg(w,.5,1))*seg(w,.3,.5);B.egoGlow.setAttribute('r',f(14+60*seg(w,.4,1)));
+}
+
+/* ---------- the Sigil of the Supreme Memeplex ---------- */
+const SM=[ // birth order
+ ['Energy','♈','Aries',1,'fire'],['The Now','♋','Cancer',1,'water'],['Geometry','♎','Libra',1,'air'],['The Four Forces','♑','Capricorn',1,'earth'],
+ ['Motion','♌','Leo',2,'fire'],['Space-Time','♏','Scorpio',2,'water'],['Prime Numbers','♒','Aquarius',2,'air'],['Mass','♉','Taurus',2,'earth'],
+ ['Vector','♐','Sagittarius',3,'fire'],['Causation','♓','Pisces',3,'water'],['Duality','♊','Gemini',3,'air'],['Matter','♍','Virgo',3,'earth']];
+const ZOD=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓']; // Aries at 195°, counter-clockwise
+const signAng=g=>195+30*ZOD.indexOf(g);
+const RS=330,RSi=280;
+const C={};
+C.paper=el('circle',{r:540,fill:'url(#pap)',filter:'url(#glow)'},S);
+C.wheel=g(S);
+C.o=drawable(el('path',{d:circD(RS),fill:'none',stroke:'#111','stroke-width':5},C.wheel));
+C.i=drawable(el('path',{d:circD(RSi),fill:'none',stroke:'#111','stroke-width':3.5},C.wheel));
+C.sp=[];for(let k=0;k<6;k++){const a=k*30;C.sp.push(drawable(el('path',{d:`M${pt(RS,a).map(f)} L${pt(RS,a+180).map(f)}`,stroke:'#111','stroke-width':2.4},C.wheel)));}
+C.zg=ZOD.map(z=>{const p=pt((RS+RSi)/2,signAng(z));return el('text',{x:f(p[0]),y:f(p[1]+11),'text-anchor':'middle','font-size':32,fill:'#111',class:'glyph'},C.wheel,z+VS);});
+C.lab=SM.map((s,i)=>{const a=signAng(s[1]);const p=pt(RS+78,a);const G=g(C.wheel,{class:'hit','data-k':'smb:'+i});
+ el('text',{x:f(p[0]),y:f(p[1]-2),'text-anchor':'middle','font-size':18,'font-weight':600,fill:'#111'},G,s[0]);
+ el('text',{x:f(p[0]),y:f(p[1]+19),'text-anchor':'middle','font-size':14,fill:'#555'},G,'T'+s[3]+' · '+s[2]);return G;});
+C.P=SM.map(s=>pt(RS,signAng(s[1])-15));
+C.num=SM.map((s,i)=>{const p=pt(RS+28,signAng(s[1])-15);return el('text',{x:f(p[0]),y:f(p[1]+10),'text-anchor':'middle','font-size':27,'font-weight':600,fill:'#c8101a'},C.wheel,String(i+1));});
+C.dot=SM.map((s,i)=>el('circle',{cx:f(C.P[i][0]),cy:f(C.P[i][1]),r:8,fill:'#c8101a'},C.wheel));
+C.line=g(S);C.seg=SM.map((s,i)=>{const a=C.P[i],b=C.P[(i+1)%12];return drawable(el('path',{d:`M${f(a[0])},${f(a[1])} L${f(b[0])},${f(b[1])}`,stroke:'#d0161f','stroke-width':7,'stroke-linecap':'round'},C.line));});
+C.img=el('image',{href:'sigil.png',x:-300,y:-300,width:600,height:600,style:'mix-blend-mode:multiply'},S);
+const SIG=[['The Wheel','The twelve super-memes stand on the zodiac, each numbered in the order of its birth: the four Cardinal roots first, then the Fixed, then the Mutable.']]
+ .concat(SM.map((s,i)=>{const n=SM[(i+1)%12];return [`${i+1} → ${(i+1)%12+1}`,`${s[0]} (${s[2]}, Tier ${s[3]}) to ${n[0]} (${n[2]}, Tier ${n[3]})${i===11?', closing the figure.':'.'}`];}))
+ .concat([['The Sigil','Joined in the order of their birth, the twelve trace the Sigil of the Supreme Memeplex, divined by Frater NOX.']]);
+function renderS(t){
+ const p=i=>clamp(t-i);const a=p(0);
+ op(C.paper,seg(a,0,.3));draw(C.o,seg(a,0,.5));draw(C.i,seg(a,.15,.6));C.sp.forEach((v,k)=>draw(v,seg(a,.3+k*.05,.75+k*.05)));
+ C.zg.forEach((v,k)=>op(v,seg(a,.4+k*.03,.6+k*.03)));C.lab.forEach((v,k)=>op(v,seg(a,.5+k*.03,.7+k*.03)));
+ C.num.forEach((v,k)=>op(v,k===0?seg(a,.8,1):seg(p(k),.85,1)));C.dot.forEach((v,k)=>op(v,k===0?seg(a,.8,1):seg(p(k),.85,1)));
+ C.seg.forEach((v,k)=>draw(v,seg(p(k+1),0,.9)));
+ const r=p(13);C.wheel.style.opacity=1-.88*seg(r,0,.6);C.line.style.opacity=1-seg(r,.3,.9);op(C.img,seg(r,.3,1));
+ C.lab.forEach(v=>{if(r>.2)v.style.pointerEvents='none';});
+}
+
+/* ---------- timeline ---------- */
+let mode='pan',t=0,target=0,dir=0,playing=false,last=0,stopAt=null;
+const SPEED=1/3.6; // stages per second
+const stages=()=>mode==='pan'?N:SIG.length;
+function caption(){
+ const L=stages();let i,txt;
+ if(mode==='pan'){const asc=dir<0||(!playing&&lastDir<0);i=Math.min(N-1,Math.max(0,asc?Math.ceil(t)-1:Math.ceil(t)-1));if(t<=0&&asc){$('cap').innerHTML='<b>The ALL</b> '+ASC[0][1];return;}
+  if(i<0)i=0;const src=asc?ASC:GEN;txt=`<b>${src[i][0]}</b> ${src[i][1]}`;}
+ else{i=Math.min(L-1,Math.max(0,Math.ceil(t)-1));txt=`<b>${SIG[i][0]}</b> ${SIG[i][1]}`;}
+ if($('cap')._t!==txt){$('cap')._t=txt;$('cap').innerHTML=txt;}
+ [...$('dots').children].forEach((d,k)=>{d.className=t>=k+1-1e-6?'done':'';if(k===Math.max(0,Math.ceil(t)-1))d.className+=' cur';});
+}
+let lastDir=1;
+function render(){if(mode==='pan')renderP(t);else renderS(t);caption();}
+function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+ if(playing){t+=dir*dt*SPEED*(mode==='sig'?1.25:1);
+  if(stopAt!=null&&((dir>0&&t>=stopAt)||(dir<0&&t<=stopAt))){t=stopAt;playing=false;stopAt=null;}
+  if(t>=stages()){t=stages();playing=false;}if(t<=0){t=0;playing=false;}
+  render();}
+ updButtons();requestAnimationFrame(tick);}
+function play(d){dir=d;lastDir=d;stopAt=null;if(d>0&&t>=stages())t=0;if(d<0&&t<=0)t=stages();playing=true;ev((mode==='pan'?(d>0?'genesis':'ascent'):'sigil')+': play');}
+function stepTo(k){k=clamp(k,0,stages());dir=k>=t?1:-1;lastDir=dir;stopAt=k;playing=true;}
+function updButtons(){$('bGen').classList.toggle('act',playing&&dir>0);$('bAsc').classList.toggle('act',playing&&dir<0);$('bPause').textContent=playing?'❚❚':'▶';}
+function buildDots(){const D=$('dots');D.innerHTML='';for(let k=0;k<stages();k++){const i=document.createElement('i');i.title=(mode==='pan'?GEN:SIG)[k][0];i.onclick=()=>stepTo(k+1);D.appendChild(i);}}
+function setMode(m){if(m===mode)return;mode=m;P.style.display=m==='pan'?'':'none';S.style.display=m==='sig'?'':'none';
+ $('bPan').classList.toggle('act',m==='pan');$('bSig').classList.toggle('act',m==='sig');$('bGen').textContent=m==='pan'?'▶ Genesis':'▶ Trace';$('bAsc').textContent=m==='pan'?'◀ Ascent':'◀ Unwind';
+ closePanel();buildDots();t=0;render();play(1);ev('mode: '+m);}
+$('bGen').onclick=()=>play(1);$('bAsc').onclick=()=>play(-1);
+$('bPause').onclick=()=>{if(playing)playing=false;else play(lastDir||1);};
+$('bPrev').onclick=()=>stepTo(Math.ceil(t-1e-6)-1);$('bNext').onclick=()=>stepTo(Math.floor(t+1e-6)+1);
+$('bPan').onclick=()=>setMode('pan');$('bSig').onclick=()=>setMode('sig');
+addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();$('bPause').click();}else if(e.key==='ArrowRight')$('bNext').click();else if(e.key==='ArrowLeft')$('bPrev').click();else if(e.key==='Escape')closePanel();});
+
+/* ---------- info ---------- */
+const TREE='../';
+function row(k,v){return `<tr><td>${k}</td><td>${v}</td></tr>`;}
+function info(k){const[a,b,c]=k.split(':');
+ if(a==='all')return{t:'The Supreme Memeplex',s:'The outer circle',h:`<p>The ALL: the One Thing, the universe, within which all things are contained. Its fourfold name is the Tetragrammaton, יהוה, whose letters stand around the edge.</p>`};
+ if(a==='heb'){const q=QUAD.find(x=>x.k===b);return{t:`${q.heb} ${q.hn}`,s:'A letter of the Tetragrammaton',h:`<table>${row('Element',q.el)}${row('Figure',q.ht)}${row('Quadrant',q.tiers.map(x=>x[0]).join(', '))}</table><p>The four letters of the Fourfold Name are reflected into the coloured quadrants of the rings.</p>`};}
+ if(a==='cond'){const c0=COND[+b];return{t:c0.cond,s:`Alchemical ${c0.pr}`,h:`<table>${row('Principle',c0.pr)}${row('Elements',c0.els)}${row('Nature',c0.act)}${row('Speed',c0.sp)}${row('Tier',`T${c0.t}: ${c0.q} signs`)}${row('Role',c0.pot)}</table><p>The three super-memetic conditions stand on the corners of the partly concealed triangle behind the rings. From them the twelve super-memes are spawned.</p>`};}
+ if(a==='sm'){const q=QUAD[+b],T=TIER[+c],m=q.tiers[+c];const beg=+c===0?`<p>${m[0]} begets ${q.tiers[1][0]} and ${q.tiers[2][0]}.</p>`:`<p>Begotten from ${q.tiers[0][0]}.</p>`;
+  return{t:m[0],s:`Super-meme · Tier ${T.n}`,h:`<table>${row('Sign',`${m[1]}${VS} ${m[2]}`)}${row('Element',q.el+' · '+q.heb)}${row('Tier',`T${T.n}: ${T.q}`)}${row('Principle',T.pr)}${row('Condition',T.cond)}</table>${beg}<a class="go" href="${TREE}#p${m[3]}">Show its path on the Tree →</a>`};}
+ if(a==='apriori')return{t:'a priori',s:'Outside the Threshold',h:`<p>Everything outside the red circle is a priori: the super-memes are the conditions of existence, and do not depend on human consciousness.</p>`};
+ if(a==='thr')return{t:'The Anthropic Threshold',s:'The large red circle',h:`<p>It separates the a priori super-memes from the a posteriori Anthropic Complexes within: the true boundary between the Self and the Other.</p>`};
+ if(a==='hex')return{t:'The Hexagram',s:'The Macroplex',h:`<p>The connection to the Macroplex and the planetary forces in relation to human consciousness: the zone in which super-memetic resonance is achieved. These are the universal, self-evident and consistent planetary associations of the Prime Anthropic Memeplex.</p>`};
+ if(a==='pl'){const p=PLAN[+b];return{t:`${p[1]}${VS} ${p[2]}`,s:'A point of the Hexagram',h:`<table>${row('Anthropic Prime',p[5])}${row('Sephira',`${p[3]} ${p[4]}`)}</table><a class="go" href="${TREE}#s${p[3]}">Open ${p[4]} on the Tree →</a>`};}
+ if(a==='pent')return{t:'The Pentagram',s:'The Microplex',h:`<p>The four elements plus one, Spirit: the core of the human Soulplex and the most basic alchemical and memetic code of the human sense-making faculty.</p>`};
+ if(a==='veil')return{t:'The Veil',s:'The circle about the Pentagram',h:`<p>A false boundary between Self and Other, to be overcome by the Great Work. In Qabalah it is called the Veil.</p>`};
+ if(a==='ego')return{t:'The Ego',s:'The small red circle',h:`<p>The ego point-of-view, at the centre of it all.</p><a class="go" href="${TREE}#s6">Open Tiphareth, the Ego-Self, on the Tree →</a>`};
+ if(a==='smb'){const s=SM[+b];return{t:`${+b+1} · ${s[0]}`,s:`${s[1]}${VS} ${s[2]} · Tier ${s[3]}`,h:`<p>Born ${['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth'][+b]} of the twelve super-memes.</p>`};}
+ return null;}
+function closePanel(){$('panel').classList.remove('show');}
+$('panel').querySelector('.x').onclick=closePanel;
+const tip=$('tip');
+document.addEventListener('pointerover',e=>{const h=e.target.closest&&e.target.closest('.hit');if(!h||h.style.pointerEvents==='none'){tip.style.opacity=0;return;}const I=info(h.dataset.k);if(!I){tip.style.opacity=0;return;}tip.textContent=I.t;tip.style.opacity=1;});
+document.addEventListener('pointermove',e=>{tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY+12)+'px';});
+document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('.hit');if(!h)return;const I=info(h.dataset.k);if(!I)return;
+ $('pc').innerHTML=`<h2>${I.t}</h2><div class="k">${I.s}</div>${I.h}`;$('panel').classList.add('show');tip.style.opacity=0;ev('sigillum open: '+I.t);});
+
+/* ---------- analytics ---------- */
+let gcReady=false;
+if(location.hostname==='russellkirkby-dev.github.io'){const s=document.createElement('script');s.async=true;s.src='https://gc.zgo.at/count.js';s.dataset.goatcounter='https://rkdm.goatcounter.com/count';document.head.appendChild(s);gcReady=true;}
+function ev(name){if(!gcReady)return;try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:name,title:name,event:true});}catch(e){}}
+
+/* ---------- start ---------- */
+S.style.display='none';buildDots();
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wantSig=location.hash==='#sigil';
+if(wantSig){mode='pan';setMode('sig');}
+else{t=reduce?N:0;render();if(!reduce)setTimeout(()=>play(1),500);}
+document.fonts&&document.fonts.ready.then(()=>render());
+requestAnimationFrame(n=>{last=n;tick(n);});
+</script>
+</body>
+</html>

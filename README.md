@@ -10,6 +10,8 @@ An interactive 3D Tree of Life from *Codex Memetica: Super-Meme Theory, Memetaph
 - **Diagrams** animates the Lightning Flash, the Serpent of Wisdom, Elements Reflected, the Three Pillars, the Four Worlds, the Parts of the Soul and the Geometric Figures.
 - **Thelemic · Liber 777** switches the base layer to Aleister Crowley's correspondences, with the Book of Thoth exchange of He and Tzaddi applied.
 
-Built with [three.js](https://threejs.org). A single self-contained `index.html`.
+**Sigillum Memetica:** https://russellkirkby-dev.github.io/codex-memetica/sigillum/ — the Memetic Sigillum as an animated pantacle (Genesis and Ascent), with the Sigil of the Supreme Memeplex traced in the order of the super-memes' birth.
+
+Built with [three.js](https://threejs.org). The Tree is a single self-contained `index.html`; the Sigillum is plain SVG in `sigillum/index.html`.
 
 © Russell Kirkby and Helen Nhieu. The Liber 777 attributions are from Aleister Crowley, *Magick in Theory and Practice* (1929), Appendix V.
