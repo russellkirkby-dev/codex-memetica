@@ -31,9 +31,9 @@ a{color:var(--gold)}
 #top a{pointer-events:auto;margin-left:auto;font:400 13px Cinzel,serif;letter-spacing:.08em;text-decoration:none;color:var(--dim);border:1px solid #3a3446;padding:6px 10px;border-radius:16px;background:#0b0a12cc}
 #top a:hover{color:var(--ink);border-color:var(--gold)}
 #stage{position:fixed;inset:54px 0 150px 0;display:flex;align-items:center;justify-content:center}
-#svg{width:100%;height:100%;max-width:100%;overflow:visible;transition:opacity .9s}
-#wax{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s;pointer-events:none;touch-action:none}
-body.d3 #wax{opacity:1;pointer-events:auto;cursor:grab}body.d3 #wax:active{cursor:grabbing}body.d3 #svg{opacity:0;pointer-events:none}
+#svg{width:100%;height:100%;max-width:100%;overflow:visible}
+#wax{position:absolute;inset:0;width:100%;height:100%;visibility:hidden;pointer-events:none;touch-action:none}
+body.d3 #wax{visibility:visible;pointer-events:auto;cursor:grab}body.d3 #wax:active{cursor:grabbing}body.d3 #svg{visibility:hidden;pointer-events:none}
 #svg text{font-family:Cinzel,serif}
 #svg .glyph{font-family:'Noto Sans Symbols','Segoe UI Symbol','DejaVu Sans',sans-serif}
 #svg .heb{font-family:'Noto Serif Hebrew','Times New Roman',serif;font-weight:600}
@@ -107,7 +107,7 @@ body.d3 #wax{opacity:1;pointer-events:auto;cursor:grab}body.d3 #wax:active{curso
 <p>The Memetic Sigillum is the pantacle of Codex Memetica: Super-Meme Theory, Memetaphysics and Magick by Russell Kirkby and Helen Nhieu. Its outer edge carries the four letters of the Tetragrammaton, Yod, He, Vav and He, attributed to Fire, Water, Air and Earth. Behind it stands the triangle of the three alchemical principles, Mercury, Sulphur and Salt, labelled with the three super-memetic conditions: Universal, Self-Evident and Consistent.</p>
 <p>Three coloured rings carry the twelve a priori super-memes as the signs of the zodiac. Tier 1, the Cardinal signs: Energy (Aries), the Now (Cancer), Geometry (Libra) and the Four Forces (Capricorn). Tier 2, the Fixed signs: Motion (Leo), Space-Time (Scorpio), Prime Numbers (Aquarius) and Mass (Taurus). Tier 3, the Mutable signs: Vector (Sagittarius), Causation (Pisces), Duality (Gemini) and Matter (Virgo). Each ring begets the ring within.</p>
 <p>The red circle is the Anthropic Threshold between the a priori super-memes and the a posteriori Anthropic Primes. Within it the Hexagram of the Macroplex carries the seven planets; the Pentagram of the Microplex carries the four elements and Spirit; the circle around the Pentagram is the Veil; and the small red circle at the centre is the ego point-of-view.</p>
-<p>When the Sigillum is complete it can be held and turned in 3D as a Pantacle, the elemental weapon of Earth: a thick disc of white wax with the Memetic Sigillum on its face and the Sigil of the Supreme Memeplex on its reverse.</p>
+<p>When the Sigillum is complete it can be held and turned in 3D as a Pantacle, the elemental weapon of Earth: a thick disc of white wax with the Memetic Sigillum engraved on its face.</p>
 <p>The Sigil of the Supreme Memeplex, divined by Frater NOX, is drawn by joining the twelve super-memes on the zodiac in the order of their birth. It passes through the three qualities in turn, Cardinal, Fixed and Mutable, which answer to the three Mother letters Shin, Aleph and Mem, the alchemical principles Sulphur, Mercury and Salt, the conditions Self-Evident, Universal and Consistent, and the Pillars of Mercy, the Middle Pillar and the Pillar of Severity. Within each quality the elements come in the order Fire, Water, Air, Earth, so the figure spells the Tetragrammaton three times; between the qualities the line leaps by a quincunx from Earth to Fire.</p>
 </section>
 <script>
@@ -179,7 +179,7 @@ function salt(parent,x,y,s){const G=g(parent,{transform:`translate(${x},${y})`})
 /* ---------- build the pantacle ---------- */
 const R0=505,R1=415,RB=312,RT=164,RH=157,RV=RH/2;
 const B={};
-B.paper=el('circle',{r:540,fill:'url(#pap)',filter:'url(#glow)'});
+B.paper=el('circle',{r:540,fill:'#f2ede2'});
 B.tint=g(P);QUAD.forEach(q=>{const a=pt(R1,q.c+45),b=pt(R1,q.c-45);el('path',{d:`M0,0 L${f(a[0])},${f(a[1])} A${R1},${R1} 0 0 1 ${f(b[0])},${f(b[1])} Z`,fill:COL[q.k],opacity:.22},B.tint);});
 B.c0=drawable(el('path',{d:circD(R0),fill:'none',stroke:'#0c0c0c','stroke-width':15}));
 B.c1=drawable(el('path',{d:circD(R1),fill:'none',stroke:'#0c0c0c','stroke-width':12}));
@@ -381,12 +381,12 @@ function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   render();}
  updButtons();requestAnimationFrame(tick);}
 let auto=false;
-function play(d){exit3D();auto=true;dir=d;lastDir=d;stopAt=null;if(d>0&&t>=stages())t=0;if(d<0&&t<=0)t=stages();playing=true;ev((mode==='pan'?(d>0?'genesis':'ascent'):'sigil')+': play');}
-function stepTo(k){exit3D();auto=false;k=clamp(k,0,stages());dir=k>=t?1:-1;lastDir=dir;stopAt=k;playing=true;}
+function play(d){if(in3D())return exit3D(()=>play(d));auto=true;dir=d;lastDir=d;stopAt=null;if(d>0&&t>=stages())t=0;if(d<0&&t<=0)t=stages();playing=true;ev((mode==='pan'?(d>0?'genesis':'ascent'):'sigil')+': play');}
+function stepTo(k){if(in3D())return exit3D(()=>stepTo(k));auto=false;k=clamp(k,0,stages());dir=k>=t?1:-1;lastDir=dir;stopAt=k;playing=true;}
 function updButtons(){$('bGen').classList.toggle('act',playing&&dir>0);$('bAsc').classList.toggle('act',playing&&dir<0);$('bPause').textContent=playing?'❚❚':'▶';}
 function buildDots(){const D=$('dots');D.innerHTML='';for(let k=0;k<stages();k++){const i=document.createElement('i');i.title=(mode==='pan'?GEN:SIG)[k][0];i.onclick=()=>stepTo(k+1);D.appendChild(i);}}
-function setMode(m){if(m===mode)return;exit3D(true);mode=m;P.style.display=m==='pan'?'':'none';S.style.display=m==='sig'?'':'none';
- $('bWhy').hidden=m!=='sig';$('bPan').classList.toggle('act',m==='pan');$('bSig').classList.toggle('act',m==='sig');$('bGen').textContent=m==='pan'?'▶ Genesis':'▶ Trace';$('bAsc').textContent=m==='pan'?'◀ Ascent':'◀ Unwind';
+function setMode(m){if(m===mode)return;if(in3D())return exit3D(()=>setMode(m));mode=m;P.style.display=m==='pan'?'':'none';S.style.display=m==='sig'?'':'none';
+ $('bWhy').hidden=m!=='sig';$('b3d').hidden=m!=='pan'||!(window.WAX&&WAX.ok);$('bPan').classList.toggle('act',m==='pan');$('bSig').classList.toggle('act',m==='sig');$('bGen').textContent=m==='pan'?'▶ Genesis':'▶ Trace';$('bAsc').textContent=m==='pan'?'◀ Ascent':'◀ Unwind';
  closePanel();buildDots();t=0;render();play(1);ev('mode: '+m);}
 $('bGen').onclick=()=>play(1);$('bAsc').onclick=()=>play(-1);
 $('bPause').onclick=()=>{if(playing)playing=false;else play(lastDir||1);};
@@ -439,13 +439,15 @@ async function snapshot(which){await fontCSS();if(SIGDATA==null){try{SIGDATA=awa
  const st=document.createElementNS(NS,'style');st.textContent=FONTCSS+"\ntext{font-family:Cinzel,serif}.glyph{font-family:'Noto Sans Symbols','DejaVu Sans',sans-serif}.heb{font-family:'Noto Serif Hebrew',serif;font-weight:600}";
  cl.insertBefore(st,cl.firstChild);
  return new XMLSerializer().serializeToString(cl);}
-let capHold=null;
-function enter3D(manual){if(!window.WAX||!WAX.ok)return;if(playing)playing=false;
- if(t<stages()&&manual){t=stages();render();}
- document.body.classList.add('d3');$('b3d').textContent='▣ Flat';closePanel();
- capHold=mode==='pan'?'<b>The Pantacle</b> The elemental weapon of Earth: a disc of wax upon which the magician’s universe is engraved. Drag to turn it over; the Sigil of the Supreme Memeplex is on the reverse.':'<b>The Pantacle</b> The Sigil of the Supreme Memeplex, on the reverse of the wax Pantacle. Drag to turn it; the Memetic Sigillum is on the face.';
- $('cap').innerHTML=capHold;$('cap')._t=capHold;WAX.enter(mode==='pan'?'front':'back');ev('pantacle: 3D');}
-function exit3D(quick){if(!document.body.classList.contains('d3'))return;document.body.classList.remove('d3');$('b3d').textContent='◎ 3D';if(window.WAX)WAX.exit();$('cap')._t=null;caption();}
+let busy3=false;
+const in3D=()=>document.body.classList.contains('d3');
+function enter3D(manual){if(mode!=='pan'||busy3||in3D()||!window.WAX||!WAX.ok)return;if(playing)playing=false;
+ if(t<N){t=N;render();}closePanel();busy3=true;
+ WAX.enter(()=>{busy3=false;document.body.classList.add('d3');$('b3d').textContent='▣ Flat';
+  const c='<b>The Pantacle</b> The elemental weapon of Earth: a disc of wax upon which the magician’s universe is engraved. Drag to turn it in your hands.';$('cap').innerHTML=c;$('cap')._t=c;});
+ ev('pantacle: 3D');}
+function exit3D(cb){if(!in3D()){cb&&cb();return;}if(busy3)return;busy3=true;
+ WAX.exit(()=>{busy3=false;document.body.classList.remove('d3');$('b3d').textContent='◎ 3D';$('cap')._t=null;caption();cb&&cb();});}
 window.SIGILLUM={snapshot};
 
 /* ---------- analytics ---------- */
@@ -466,56 +468,65 @@ requestAnimationFrame(n=>{last=n;tick(n);});
 <script type="module">
 import * as THREE from 'three';
 const cv=document.getElementById('wax');
-let R,scene,cam,disc,faceF,faceB,active=false,built=false,building=null,raf=0,yaw=0,pitch=0,vy=0,vp=0,drag=null,touched=false,zoom=1,t0=0,from=null,to=null;
+let R,scene,cam,disc,face,waxM,active=false,built=false,building=null,raf=0,yaw=0,pitch=0,vy=0,vp=0,drag=null,touched=false,zoom=1,anim=null,lit=0,onDone=null;
 const FOV=28,H=.62,RR=5.4,BV=.16,FR=RR-BV;
-try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:false});}catch(e){R=null;}
+try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});}catch(e){R=null;}
 window.WAX={ok:!!R,enter,exit};
-if(!R){document.getElementById('b3d').hidden=true;}
+if(!R)document.getElementById('b3d').hidden=true;
 else{
- R.setPixelRatio(Math.min(devicePixelRatio,2));R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.2;
+ R.setPixelRatio(Math.min(devicePixelRatio,2));R.outputColorSpace=THREE.SRGBColorSpace;R.toneMapping=THREE.NoToneMapping;
  scene=new THREE.Scene();cam=new THREE.PerspectiveCamera(FOV,1,.1,300);
- scene.add(new THREE.HemisphereLight(0xfff6ea,0x2c2838,1.25));
- const key=new THREE.DirectionalLight(0xfff0da,2.1);key.position.set(-5,7,10);scene.add(key);
- const fill=new THREE.DirectionalLight(0xdfe6ff,.55);fill.position.set(7,-2,6);scene.add(fill);
- const rim=new THREE.DirectionalLight(0xffe2b8,1.1);rim.position.set(3,4,-9);scene.add(rim);
+ scene.add(new THREE.HemisphereLight(0xfff8ee,0x403a4a,1.55));
+ const key=new THREE.DirectionalLight(0xfff2e0,1.9);key.position.set(-5,7,10);scene.add(key);
+ const fill=new THREE.DirectionalLight(0xe6ebff,.35);fill.position.set(7,-2,6);scene.add(fill);
+ const rim=new THREE.DirectionalLight(0xffe6c4,.9);rim.position.set(3,4,-9);scene.add(rim);
  disc=new THREE.Group();scene.add(disc);
  const prof=[new THREE.Vector2(0,-H/2)];
  for(let i=0;i<=10;i++){const a=-Math.PI/2+i/10*Math.PI/2;prof.push(new THREE.Vector2(RR-BV+BV*Math.cos(a),-H/2+BV+BV*Math.sin(a)));}
  for(let i=0;i<=10;i++){const a=i/10*Math.PI/2;prof.push(new THREE.Vector2(RR-BV+BV*Math.cos(a),H/2-BV+BV*Math.sin(a)));}
  prof.push(new THREE.Vector2(0,H/2));
- const wax=new THREE.MeshPhysicalMaterial({color:0xf2ede2,roughness:.46,clearcoat:.3,clearcoatRoughness:.45,sheen:1,sheenRoughness:.55,sheenColor:new THREE.Color(0xfff3dd)});
+ const wax=waxM=new THREE.MeshPhysicalMaterial({emissive:0xf2ede2,emissiveIntensity:0,color:0xf2ede2,roughness:.46,clearcoat:.3,clearcoatRoughness:.45,sheen:1,sheenRoughness:.55,sheenColor:new THREE.Color(0xfff3dd)});
  const body=new THREE.Mesh(new THREE.LatheGeometry(prof,160),wax);body.rotation.x=Math.PI/2;disc.add(body);
- const mk=()=>new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.5,clearcoat:.22,clearcoatRoughness:.5,sheen:.6,sheenRoughness:.6,sheenColor:new THREE.Color(0xfff3dd),bumpScale:2.2});
- faceF=new THREE.Mesh(new THREE.CircleGeometry(FR,160),mk());faceF.position.z=H/2+.004;disc.add(faceF);
- faceB=new THREE.Mesh(new THREE.CircleGeometry(FR,160),mk());faceB.rotation.y=Math.PI;faceB.position.z=-H/2-.004;disc.add(faceB);
- faceF.visible=faceB.visible=false;
- cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};touched=true;vy=vp=0;cv.setPointerCapture(e.pointerId);});
- cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag={x:e.clientX,y:e.clientY};vy=dx*.0085;vp=dy*.0085;yaw+=vy;pitch+=vp;to=null;});
+ face=new THREE.Mesh(new THREE.CircleGeometry(FR,160),new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.5,clearcoat:.22,clearcoatRoughness:.5,sheen:.6,sheenRoughness:.6,sheenColor:new THREE.Color(0xfff3dd),bumpScale:2.2,emissive:0xffffff,emissiveIntensity:1}));
+ face.position.z=H/2+.004;face.visible=false;disc.add(face);
+ cv.addEventListener('pointerdown',e=>{if(anim&&anim.lock)return;drag={x:e.clientX,y:e.clientY};touched=true;anim=null;vy=vp=0;cv.setPointerCapture(e.pointerId);});
+ cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag={x:e.clientX,y:e.clientY};vy=dx*.0085;vp=dy*.0085;yaw+=vy;pitch+=vp;});
  cv.addEventListener('pointerup',()=>{drag=null;});cv.addEventListener('pointercancel',()=>{drag=null;});
  cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.min(1.7,Math.max(.55,zoom*Math.exp(e.deltaY*.0012)));frame();},{passive:false});
- cv.addEventListener('dblclick',()=>{touched=true;ease(Math.round(yaw/(2*Math.PI))*2*Math.PI+(Math.cos(yaw)<0?Math.PI:0),0,1200);zoom=1;frame();});
+ cv.addEventListener('dblclick',()=>{touched=true;go(near(yaw),0,1100,0);});
  addEventListener('resize',()=>{if(active)frame();});
 }
+const near=y=>Math.round(y/(2*Math.PI))*2*Math.PI;
 function frame(){const r=cv.getBoundingClientRect();if(!r.width)return;R.setSize(r.width,r.height,false);cam.aspect=r.width/r.height;cam.updateProjectionMatrix();
- const s=Math.min(r.width,r.height)/1120;const d=r.height/(200*s*Math.tan(FOV/2*Math.PI/180))+H/2;cam.position.set(0,0,d*zoom);cam.lookAt(0,0,0);}
-async function tex(which){const str=await window.SIGILLUM.snapshot(which);const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(str);await img.decode();await new Promise(r=>setTimeout(r,120));
+ const s=Math.min(r.width,r.height)/1120;const d=r.height/(200*s*Math.tan(FOV/2*Math.PI/180))+H/2+.004;cam.position.set(0,0,d*zoom);cam.lookAt(0,0,0);}
+// lit: 0 = the face shows its drawing exactly as on the page; 1 = fully lit wax
+function setLit(k){lit=k;const m=face.material,q=Math.max(k,.001);m.color.setScalar(k);m.emissiveIntensity=1-k;m.specularIntensity=k;m.clearcoat=.22*q;m.sheen=.6*q;
+ const w=waxM;w.color.set(0xf2ede2).multiplyScalar(k);w.emissiveIntensity=1-k;w.specularIntensity=k;w.clearcoat=.3*q;w.sheen=q;}
+async function tex(){const str=await window.SIGILLUM.snapshot('front');const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(str);await img.decode();await new Promise(r=>setTimeout(r,120));
  const c=document.createElement('canvas');c.width=c.height=2048;const x=c.getContext('2d');x.fillStyle='#f2ede2';x.fillRect(0,0,2048,2048);x.drawImage(img,0,0,2048,2048);
- const T=new THREE.CanvasTexture(c);T.colorSpace=THREE.SRGBColorSpace;T.anisotropy=R.capabilities.getMaxAnisotropy();
- const Bm=new THREE.CanvasTexture(c);return [T,Bm];}
-async function build(){const [a,ab]=await tex('front');const [b,bb]=await tex('back');faceF.material.map=a;faceF.material.bumpMap=ab;faceB.material.map=b;faceB.material.bumpMap=bb;faceF.material.needsUpdate=faceB.material.needsUpdate=true;faceF.visible=faceB.visible=true;built=true;}
-const easeF=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
-function ease(y,p,ms){from={y:yaw,p:pitch};to={y,p,ms};t0=performance.now();}
-async function enter(side){if(!R)return;active=true;touched=false;zoom=1;frame();
- yaw=side==='back'?Math.PI:0;pitch=0;vy=vp=0;
- if(!built){building=building||build();try{await building;}catch(e){console.error(e);}}
- if(!active)return;loop();
- if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setTimeout(()=>{if(active&&!touched)ease(yaw+.42,-.5,2600);},700);}
-function exit(){active=false;}
-function loop(){cancelAnimationFrame(raf);const st=performance.now();const step=now=>{
-  if(to){const k=Math.min(1,(now-t0)/to.ms),e=easeF(k);yaw=from.y+(to.y-from.y)*e;pitch=from.p+(to.p-from.p)*e;if(k>=1)to=null;}
-  else if(!drag){yaw+=vy;pitch+=vp;vy*=.94;vp*=.94;if(!touched&&Math.abs(vy)<1e-4){yaw+=.0016;}}
+ const T=new THREE.CanvasTexture(c);T.colorSpace=THREE.SRGBColorSpace;T.anisotropy=R.capabilities.getMaxAnisotropy();return [T,new THREE.CanvasTexture(c)];}
+async function build(){const [a,b]=await tex();const m=face.material;m.map=a;m.emissiveMap=a;m.bumpMap=b;m.needsUpdate=true;face.visible=true;built=true;}
+const E=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+function go(y,p,ms,l,lock,cb){anim={y0:yaw,p0:pitch,l0:lit,y,p,l:l==null?lit:l,ms,t0:performance.now(),lock,cb};}
+async function enter(shown){if(!R)return;
+ if(!built){building=building||build();try{await building;}catch(e){console.error(e);return;}}
+ active=true;touched=false;zoom=1;frame();yaw=0;pitch=0;vy=vp=0;setLit(0);anim=null;disc.rotation.set(0,0,0);
+ R.render(scene,cam); // the first frame matches the page; only then swap
+ requestAnimationFrame(()=>{shown&&shown();loop();
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(()=>{if(active&&!touched)go(still?0:.42,still?0:-.5,still?900:2800,1);},250);});}
+function exit(done){if(!active){done&&done();return;}drag=null;vy=vp=0;
+ const ms=Math.abs(yaw-near(yaw))+Math.abs(pitch)>.02||lit>.01?1000:0;
+ const fin=()=>{active=false;cancelAnimationFrame(raf);done&&done();};
+ if(!ms){zoom=1;frame();setLit(0);fin();return;}
+ const z0=zoom;go(near(yaw),near(pitch),ms,0,true,fin);anim.z0=z0;}
+function loop(){cancelAnimationFrame(raf);const step=now=>{
+  if(anim){const k=Math.min(1,(now-anim.t0)/anim.ms),e=E(k);yaw=anim.y0+(anim.y-anim.y0)*e;pitch=anim.p0+(anim.p-anim.p0)*e;setLit(anim.l0+(anim.l-anim.l0)*e);
+   if(anim.z0!=null){zoom=anim.z0+(1-anim.z0)*e;frame();}
+   if(k>=1){const cb=anim.cb;anim=null;if(cb){disc.rotation.set(pitch,yaw,0,'XYZ');R.render(scene,cam);cb();return;}}}
+  else if(!drag){yaw+=vy;pitch+=vp;vy*=.94;vp*=.94;if(!touched)yaw+=.0016;}
   disc.rotation.set(pitch,yaw,0,'XYZ');R.render(scene,cam);
-  if(active||now-st<0)raf=requestAnimationFrame(step);else{setTimeout(()=>{if(!active)R.clear();},950);} };
+  if(active)raf=requestAnimationFrame(step);};
  raf=requestAnimationFrame(step);}
 </script>
 </body>
