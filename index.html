@@ -39,14 +39,12 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Cormorant Ga
 .lbl span{display:block;font:italic calc(14px*var(--ls,1)) "Cormorant Garamond",serif;color:var(--mute)}
 .lbl.r b{color:#f0b3b3}
 .gl{pointer-events:auto;cursor:pointer;font:500 calc(15px*var(--ls,1)) "Noto Serif Hebrew",serif;color:#f3e2b5;text-shadow:0 0 6px #000,0 0 2px #000;transition:opacity .5s;padding:4px}
-.gl.r:hover span,body.hasfocus .gl.r:not(.dim) span{display:block}
 .gl.r{color:#e0545f;text-align:center;line-height:1}
-.gl.r span{display:none;font:italic calc(11.5px*var(--ls,1)) "Cormorant Garamond",serif;color:#e7a3a8;margin-top:1px;white-space:nowrap}
+
 .lbl.dim,.gl.dim{opacity:.18}
 .lbl.focus b{font-size:calc(13px*var(--ls,1)*1.5)}.lbl.focus span{font-size:calc(14px*var(--ls,1)*1.5)}.gl.focus{font-size:calc(15px*var(--ls,1)*1.6)}
 .lbl b,.lbl span,.gl{transition:font-size .4s}
 body.rear .f, body:not(.rear) .r{opacity:0;pointer-events:none}
-body.nolabels .lbl,body.nolabels .gl{opacity:0!important;pointer-events:none}
 header{position:fixed;left:max(3vw,16px);top:max(2.5vh,14px);pointer-events:none;z-index:2;max-width:min(520px,60vw)}
 h1{font:600 clamp(20px,2.4vw,30px)/1.1 Cinzel,serif;margin:0;letter-spacing:.04em}
 .sub{margin:.35em 0 0;color:var(--mute);font-style:italic}
@@ -151,6 +149,25 @@ body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important
 .menu.open{display:flex}
 .menu button{text-align:left;border-radius:8px;min-height:40px}
 .menu button[aria-current=true]{color:var(--gold)}
+#labm{min-width:250px;padding:8px 10px 10px}
+#labm h4{margin:10px 4px 2px;font:600 11px Cinzel,serif;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+#labm label{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 6px;border-radius:8px;font:15px "Cormorant Garamond",serif;color:var(--ink);cursor:pointer}
+#labm label:hover{background:rgba(255,255,255,.05)}#labm label i{color:var(--mute);margin-left:-6px}#labm .tonly{display:none}body.thelemic #labm .tonly{display:inline}
+#labm input{accent-color:#d8b46a;width:16px;height:16px;margin:0}
+#labm .lp{display:flex;gap:4px}#labm .lp button{flex:1;text-align:center;min-height:34px;font-size:12px}
+.gl{direction:ltr;unicode-bidi:isolate}.gl .h{font-family:"Noto Serif Hebrew",serif;unicode-bidi:isolate}.gl .y{font-family:"Segoe UI Symbol","Noto Sans Symbols","Noto Sans Symbols 2","DejaVu Sans",sans-serif;font-size:.85em}.gl .g{font:600 .72em Cinzel,serif;letter-spacing:.04em}
+.gl .sep{opacity:.45;font:.7em serif;margin:0 .25em}
+.gl .t,.gl .nm{display:block;font:italic calc(11.5px*var(--ls,1)) "Cormorant Garamond",serif;line-height:1.1;white-space:nowrap;margin-top:1px}
+.gl.f .t{color:#ead7a6}.gl.r .t{color:#e7a3a8}
+.gl .tf,.gl .nm{display:none}
+body.zin .gl .tf,.gl.focus .tf,.gl:hover .tf,body.hasfocus .gl:not(.dim) .tf{display:inline}
+body.zin .gl .ts,.gl.focus .ts,.gl:hover .ts,body.hasfocus .gl:not(.dim) .ts{display:none}
+.gl.focus .nm{display:block}
+.gl.empty{display:none}
+.lbl .y{font-family:"Segoe UI Symbol","Noto Sans Symbols","Noto Sans Symbols 2","DejaVu Sans",sans-serif;font-weight:400}
+.lbl.noname b:empty,.lbl span:empty{display:none}
+#tip{position:fixed;z-index:30;pointer-events:none;max-width:300px;padding:6px 10px;background:rgba(8,8,14,.94);border:1px solid var(--line);border-radius:8px;font:14px/1.35 "Cormorant Garamond",serif;color:var(--ink);opacity:0;transition:opacity .15s;transform:translate(14px,14px)}
+#tip.on{opacity:1}#tip b{font:600 12px Cinzel,serif;letter-spacing:.06em;color:var(--gold)}
 #leg{position:fixed;right:max(3vw,16px);bottom:84px;width:min(360px,calc(100vw - 32px));background:rgba(8,8,14,.86);border:1px solid var(--line);border-radius:12px;padding:12px 40px 12px 14px;display:none;font-size:15px;line-height:1.45;backdrop-filter:blur(8px)}
 #leg.on{display:block}
 #leg b{display:block;font:600 14px Cinzel,serif;letter-spacing:.05em;color:var(--gold);margin-bottom:4px}
@@ -247,14 +264,22 @@ body.thelemic #dia .memonly{display:none}
  <button id="bDia" aria-expanded="false">Diagrams</button>
  <button id="bCol" aria-expanded="false">Colours</button>
  <button id="bIdx" aria-expanded="false">Index</button>
- <button id="bLbl" aria-pressed="true">Labels</button>
+ <button id="bLbl" aria-expanded="false">Labels</button>
  <button id="bReset">Reset</button>
 </nav>
 <div id="cap" aria-live="polite"></div>
+<div id="tip" role="tooltip"></div>
 <div id="hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 12a8 8 0 0 1 14.5-4.6"/><path d="M18.9 3.6v4h-4"/><path d="M20 12a8 8 0 0 1-14.5 4.6"/><path d="M5.1 20.4v-4h4"/></svg><span id="hintT">Drag to turn the Tree · click any sphere</span></div>
 <div id="colm" class="menu" role="menu" aria-label="Colour scales">
  <button data-s="flash">Flashing Tree · Queen spheres, King paths</button><button data-s="neutral">Neutral · plain ivory paths</button>
  <button data-s="king">King scale · Atziluth</button><button data-s="queen">Queen scale · Briah</button><button data-s="prince">Prince scale · Yetzirah</button><button data-s="princess">Princess scale · Assiah</button>
+</div>
+<div id="labm" class="menu" role="group" aria-label="Labels">
+ <div class="lp"><button data-p="default">Default</button><button data-p="all">Everything</button><button data-p="none">None</button></div>
+ <h4>Spheres</h4>
+ <label><input type="checkbox" data-l="sname">Names</label><label><input type="checkbox" data-l="sprime">Anthropic Primes<i class="tonly"> · subtitles</i></label><label><input type="checkbox" data-l="splanet">Planet symbols</label><label><input type="checkbox" data-l="snum">Numbers</label>
+ <h4>Paths</h4>
+ <label><input type="checkbox" data-l="pletter">Hebrew letters</label><label><input type="checkbox" data-l="psym">Astrological symbols</label><label><input type="checkbox" data-l="pgem">Gematria</label><label><input type="checkbox" data-l="ptarot">Tarot<i> · tunnels on the reverse</i></label>
 </div>
 <div id="dia" class="menu" role="menu" aria-label="Diagrams from the Codex">
  <button data-o="flash">Lightning Flash</button><button data-o="serpent">Serpent of Wisdom</button><button data-o="elements">Elements Reflected</button>
@@ -361,7 +386,7 @@ const rearFS=`varying vec2 vU;uniform float uT,uHi,uDim;${NOISE}void main(){floa
 const TUN={1:['Amprodias'],2:['Baratchial'],3:['Gargophias'],4:['Dagadgiel','Dagdagiel in Grant'],5:['Hemethterith'],6:['Uriens'],7:['Zamradiel'],8:['Characith'],9:['Temphioth'],10:['Yamatu'],11:['Kurgasiax'],12:['Lafcursiax'],13:['Malkunofat'],14:['Niantiel'],15:['Saksaksalim'],16:["A'ano'nin"],17:['Parfaxitas'],18:['Tzuflifu'],19:['Qulielfi'],20:['Raflifu'],21:['Shalicu'],22:['Thantifaxath']};
 const QORD={5:['Bahimiron','the Bestial','black and brown; vast beasts like hippopotami and elephants, crushed flat as if their hides were stretched over a giant beetle'],6:['Adimiron','the Bloody','blood thinned with water, dull yellow and grey; lion-lizards'],7:['Tzalalimiron','the Clangers','clear blood, bronze and crimson; savage dogs with triangular heads'],8:['Shichiriron','the Black','black; demon-faced blends of reptile, insect and shellfish, like crab and lobster'],9:['Shalehbiron','the Flaming','fiery yellow; merciless wolves and jackals'],10:['Tzaphiriron','the Scratchers','the colours of earth; corpses half alive and half decayed'],12:["A'abiriron",'the Clayey','the colours of cloud; grey, bloated goblins'],14:['Necheshthiron','the Brazen','copper; fiendish insects with human heads'],15:['Nachashiron','the Snakey','serpent colours; dog-headed serpents'],16:['Dagdagiron','the Fishy','reddish and gleaming; vast, flat, devouring fish'],18:["Ba'airiron",'the Flock','dull and black; dragon-lions'],19:['Nashimiron','the Malignant Women','stagnant, gleaming water-blue; near-skeletal women joined to the bodies of serpents and fish']};
 const TUNNOTE='According to Kenneth Grant’s Typhonian tradition, as each Sphere on the Tree of Life has a corresponding Shell, so too does each path have a corresponding Tunnel on the reverse side of the Tree. These are the Tunnels of Set. Each guarded by a Typhonian Demon who represents the untamed chthonic forces of the unconscious. They represents ego-wants, paraphilias and other neurosis.';
-const pathGlyphs=[],LBL=[],FRONT={};
+const pathGlyphs=[],LBL=[],FRONT={},PGL=[],SGL=[];
 PATHS.forEach(p=>{
  const [a,b]=p.con;const A=POS[a],B=POS[b];
  for(const side of [1,-1]){
@@ -369,7 +394,7 @@ PATHS.forEach(p=>{
   const m=new THREE.Mesh(new THREE.TubeGeometry(curve,40,side>0?.05:.06,10,false),new THREE.ShaderMaterial({uniforms:{uT:T,uHi:{value:0},uDim:{value:0},uC:{value:new THREE.Color(.82,.68,.44)},uCT:{value:new THREE.Color(.82,.68,.44)},uC2:{value:new THREE.Color(.82,.68,.44)},uC2T:{value:new THREE.Color(.82,.68,.44)},uC3:{value:new THREE.Color(.82,.68,.44)},uC3T:{value:new THREE.Color(.82,.68,.44)},uPat:{value:0}},vertexShader:tubeVS,fragmentShader:side>0?frontFS:rearFS}));
   m.userData={kind:side>0?'p':'pr',n:p.n};scene.add(m);pickables.push(m);meshes[(side>0?'p':'pr')+p.n]=m;
   const t=LABEL_T[p.n]??.5;
-  const el=document.createElement('div');el.className='gl '+(side>0?'f':'r');el.textContent=HEB[p.letter]||'';if(side<0){const sp=document.createElement('span');sp.textContent=TUN[p.n][0];el.appendChild(sp);}el.title=side>0?p.letter+' — '+p.tarot:'Tunnel of Set '+(p.n+10)+' · '+TUN[p.n][0];
+  const el=document.createElement('div');el.className='gl '+(side>0?'f':'r');el.dataset.k=(side>0?'p':'pr')+p.n;PGL.push([side,p,el]);
   el.addEventListener('click',e=>{e.stopPropagation();tap((side>0?'p':'pr')+p.n)});
   LBL.push([ 'p'+p.n,el]);const o=new CSS2DObject(el);o.position.set(A[0]+(B[0]-A[0])*t+(side>0?.0:0),A[1]+(B[1]-A[1])*t,(PZ+.25)*side);scene.add(o);
  }
@@ -379,8 +404,7 @@ for(let n=1;n<=11;n++){
  const s=SPH[n];
  for(const side of [1,-1]){
   const el=document.createElement('div');el.className='lbl '+(side>0?'f':'r');
-  if(side>0)el.innerHTML=`<b>${n<11?n+' · ':''}${s.name}</b><span>${n<11?s.prime:'the hidden Sephira'}</span>`;
-  else el.innerHTML=n<11?`<b>${s.q.name}</b><span>${s.q.meaning}</span>`:`<b>Daath</b><span>gate to the Qliphoth</span>`;
+  SGL.push([side,n,el]);el.dataset.k=(n===11?'d':side>0?'s':'q')+n;
   const kind=n===11?'d':(side>0?'s':'q');
   el.addEventListener('click',e=>{e.stopPropagation();tap(kind+n)});
   if(side>0)FRONT[n]=el;LBL.push(['s'+n,el]);const o=new CSS2DObject(el);o.position.set(POS[n][0],POS[n][1]-R-.32,side*.4);scene.add(o);
@@ -467,10 +491,10 @@ function focus(kind,n,toRear){
 function setSide(r){if(r===rear)return;rear=r;document.body.classList.toggle('rear',r);$('bTurn').textContent=innerWidth<=700?(r?'Sephiroth':'Qliphoth'):(r?'Turn to the Sephiroth':'Turn to the Qliphoth');$('faceLbl').textContent=r?'Reverse · Qliphoth':'Obverse · Sephiroth';renderIndex();followSide();}
 $('bTurn').onclick=()=>turn(!rear);
 $('bReset').onclick=()=>{clearOverlay();closeIdx();closeDia();closeCol();closeCred();if(corrOn)setCorr(false);
- document.body.classList.remove('nolabels');$('bLbl').setAttribute('aria-pressed','true');
+ closeLab();LS={...LDEF};relabel();
  if(scheme!=='flash'){scheme='flash';applyColours();try{localStorage.setItem('tol-scale','flash');}catch(e){}}
  if(sel)closePanel();setSide(false);resetView(false);};
-$('bLbl').onclick=e=>{const on=document.body.classList.toggle('nolabels');e.currentTarget.setAttribute('aria-pressed',String(!on));};
+
 
 /* ---------- flash ---------- */
 let fl=null;const cap=$('cap');
@@ -527,6 +551,42 @@ function setCorr(on){corrOn=on;$('bCorr').setAttribute('aria-pressed',String(on)
  if(on&&innerWidth<=700){cap.textContent='On a phone, correspondences appear in the panel';cap.classList.add('on');clearTimeout(setCorr.t);setCorr.t=setTimeout(()=>cap.classList.remove('on'),2600);}
 }
 $('bCorr').onclick=()=>setCorr(!corrOn);
+
+
+/* ---------- label layers ---------- */
+const LDEF={sname:1,sprime:1,splanet:0,snum:0,pletter:1,psym:0,pgem:0,ptarot:0};
+let LS={...LDEF};try{const j=JSON.parse(localStorage.getItem('tol-labels')||'null');if(j)LS={...LDEF,...j};}catch(e){}
+const VS='︎';
+const PSYM={1:'🜁',2:'☿',3:'☽',4:'♀',5:'♒',6:'♉',7:'♊',8:'♋',9:'♌',10:'♍',11:'♃',12:'♎',13:'🜄',14:'♏',15:'♐',16:'♑',17:'♂',18:'♈',19:'♓',20:'☉',21:'🜂',22:'♄'};
+const PSYN={1:'Air',2:'Mercury',3:'the Moon',4:'Venus',5:'Aquarius',6:'Taurus',7:'Gemini',8:'Cancer',9:'Leo',10:'Virgo',11:'Jupiter',12:'Libra',13:'Water',14:'Scorpio',15:'Sagittarius',16:'Capricorn',17:'Mars',18:'Aries',19:'Pisces',20:'the Sun',21:'Fire',22:'Saturn'};
+const GEM={1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,10:10,11:20,12:30,13:40,14:50,15:60,16:70,17:80,18:90,19:100,20:200,21:300,22:400};
+const MEANING=n=>n===18?'Fish-hook':PATHS.find(x=>x.n===n).meaning;
+const SPL={m:{1:'♇',2:'♆',3:'♄',4:'♃',5:'♂',6:'☉',7:'♀',8:'☿',9:'☽',10:'⊕',11:'♅'},t:{3:'♄',4:'♃',5:'♂',6:'☉',7:'♀',8:'☿',9:'☽'}};
+const atuOf=p=>base==='t'?TH.paths[p.n].tags[0][1].split(' · '):[p.atu,p.tarot.split(' / ')[0]];
+function relabel(){const t=base==='t',sp=SPL[t?'t':'m'];
+ SGL.forEach(([side,n,el])=>{const s=SPH[n];const pl=LS.splanet&&sp[n]?`<i class="y">${sp[n]}${VS}</i> `:'';
+  const num=LS.snum&&n<11?n:'';const nm=LS.sname?(side>0?s.name:(n<11?s.q.name:'Daath')):'';
+  const b=[pl+(num!==''?num:''),nm].filter(x=>x!=='').join(num!==''&&nm?' · ':' ');
+  const sub=LS.sprime?(side>0?(n<11?(t?TH.spheres[n].sub:s.prime):(t?'Knowledge · the Abyss':'the hidden Sephira')):(n<11?s.q.meaning:'gate to the Qliphoth')):'';
+  el.innerHTML=`<b>${b}</b><span>${sub}</span>`;el.style.display=(b||sub)?'':'none';
+  el.dataset.tip=side>0?(n<11?`<b>${n} · ${s.name}</b><br>${t?TH.spheres[n].sub:s.prime}${sp[n]?` · ${sp[n]}${VS} ${s.planet}`:''}`:`<b>Daath</b><br>the hidden Sephira · the Abyss`):(n<11?`<b>${s.q.name}</b><br>the ${s.q.meaning} · shell of ${s.name}`:`<b>Daath</b><br>gate to the Qliphoth`);});
+ PGL.forEach(([side,p,el])=>{const n=p.n,[an,at]=atuOf(p);const parts=[];
+  if(LS.pletter)parts.push(`<i class="h">${HEB[p.letter]}</i>`);if(LS.psym)parts.push(`<i class="y">${PSYM[n]}${VS}</i>`);if(LS.pgem)parts.push(`<i class="g">${GEM[n]}</i>`);
+  let tl='';if(LS.ptarot)tl=side>0?`<span class="t"><span class="ts">${an}</span><span class="tf">${an} · ${at}</span></span>`:`<span class="t"><span class="tf">${TUN[n][0]}</span></span>`;
+  el.innerHTML=parts.join('<i class="sep">·</i>')+tl+`<span class="nm">${side>0?`${p.letter} · ${MEANING(n)}`:`${TUN[n][0]} · beneath ${p.letter}`}</span>`;
+  el.classList.toggle('empty',!parts.length&&!tl);
+  el.dataset.tip=side>0?`<b>${HEB[p.letter]} ${p.letter} · ${MEANING(n)}</b><br>Path ${n+10} · value ${GEM[n]} · ${PSYM[n]}${VS} ${PSYN[n]}<br>Atu ${an} · ${at}`:`<b>Tunnel of Set ${n+10} · ${TUN[n][0]}</b><br>beneath ${HEB[p.letter]} ${p.letter} · ${at}`;});
+ document.querySelectorAll('#labm input').forEach(i=>i.checked=!!LS[i.dataset.l]);
+ const isDef=Object.keys(LDEF).every(k=>!!LS[k]===!!LDEF[k]);$('bLbl').classList.toggle('mod',!isDef);
+ try{localStorage.setItem('tol-labels',JSON.stringify(LS));}catch(e){}}
+const labm=$('labm');function closeLab(){labm.classList.remove('open');$('bLbl').setAttribute('aria-expanded','false');}
+$('bLbl').onclick=e=>{e.stopPropagation();closeDia();closeCol();const o=labm.classList.toggle('open');$('bLbl').setAttribute('aria-expanded',String(o));};
+labm.addEventListener('change',e=>{const i=e.target.closest('input[data-l]');if(i){LS[i.dataset.l]=i.checked?1:0;relabel();}});
+labm.addEventListener('click',e=>{const b=e.target.closest('button[data-p]');if(!b)return;const p=b.dataset.p;LS=p==='default'?{...LDEF}:Object.fromEntries(Object.keys(LDEF).map(k=>[k,p==='all'?1:0]));relabel();});
+addEventListener('pointerdown',e=>{if(!e.target.closest('#labm,#bLbl'))closeLab();});
+const tip=$('tip');
+addEventListener('pointerover',e=>{if(e.pointerType==='touch')return;const el=e.target.closest&&e.target.closest('.lbl[data-tip],.gl[data-tip]');if(!el){tip.classList.remove('on');return;}tip.innerHTML=el.dataset.tip;tip.classList.add('on');});
+addEventListener('pointermove',e=>{if(tip.classList.contains('on')){tip.style.left=Math.min(e.clientX,innerWidth-320)+'px';tip.style.top=Math.min(e.clientY,innerHeight-90)+'px';}});
 
 /* ---------- diagrams (overlays) ---------- */
 const ovl=new THREE.Group();scene.add(ovl);let ovlStep=null,ovlName=null;
@@ -621,7 +681,7 @@ const OV={
 function chooseOverlay(o){clearOverlay();closeDia();if(sel)closePanel();if(rear||zoomed||camera.position.z<controls.target.z)resetView(false,1200);ovlName=o;OV[o]();
  document.querySelectorAll('#dia button').forEach(b=>b.toggleAttribute('aria-current',b.dataset.o===o));}
 const dia=$('dia');function closeDia(){dia.classList.remove('open');$('bDia').setAttribute('aria-expanded','false');}
-$('bDia').onclick=e=>{e.stopPropagation();closeCol();const o=dia.classList.toggle('open');$('bDia').setAttribute('aria-expanded',String(o));};
+$('bDia').onclick=e=>{e.stopPropagation();closeCol();closeLab();const o=dia.classList.toggle('open');$('bDia').setAttribute('aria-expanded',String(o));};
 dia.addEventListener('click',e=>{const b=e.target.closest('button[data-o]');if(b)chooseOverlay(b.dataset.o);});
 addEventListener('pointerdown',e=>{if(!e.target.closest('#dia,#bDia'))closeDia();});
 
@@ -631,14 +691,12 @@ function followSide(){if(!sel||typeof lastF==='undefined')return;const k=sel.rep
  const m={s:'q',q:'s',p:'pr',pr:'p'}[k];const d=lastF?lastF.dist:null;open(m,n,true);if(d)showTags(m,n,d,rear);}
 /* ---------- base layer: memetic / thelemic ---------- */
 const TH=JSON.parse(document.getElementById('thel').textContent);
-let base='m';const MEMCOL={};for(let n=1;n<=10;n++)MEMCOL[n]=meshes['s'+n].material.uniforms.uA.value.clone();
+let base='m';const MEMCOL={};for(let n=1;n<=10;n++)MEMCOL[n]=meshes['s'+n].material.uniforms.uA.value.clone();relabel();
 const tgtCol={};
 function applyBase(b,save=true){const sv=sel&&sel[0]==='v'?sel:null;if(sv)setHi(sv,0);base=b;const t=b==='t';VORDER=t?[3,2,1]:[1,2,3];placeVeilLabels();if(sv){setHi(sv,1);setFocus('v',+sv.slice(1));}document.body.classList.toggle('thelemic',t);$('subLbl').textContent=t?'Thelemic base from Liber 777 — the Sephiroth on the face, the Qliphoth on the reverse':'Codex Memetica — the Sephiroth on the face, the Qliphoth on the reverse';
  document.querySelectorAll('.base button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.b===b)));
  applyColours();if(t&&ovlName==='primes')clearOverlay();
- for(let n=1;n<=10;n++){
-  FRONT[n].querySelector('span').textContent=t?TH.spheres[n].sub:SPH[n].prime;}
- FRONT[11].querySelector('span').textContent=t?'Knowledge · the Abyss':'the hidden Sephira';
+ relabel();
  renderIndex();
  if(sel){const k=sel.replace(/\d+$/,''),n=+sel.match(/\d+$/)[0];open(k==='d'?'d':k,n,true);}
  if(lastF&&sel)showTags(lastF.kind,lastF.n,lastF.dist,lastF.r);
@@ -676,7 +734,7 @@ function setScheme(s){scheme=s;applyColours();try{localStorage.setItem('tol-scal
  cap.textContent=msg;cap.classList.add('on');clearTimeout(setScheme.t);setScheme.t=setTimeout(()=>cap.classList.remove('on'),3200);
  if(sel){const k=sel.replace(/\d+$/,''),n=+sel.match(/\d+$/)[0];open(k,n,true);if(lastF)showTags(lastF.kind,lastF.n,lastF.dist,lastF.r);}}
 const colm=$('colm');function closeCol(){colm.classList.remove('open');$('bCol').setAttribute('aria-expanded','false');}
-$('bCol').onclick=e=>{e.stopPropagation();closeDia();const o=colm.classList.toggle('open');$('bCol').setAttribute('aria-expanded',String(o));};
+$('bCol').onclick=e=>{e.stopPropagation();closeDia();closeLab();const o=colm.classList.toggle('open');$('bCol').setAttribute('aria-expanded',String(o));};
 colm.addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(b){closeCol();setScheme(b.dataset.s);}});
 addEventListener('pointerdown',e=>{if(!e.target.closest('#colm,#bCol'))closeCol();if(!e.target.closest('#cred,#crB'))closeCred();});
 function closeCred(){$('cred').classList.remove('open');$('crB').setAttribute('aria-expanded','false');}
@@ -787,7 +845,7 @@ renderer.setAnimationLoop(now=>{
  flashStep(now);
  if(ovlStep)ovlStep(now);
  baseStep();
- {const ls=Math.min(2.6,Math.max(1,baseD/camera.position.distanceTo(controls.target)));if(Math.abs(ls-lastLs)>.01){lastLs=ls;labelsEl.style.setProperty('--ls',ls.toFixed(3));}}
+ {const ls=Math.min(2.6,Math.max(1,baseD/camera.position.distanceTo(controls.target)));if(Math.abs(ls-lastLs)>.01){lastLs=ls;labelsEl.style.setProperty('--ls',ls.toFixed(3));document.body.classList.toggle('zin',ls>1.55);}}
  scene.traverse(o=>{const m=o.material;if(m&&m.uniforms&&m.uniforms.uDim){const t=m.userData.dimT||0;m.uniforms.uDim.value+=(t-m.uniforms.uDim.value)*(RM?1:.08);}});
  composer.render();lr.render(scene,camera);
 });
