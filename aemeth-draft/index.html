@@ -72,6 +72,8 @@ small.hint{display:block;color:var(--dim);font-style:italic;font-size:16px;margi
 <div id="dots"></div>
 <nav id="bar">
  <button id="bDraw">▶ Draw it</button>
+ <button id="bPause">❚❚ Pause</button>
+ <button id="bRestart">⟲ Restart</button>
  <button id="b3d">◎ Hold it</button>
  <button id="bBp">▤ Blueprint</button>
 </nav>
@@ -285,7 +287,7 @@ function render(){const p=i=>clamp(t-i);
  if(!document.body.classList.contains('d3')&&!document.body.classList.contains('bp')){const i=Math.max(0,Math.min(N-1,Math.ceil(t)-1));$('cap').innerHTML=t>=N&&!playing?'<b>Sigillum Dei Aemeth</b> John Dee’s Seal of the Truth of God, as you traced it into wax.':`<b>${CAP[i][0]}</b> ${CAP[i][1]}`;}}
 const DOTS=CAP.map((c,i)=>{const d=document.createElement('i');d.title=c[0];d.appendChild(document.createElement('b'));d.onclick=()=>{if(in3D())return exit3D(()=>{t=i+1;playing=false;render();});setMode('');t=i+1;playing=false;render();};$('dots').appendChild(d);return d.firstChild;});
 function dots(){DOTS.forEach((b,i)=>b.style.width=(clamp(t-i)*100)+'%');}
-function tick(now){dots();const dt=Math.min(.05,(now-last)/1000);last=now;if(playing){t+=dt/3.4;if(t>=N){t=N;playing=false;setTimeout(()=>{if(!playing)enter3D();},1000);}render();}requestAnimationFrame(tick);}
+function tick(now){dots();pauseLabel();const dt=Math.min(.05,(now-last)/1000);last=now;if(playing){t+=dt/3.4;if(t>=N){t=N;playing=false;setTimeout(()=>{if(!playing)enter3D();},1000);}render();}requestAnimationFrame(tick);}
 function play(){if(in3D())return exit3D(play);setMode('');t=0;playing=true;}
 
 /* ---------- options ---------- */
@@ -352,6 +354,9 @@ function enter3D(){if(busy3||in3D()||!window.WAX||!WAX.ok)return;if(t<N){t=N;ren
 function exit3D(cb){if(!in3D()){cb&&cb();return;}if(busy3)return;busy3=true;WAX.exit(()=>{busy3=false;document.body.classList.remove('d3');$('b3d').classList.remove('act');render();cb&&cb();});}
 function setMode(m){document.body.classList.toggle('bp',m==='bp');$('bBp').classList.toggle('act',m==='bp');if(m==='bp')$('cap').innerHTML='<b>Blueprint</b> The plan and section, to scale, as the print file will be made. The numbers follow the choices below.';else render();}
 $('bDraw').onclick=play;
+let lbl='';function pauseLabel(){const s=playing?'❚❚ Pause':(t>=N?'▶ Replay':'▶ Resume');if(s!==lbl){lbl=s;$('bPause').textContent=s;}}
+$('bPause').onclick=()=>{if(in3D())return exit3D();if(playing)playing=false;else if(t>=N)play();else playing=true;pauseLabel();};
+$('bRestart').onclick=play;
 $('b3d').onclick=()=>{if(in3D())exit3D();else{if(document.body.classList.contains('bp'))setMode('');enter3D();}};
 $('bBp').onclick=()=>{const on=!document.body.classList.contains('bp');if(in3D())exit3D(()=>setMode(on?'bp':''));else setMode(on?'bp':'');};
 function mail(kind){const o=OPT;const lines=kind==='leave'?['Russell,','',"I've looked at the Sigillum draft and I'd rather leave this be.",'']:
