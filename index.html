@@ -150,7 +150,7 @@ body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important
 @media(max-width:700px){#pb .ctog{display:none}}
 #pb .cdl.sc dt,#pb .cdl.sc dd{cursor:pointer}#pb .cdl.sc .on{color:var(--gold)}
 #pb .scn{margin:-6px 0 12px;font:italic 13px "Cormorant Garamond",serif;color:var(--mute)}
-#pb .dchips button{font-size:12px}
+#pb .dg dd{display:flex;align-items:center;justify-content:space-between;gap:10px}#pb .dg .go{flex:none;min-height:28px;padding:0 10px;font-size:11px;border-radius:999px}
 .menu{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);display:none;flex-direction:column;min-width:230px;padding:6px;background:rgba(8,8,14,.92);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(8px)}
 .menu.open{display:flex}
 .menu button{text-align:left;border-radius:8px;min-height:40px}
@@ -750,18 +750,19 @@ $('crB').onclick=e=>{e.stopPropagation();const o=$('cred').classList.toggle('ope
 addEventListener('keydown',e=>{if(e.key==='Escape')closeCred();});
 
 const SHAPE={1:'Point',2:'Line',3:'Triangle',4:'Square',5:'Pentagram',6:'Hexagram',7:'Heptagram',8:'Octagram',9:'Enneagram',10:'Decagram'};
-function diaChips(kind,n){const c=[];const add=(o,t)=>c.push(`<button data-o="${o}">${t}</button>`);
- if(kind==='s'){add('flash','Lightning Flash · step '+n);
-  add('pillars',[2,4,7].includes(n)?'Pillar of Mercy':[3,5,8].includes(n)?'Pillar of Severity':'Middle Pillar');
-  add('worlds',n<=3?'Atziluth':n<=6?'Briah':n<=9?'Yetzirah':'Assiah');
-  add('elements',[1,6,9].includes(n)?'Air reflected':[2,5,7].includes(n)?'Fire reflected':[3,4,8].includes(n)?'Water reflected':'Earth');
-  add('soul',{1:'Yechidah',2:'Chiah',3:'Neschamah',10:'Nephesch'}[n]||'Ruach');
-  add('figures','Figure · '+SHAPE[n]);
-  if(base!=='t')add('primes',n<=3?'Prime Anthropic · Supernal Complex':n===10?'Prime Anthropic · Physical Plane':n===6?'Prime Anthropic · the Soulplex':'Prime Anthropic · within the Veil');}
- else if(kind==='p'){const ord=[...PATHS].sort((a,b)=>b.n-a.n).findIndex(x=>x.n===n)+1;add('serpent','Serpent of Wisdom · scale '+ord+' of 22');}
- else if(kind==='d'){if(base!=='t')add('primes','Prime Anthropic · the Unknown');add('worlds','The Four Worlds');}
- else if(kind==='v'){add('flash','Lightning Flash · its source');}
- return c.length?`<h3>On the Tree</h3><div class="chips dchips">${c.join('')}</div>`:'';}
+function diaChips(kind,n){const c=[];const add=(o,d,t)=>c.push(`<dt>${d}</dt><dd>${t}<button class="go" data-o="${o}" aria-label="Show the ${d} diagram">▶ Show</button></dd>`);
+ const nm=kind==='s'?SPH[n].name:kind==='p'?PATHS.find(x=>x.n===n).letter:kind==='d'?'Daath':kind==='v'?VD[n].name:'';
+ if(kind==='s'){add('flash','Lightning Flash','step '+n+' of the descent');
+  add('pillars','Three Pillars',[2,4,7].includes(n)?'on the Pillar of Mercy':[3,5,8].includes(n)?'on the Pillar of Severity':'on the Middle Pillar');
+  add('worlds','Four Worlds','in '+(n<=3?'Atziluth':n<=6?'Briah':n<=9?'Yetzirah':'Assiah'));
+  add('elements','Elements Reflected',[1,6,9].includes(n)?'on the line of Air':[2,5,7].includes(n)?'on the line of Fire':[3,4,8].includes(n)?'on the line of Water':'Earth, alone');
+  add('soul','Parts of the Soul',({1:'Yechidah',2:'Chiah',3:'Neschamah',10:'Nephesch'}[n]||'part of the Ruach'));
+  add('figures','Geometric Figures','the '+SHAPE[n].toLowerCase());
+  if(base!=='t')add('primes','Prime Anthropic Spheres',n<=3?'in the Supernal Complex':n===10?'on the edge of the Physical Plane':n===6?'the Ego-Self, heart of the Soulplex':'inside the Veil');}
+ else if(kind==='p'){const ord=[...PATHS].sort((a,b)=>b.n-a.n).findIndex(x=>x.n===n)+1;add('serpent','Serpent of Wisdom','scale '+ord+' of 22, climbing from Tau');}
+ else if(kind==='d'){if(base!=='t')add('primes','Prime Anthropic Spheres','the Unknown, in the Abyss');}
+ else if(kind==='v'){add('flash','Lightning Flash','where the descent begins');}
+ return c.length?`<h3>In the diagrams</h3><p class="scn">Where ${nm} sits in each diagram. Press ▶ Show to play one.</p><dl class="cdl dg">${c.join('')}</dl>`:'';}
 function scalesDL(kind,n){const key=kind==='p'?pathKey(n):n;const rows=[['King','king','Atziluth'],['Queen','queen','Briah'],['Prince','prince','Yetzirah'],['Princess','princess','Assiah']];
  return `<h3>The four colour scales · Liber 777</h3><p class="scn">Click a scale to colour the whole Tree in it.</p><dl class="cdl sc">${rows.map(([l,k,w])=>{const e=SC[k][key];const on=scheme===k?' class="on"':'';return `<dt data-s="${k}"${on}>${l} · ${w}</dt><dd data-s="${k}"${on}>${e.cols.map(c=>`<span class="sw" style="background:${c}"></span>`).join('')}${esc(e.name)}</dd>`;}).join('')}</dl>${kind==='p'&&base==='t'&&(n===5||n===18)?'<p class="note">Thoth exchange applied: the colours follow the card and its sign.</p>':''}`;}
 
