@@ -694,7 +694,12 @@ function setHi(k,v){if(k&&k[0]==='v'){const Rg=RINGS[VORDER.indexOf(+k.slice(1))
 function pick(e){const r=renderer.domElement.getBoundingClientRect();ptr.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ptr,camera);const h=ray.intersectObjects(pickables,false)[0];return h?keyOf(h):null;}
 renderer.domElement.addEventListener('pointermove',e=>{if(down)return;const k=pick(e);if(k!==hov){if(hov&&hov!==sel)setHi(hov,0);hov=k;if(k&&k!==sel)setHi(k,.6);renderer.domElement.style.cursor=k?'pointer':'grab';}});
 renderer.domElement.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};if(anim&&anim.sway)anim=null;touched();});
-renderer.domElement.addEventListener('wheel',()=>{if(anim&&anim.sway)anim=null;touched();},{passive:true});
+let zGoal=null;
+addEventListener('wheel',e=>{const t=e.target;if(!(t===renderer.domElement||(t.closest&&t.closest('#labels'))))return;
+ e.preventDefault();e.stopImmediatePropagation();anim=null;touched();
+ const dy=e.deltaY*(e.deltaMode===1?33:e.deltaMode===2?400:1)*(e.ctrlKey?6:1);const d=camera.position.distanceTo(controls.target);
+ zGoal=THREE.MathUtils.clamp((zGoal??d)*Math.exp(dy*.0011),controls.minDistance,controls.maxDistance);},{capture:true,passive:false});
+function zoomStep(){if(zGoal===null)return;const v=camera.position.clone().sub(controls.target),d=v.length(),nd=d+(zGoal-d)*.16;v.setLength(nd);camera.position.copy(controls.target).add(v);if(Math.abs(zGoal-nd)<nd*.002){zGoal=null;}}
 let lastTap={k:undefined,t:0,was:null};
 function tap(k){const now=performance.now();
  if(now-lastTap.t<380&&k===lastTap.k&&(sel||zoomed)&&(k===null||lastTap.was===k)){lastTap={k:undefined,t:0,was:null};closePanel();return;}
@@ -777,7 +782,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape'){if(idx.classList.contains('o
 const clock=new THREE.Clock();let lastLs=0;const labelsEl=$('labels');let baseD=fitDist();addEventListener('resize',()=>{const p=panelOff,q=sheetOff;panelOff=0;sheetOff=0;baseD=fitDist();panelOff=p;sheetOff=q;});
 renderer.setAnimationLoop(now=>{
  T.value=RM?0:clock.getElapsedTime();
- if(anim){const k=Math.min((now-anim.t0)/anim.dur,1);anim.step(k);if(k>=1)anim=null;}else controls.update();
+ if(anim){zGoal=null;const k=Math.min((now-anim.t0)/anim.dur,1);anim.step(k);if(k>=1)anim=null;}else{zoomStep();controls.update();}
  setSide(camera.position.z-controls.target.z<0);
  flashStep(now);
  if(ovlStep)ovlStep(now);
