@@ -44,7 +44,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Cormorant Ga
 .lbl.dim,.gl.dim{opacity:.18}
 .lbl.focus b{font-size:calc(13px*var(--ls,1)*1.5)}.lbl.focus span{font-size:calc(14px*var(--ls,1)*1.5)}.gl.focus{font-size:calc(15px*var(--ls,1)*1.6)}
 .lbl b,.lbl span,.gl{transition:font-size .4s}
-body.rear .f, body:not(.rear) .r{opacity:0;pointer-events:none}
+body.rear .f, body:not(.rear):not(.cdark) .r, body.cdark .gl.f{opacity:0;pointer-events:none}
+body.cdark .gl.r{opacity:1;pointer-events:auto}
+body.cdark button.primary{background:linear-gradient(180deg,rgba(208,50,63,.3),rgba(208,50,63,.08));border-color:rgba(208,50,63,.55)}
+body.cdark #pb .heb{color:var(--blood)}
 header{position:fixed;left:max(3vw,16px);top:max(2.5vh,14px);pointer-events:none;z-index:2;max-width:min(520px,60vw)}
 h1{font:600 clamp(20px,2.4vw,30px)/1.1 Cinzel,serif;margin:0;letter-spacing:.04em}
 .sub{margin:.35em 0 0;color:var(--mute);font-style:italic}
@@ -145,7 +148,8 @@ body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important
 @media(min-width:701px){body.panel nav.bar{left:calc((100vw - 430px)/2)}}
 .tag,.ov,#pb .cdl dd{font-variant-emoji:text}
 .figsw{margin-top:6px}
-body.cube #bTurn,body.cube .lbl,body.cube .pls{display:none!important}
+body.cube .lbl,body.cube .pls{display:none!important}
+.ov.qft{color:#ffb3a8;font-size:calc(12.5px*var(--ls,1))}.ov.qft span{color:#d98a80}
 body.cube #dia button:not(.cubeonly),body:not(.cube) #dia .cubeonly{display:none}
 .cdir{font:italic calc(17px*var(--ls,1)) "Cormorant Garamond",serif;color:rgba(232,211,160,.7);text-shadow:0 0 6px #000;letter-spacing:.06em;pointer-events:none;display:none}body.cube .cdir{display:block}
 .bsep{display:block;align-self:center;width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
@@ -503,7 +507,7 @@ function resetView(r,dur=1100){zoomed=false;setFocus(null);if(typeof clearTags==
 const nbr=n=>n===11?[1,2,3,4,5,6]:PATHS.filter(p=>p.con.includes(n)).map(p=>p.con[0]===n?p.con[1]:p.con[0]);
 function focus(kind,n,toRear){
  let c,pts;
- if(fig==='cube'&&kind==='p'){setFocus(kind,n);zoomed=true;animateTo(0,8.5,cubeWorld(n),1300);return;}
+ if(fig==='cube'&&(kind==='p'||kind==='pr')){setFocus(kind,n);zoomed=true;animateTo(0,8.5,cubeWorld(n),1300);return;}
  if(kind==='p'||kind==='pr'){const p=PATHS.find(x=>x.n===n);const [a,b]=p.con;c=new THREE.Vector3((POS[a][0]+POS[b][0])/2,(POS[a][1]+POS[b][1])/2,0);pts=[a,b];}
  else if(kind==='v'){c=new THREE.Vector3(POS[1][0],POS[1][1],0);pts=[];}
  else{c=new THREE.Vector3(POS[n][0],POS[n][1],0);pts=nbr(n);}
@@ -529,13 +533,13 @@ const curBase=()=>{try{return base;}catch(e){return 'm';}};
 const edgeOf=n=>{let e=CEDGE[n];if(curBase()!=='g'){if(n===5)e='SA';else if(n===18)e='NE';}return e;};
 const cv=a=>new THREE.Vector3(a[0]*CH,a[1]*CH,a[2]*CH);
 function cubeSeg(n){if(CAXIS[n])return [cv(CAXIS[n][0]),cv(CAXIS[n][1])];if(CFACE[n]){const f=CFACE[n],c=cv(f),u=Math.abs(f[1])?new THREE.Vector3(.5,0,0):new THREE.Vector3(0,.5,0);return [c.clone().sub(u),c.clone().add(u)];}if(n===22){return [new THREE.Vector3(-.2,0,0),new THREE.Vector3(.2,0,0)];}const e=CSLOT[edgeOf(n)];return [cv(e[0]),cv(e[1])];}
-const cubePick=[],CUBEM={};
+const cubePick=[],CUBEM={};let cubeDark=false;
 function buildCube(){for(const k in CUBEM){cubeG.remove(CUBEM[k]);const i=cubePick.indexOf(CUBEM[k]);if(i>=0)cubePick.splice(i,1);}
- PATHS.forEach(p=>{const n=p.n,mat=meshes['p'+n].material;let m;
+ PATHS.forEach(p=>{const n=p.n,mat=meshes[(cubeDark?'pr':'p')+n].material;let m;
   if(CFACE[n]){const f=CFACE[n];m=new THREE.Mesh(new THREE.CylinderGeometry(.55,.55,.05,48),mat);m.position.copy(cv(f).multiplyScalar(1.012));m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(f[0],f[1],f[2]));}
   else if(n===22){m=new THREE.Mesh(new THREE.SphereGeometry(.3,32,24),mat);}
   else{const [a,b]=cubeSeg(n);m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(a,b),20,CAXIS[n]?.045:.065,10,false),mat);}
-  m.userData={kind:'p',n};cubeG.add(m);cubePick.push(m);CUBEM[n]=m;});}
+  m.userData={kind:cubeDark?'pr':'p',n};cubeG.add(m);cubePick.push(m);CUBEM[n]=m;});}
 buildCube();
 /* the trump of each double letter, faintly on its face */
 const CFCARD={2:1,3:2,4:3,11:10,17:16,20:19};const texL=new THREE.TextureLoader();const CARDTEX={};
@@ -543,9 +547,9 @@ const cardTex=k=>CARDTEX[k]||(CARDTEX[k]=(()=>{const t=texL.load(`cards/m${Strin
 const cardMat=k=>new THREE.MeshBasicMaterial({map:cardTex(k),color:new THREE.Color(.62,.6,.56),transparent:true,opacity:.2,depthWrite:false,side:THREE.DoubleSide});
 function faceCard(n,parentPos){const f=CFACE[n];const m=new THREE.Mesh(new THREE.PlaneGeometry(1.62,2.7),cardMat(CFCARD[n]));const nrm=new THREE.Vector3(f[0],f[1],f[2]);
  m.position.copy(cv(f).multiplyScalar(1.004));const up=Math.abs(f[1])?new THREE.Vector3(0,0,-f[1]):new THREE.Vector3(0,1,0);m.up.copy(up);m.lookAt(m.position.clone().add(nrm));return m;}
-Object.keys(CFCARD).forEach(n=>{const m=faceCard(+n);m.renderOrder=-1;cubeG.add(m);});
+const FACECARDS=[];Object.keys(CFCARD).forEach(n=>{const m=faceCard(+n);m.renderOrder=-1;cubeG.add(m);FACECARDS.push(m);});
 /* corner nodes and direction words */
-[[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1]].forEach(c=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.09,16,12),new THREE.MeshBasicMaterial({color:'#e8d3a0'}));m.position.copy(cv(c));cubeG.add(m);});
+const CORNERS=[];[[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1]].forEach(c=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.09,16,12),new THREE.MeshBasicMaterial({color:'#e8d3a0'}));CORNERS.push(m);m.position.copy(cv(c));cubeG.add(m);});
 const CDIR=[];[['Above',[0,2.6,0]],['Below',[0,-2.6,0]],['East',[2.15,0,0]],['West',[-2.15,0,0]],['North',[0,0,-2.15]],['South',[0,0,2.15]]].forEach(([t,p])=>{const el=document.createElement('div');el.className='cdir';el.textContent=t;const o=new CSS2DObject(el);o.position.copy(cv(p));cubeG.add(o);CDIR.push(o);});
 function cubeLabelPos(n){if(CAXIS[n]){const b=cv(CAXIS[n][1]).multiplyScalar(.55);return b.add(new THREE.Vector3(.18,.18,0));}if(CFACE[n])return cv(CFACE[n]).multiplyScalar(1.08);if(n===22)return new THREE.Vector3(0,-.42,0);const [a,b]=cubeSeg(n);return a.clone().add(b).multiplyScalar(.5).multiplyScalar(1.09);}
 function cubeWorld(n){const v=n===22?new THREE.Vector3():(()=>{const [a,b]=cubeSeg(n);return a.clone().add(b).multiplyScalar(.5);})();cubeG.updateMatrixWorld();return v.applyMatrix4(cubeG.matrixWorld);}
@@ -556,12 +560,13 @@ const _up=new THREE.Vector3(0,1,0);
 function setBar(m,a,b,rad){const d=b.clone().sub(a),L=Math.max(d.length(),.001);m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(_up,d.normalize());m.scale.set(rad,L,rad);}
 let morph=null;let TREE_OBJ=null;
 function treeVis(v){TREE_OBJ.forEach(o=>o.visible=v);}
-function labelsToCube(on){PATHS.forEach(p=>{const f=PGLO['f'+p.n],r=PGLO['r'+p.n];if(on){if(f.o.parent!==cubeG)cubeG.add(f.o);f.o.position.copy(cubeLabelPos(p.n));r.o.visible=false;}else{if(f.o.parent!==scene)scene.add(f.o);f.o.position.copy(f.home);r.o.visible=true;}});}
+function labelsToCube(on){PATHS.forEach(p=>{const f=PGLO['f'+p.n],r=PGLO['r'+p.n];const use=cubeDark?r:f,other=cubeDark?f:r;if(on){if(use.o.parent!==cubeG)cubeG.add(use.o);use.o.position.copy(cubeLabelPos(p.n));use.o.visible=true;if(other.o.parent===cubeG){scene.add(other.o);other.o.position.copy(other.home);}other.o.visible=false;}else{[f,r].forEach(x=>{if(x.o.parent!==scene)scene.add(x.o);x.o.position.copy(x.home);x.o.visible=true;});}});}
 function setFig(f,save=true){if(f===fig||morph)return;ev('figure: '+f);
  if(sel)closePanel();clearOverlay();closeIdx();closeDia();if(rear)setSide(false);
- const toCube=f==='cube';fig=f;document.body.classList.toggle('cube',toCube);controls.enableRotate=!toCube;if(toCube){cyaw=CUBE0.yaw;cpitch=CUBE0.pitch;cvy=cvp=0;applyCubeRot();}
+ const toCube=f==='cube';if(!toCube&&cubeDark){cubeDark=false;buildCube();cubeLook();}fig=f;document.body.classList.toggle('cube',toCube);controls.enableRotate=!toCube;if(toCube){cyaw=CUBE0.yaw;cpitch=CUBE0.pitch;cvy=cvp=0;applyCubeRot();}
  document.querySelectorAll('.figsw button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===f)));
  if(save)try{localStorage.setItem('tol-fig',f);}catch(e){}
+ if(toCube)cubeLook();else{$('bTurn').textContent=innerWidth<=700?'Qliphoth':'Turn to the Qliphoth';document.body.classList.remove('cdark');}
  $('subLbl').textContent=subText();
  if(!TREE_OBJ)TREE_OBJ=scene.children.filter(o=>!(o.isPoints||o===corrGroup||o===ovl||o===cubeG||Object.values(FLY).includes(o)||o===flash));
  cubeG.updateMatrixWorld();
@@ -591,25 +596,42 @@ function cubeStep(){if(fig!=='cube'||morph)return;
  if(creset){const k=Math.min((performance.now()-creset.t0)/900,1),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;cyaw=creset.y0+(CUBE0.yaw-creset.y0)*e;cpitch=creset.p0+(CUBE0.pitch-creset.p0)*e;applyCubeRot();if(k>=1)creset=null;return;}
  if(!cdrag&&(Math.abs(cvy)>1e-4||Math.abs(cvp)>1e-4)){cyaw+=cvy;cpitch=THREE.MathUtils.clamp(cpitch+cvp,-1.45,1.45);cvy*=.92;cvp*=.92;applyCubeRot();}}
 function resetCube(){const y=((cyaw-CUBE0.yaw)%(2*Math.PI)+3*Math.PI)%(2*Math.PI)-Math.PI;cyaw=CUBE0.yaw+y;creset={t0:performance.now(),y0:cyaw,p0:cpitch};cvy=cvp=0;animateTo(0,fitDist()*.82,HOME,900);}
+
+/* ---------- the Qliphothic Cube: turned inside out through Tau (an experimental construction) ---------- */
+const QFACE={2:[8,'Mercury'],3:[9,'the Moon'],4:[7,'Venus'],11:[4,'Jupiter'],17:[5,'Mars'],20:[6,'the Sun'],22:[3,'Saturn']};
+const qtags=new THREE.Group();cubeG.add(qtags);qtags.visible=false;
+Object.entries(QFACE).forEach(([n,[s,pl]])=>{n=+n;const el=document.createElement('div');el.className='ov cov qft';el.innerHTML=`${SPH[s].q.name}<span>shell of ${SPH[s].name} · ${pl}</span>`;const o=new CSS2DObject(el);o.position.copy(n===22?new THREE.Vector3(0,.55,0):cv(CFACE[n]).multiplyScalar(1.28));o.visible=false;qtags.add(o);});
+const pulse=new THREE.Mesh(new THREE.SphereGeometry(.5,32,24),new THREE.MeshBasicMaterial({color:'#ffd9a0',transparent:true,opacity:0,depthWrite:false}));pulse.visible=false;cubeG.add(pulse);
+function cubeLook(){FACECARDS.forEach(m=>{m.material.color.set(cubeDark?'#5a1a1a':'#9e998f');m.rotation.z=cubeDark?Math.PI:0;});CORNERS.forEach(m=>m.material.color.set(cubeDark?'#b8323a':'#e8d3a0'));qtags.visible=cubeDark;qtags.children.forEach(o=>o.visible=cubeDark);pulse.material.color.set(cubeDark?'#ff5a3a':'#ffd9a0');
+ document.body.classList.toggle('cdark',cubeDark);$('bTurn').textContent=innerWidth<=700?(cubeDark?'Light':'Invert'):(cubeDark?'Turn to the Cube of Light':'Turn the Cube inside out');}
+let inv=null;
+function invertCube(to=!cubeDark){if(inv||morph||fig!=='cube')return;ev(to?'cube: inside out':'cube: to the light');if(sel)closePanel();clearOverlay();
+ const t0=performance.now(),D=RM?20:2200;let swapped=false;pulse.visible=true;
+ inv=now=>{const k=Math.min((now-t0)/D,1);
+  const s=k<.45?1-ease(k/.45)*.985:k<.55?.015:.015+ease((k-.55)/.45)*.985;cubeG.scale.setScalar(s);
+  const pk=k<.4?0:k<.5?(k-.4)/.1:k<.65?1-(k-.5)/.15:0;pulse.material.opacity=pk*.95;pulse.scale.setScalar(.4+pk*1.6);
+  if(!swapped&&k>=.5){swapped=true;cubeDark=to;buildCube();labelsToCube(true);cubeLook();}
+  if(k>=1){inv=null;cubeG.scale.setScalar(1);pulse.visible=false;cap.textContent=cubeDark?'The Cube turned inside out · the Tunnels of Set and the Qliphoth':'The Cube of Space';cap.classList.add('on');clearTimeout(invertCube.t);invertCube.t=setTimeout(()=>cap.classList.remove('on'),3200);}};}
 function subText(){const b=base==='g'?'Golden Dawn':base==='t'?'Thelemic':'Codex Memetica';if(fig==='cube')return `The Cube of Space · ${b} attributions${base==='g'?'':' · He and Tzaddi exchanged'}`;return base==='g'?'Golden Dawn base — the Sephiroth on the face, the Qliphoth on the reverse':base==='t'?'Thelemic base from Liber 777 — the Sephiroth on the face, the Qliphoth on the reverse':'Codex Memetica — the Sephiroth on the face, the Qliphoth on the reverse';}
-function cubeInfo(n){const p=PATHS.find(x=>x.n===n);let kind,where;
+function cubeInfo(n,dark){const p=PATHS.find(x=>x.n===n);let kind,where;
  if(CAXIS[n]){kind='Mother letter';where='the inner axis '+CAXIS[n][2]+', through the centre';}
  else if(CFACE[n]){kind='Double letter';where='the '+CFACE[n][3]+' face';}
  else if(n===22){kind='Double letter';where='the centre of the Cube';}
  else{kind='Single letter';where=SNAME[edgeOf(n)];}
  const sw=(n===5||n===18)?(base==='g'?`<p class="note">In the Golden Dawn Cube, as in Case, letter, sign and card agree on this edge.</p>`:`<p class="note">Crowley exchanged He and Tzaddi. Here the sign and its card keep their edge, so the zodiac still runs in order round the Cube: ${n===18?'Tzaddi takes the north-east edge with the Emperor and Aries':'He takes the south-above edge with the Star and Aquarius'}. In Case’s original, ${n===18?'Tzaddi sits south-above':'He sits north-east'}.</p>`):'';
- return `<h3>In the Cube of Space</h3><dl><dt>Letter class</dt><dd>${kind} · Sepher Yetzirah</dd><dt>Place</dt><dd>${where}</dd></dl>${sw}`;}
+ const qf=dark&&QFACE[n]?`<dt>Shell</dt><dd>${SPH[QFACE[n][0]].q.name}, shell of ${SPH[QFACE[n][0]].name} (${QFACE[n][1]})</dd>`:'';
+ return `<h3>${dark?'In the Cube turned inside out':'In the Cube of Space'}</h3><dl><dt>Letter class</dt><dd>${kind} · Sepher Yetzirah</dd><dt>Place</dt><dd>${where}</dd>${dark?`<dt>Tunnel</dt><dd>${TUN[n][0]}</dd>`:''}${qf}</dl>${sw}${dark?'<p class="note">The Qliphothic Cube is an experimental construction by Russell Kirkby: each letter carries its Tunnel of Set, and each double letter carries the shell of the Sephira that shares its planet.</p>':''}`;}
 
 /* ---------- anonymous analytics (GoatCounter; no cookies; live site only) ---------- */
 let gcReady=false;
 if(location.hostname==='russellkirkby-dev.github.io'){const g=document.createElement('script');g.async=true;g.src='https://gc.zgo.at/count.js';g.dataset.goatcounter='https://rkdm.goatcounter.com/count';document.head.appendChild(g);gcReady=true;}
 function ev(name){if(!gcReady)return;try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:name,title:name,event:true});}catch(e){}}
 function setSide(r){if(r===rear)return;rear=r;document.body.classList.toggle('rear',r);$('bTurn').textContent=innerWidth<=700?(r?'Sephiroth':'Qliphoth'):(r?'Turn to the Sephiroth':'Turn to the Qliphoth');$('faceLbl').textContent=r?'Reverse · Qliphoth':'Obverse · Sephiroth';renderIndex();followSide();}
-$('bTurn').onclick=()=>{ev(rear?'turn: to the Sephiroth':'turn: to the Qliphoth');turn(!rear);};
+$('bTurn').onclick=()=>{if(fig==='cube'){invertCube();return;}ev(rear?'turn: to the Sephiroth':'turn: to the Qliphoth');turn(!rear);};
 $('bReset').onclick=()=>{clearOverlay();closeIdx();closeDia();closeCol();closeCred();if(corrOn)setCorr(false);
  closeLab();LS={...LDEF};relabel();
  if(scheme!=='flash'){scheme='flash';applyColours();try{localStorage.setItem('tol-scale','flash');}catch(e){}}
- if(sel)closePanel();if(fig==='cube'){resetCube();return;}setSide(false);resetView(false);};
+ if(sel)closePanel();if(fig==='cube'){if(cubeDark)invertCube(false);resetCube();return;}setSide(false);resetView(false);};
 
 
 /* ---------- flash ---------- */
@@ -1000,7 +1022,7 @@ renderer.domElement.addEventListener('pointerup',e=>{if(down&&Math.hypot(e.clien
 const panel=$('panel'),pb=$('pb'),pk=$('pk');
 const pathsOf=n=>PATHS.filter(p=>p.con.includes(n));
 const chip=(k,n,t)=>`<button data-k="${k}" data-n="${n}">${t}</button>`;
-function open(kind,n,noFocus){if(fig==='cube'&&kind!=='p'){setFig('tree');return;}try{const nm=kind==='s'?SPH[n].name:kind==='q'?SPH[n].q.name+' (shell of '+SPH[n].name+')':kind==='p'?'path '+(n+10)+' '+PATHS.find(x=>x.n===n).letter:kind==='pr'?'tunnel '+(n+10)+' '+TUN[n][0]:kind==='d'?'Daath':kind==='v'?'veil '+VD[n].name:kind+n;ev('open: '+nm);}catch(e){}
+function open(kind,n,noFocus){if(fig==='cube'&&kind!=='p'&&kind!=='pr'){setFig('tree');return;}try{const nm=kind==='s'?SPH[n].name:kind==='q'?SPH[n].q.name+' (shell of '+SPH[n].name+')':kind==='p'?'path '+(n+10)+' '+PATHS.find(x=>x.n===n).letter:kind==='pr'?'tunnel '+(n+10)+' '+TUN[n][0]:kind==='d'?'Daath':kind==='v'?'veil '+VD[n].name:kind+n;ev('open: '+nm);}catch(e){}
  if(kind==='s'&&n===11)kind='d';
  const key=kind==='d'?'d11':kind+n;
  if(sel)setHi(sel,0);sel=key;setHi(sel,1);
@@ -1043,7 +1065,7 @@ function open(kind,n,noFocus){if(fig==='cube'&&kind!=='p'){setFig('tree');return
   let head;if(kind==='p'){const p=PATHS.find(x=>x.n===n),tp=TH.paths[n].tags;head=`<span class="heb">${HEB[p.letter]}</span><h2>${p.letter}</h2><p class="ep">${esc(tp[0][1])}</p><p>${esc(tp[1][1])}.</p>`;k=`Path ${n+10} · ${SYS()} · ${(tp.find(t=>t[0]==='Attribution')||['',''])[1]}`;}
   else{const ts=TH.spheres[n],s=SPH[n];head=`<h2>${s.name}</h2><p class="ep">${esc(ts.title)}${n<11?' · '+esc(ts.tags[0][1]):''}</p>`;k=n<11?`Sephira ${n} · ${SYS()}`:'The Abyss';}
   h=head+corrDL(kind==='d'?'d':kind,n,'t',base==='g'?'Golden Dawn correspondences':'Thelemic correspondences · Liber 777')+(base==='g'?'<p class="note">The Golden Dawn correspondences as preserved in Liber 777, with Crowley’s later changes left out: no He/Tzaddi exchange, Golden Dawn trump titles and grades, and without his Egyptian and Greek god columns.</p>':'')+'<h3>In the Memetic Qabalah</h3>'+strip;}
- if(fig==='cube'&&kind==='p'){const ci=cubeInfo(n),di=h.indexOf('<h3');h=di>=0?h.slice(0,di)+ci+h.slice(di):h+ci;}
+ if(fig==='cube'&&(kind==='p'||kind==='pr')){const ci=cubeInfo(n,kind==='pr'),di=h.indexOf('<h3');h=di>=0?h.slice(0,di)+ci+h.slice(di):h+ci;}
  if(kind!=='q'&&kind!=='pr'&&fig!=='cube'){const dc=diaChips(kind,n),di=h.lastIndexOf('<details');h=di>=0?h.slice(0,di)+dc+h.slice(di):h+dc;}h=`<label class="ctog"><input type="checkbox"${corrOn?' checked':''}>Show correspondences on the Tree</label>`+h;
  pk.textContent=k;pb.innerHTML=h;pb.scrollTop=0;
  panel.classList.add('open');panel.setAttribute('aria-hidden','false');document.body.classList.add('panel');
@@ -1079,7 +1101,7 @@ renderer.setAnimationLoop(now=>{
  T.value=RM?0:clock.getElapsedTime();
  if(anim){zGoal=null;const k=Math.min((now-anim.t0)/anim.dur,1);anim.step(k);if(k>=1)anim=null;}else{zoomStep();controls.update();}
  setSide(fig==='tree'&&camera.position.z-controls.target.z<0);
- if(morph)morph(now);cubeStep();
+ if(morph)morph(now);if(inv)inv(now);cubeStep();
  flashStep(now);
  if(ovlStep)ovlStep(now);
  baseStep();
