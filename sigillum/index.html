@@ -128,7 +128,7 @@ function circD(r){const a=pt(r,90),b=pt(r,-90);return `M${f(a[0])},${f(a[1])} A$
 function polyD(pts,close){return 'M'+pts.map(p=>f(p[0])+','+f(p[1])).join(' L')+(close?' Z':'');}
 // stroke-drawing helper
 const DR=[];function drawable(e){const L=e.getTotalLength();e.style.strokeDasharray=L+' '+L;e.style.strokeDashoffset=L;e._L=L;return e;}
-function draw(e,p){e.style.strokeDashoffset=e._L*(1-p);}
+function draw(e,p){if(p>=1){e.style.strokeDasharray='none';e.style.strokeDashoffset=0;}else{e.style.strokeDasharray=e._L+' '+e._L;e.style.strokeDashoffset=e._L*(1-p);}}
 function op(e,p){e.style.opacity=p;e.classList.toggle('on',p>.6);e.style.pointerEvents=p>.6?'':'none';}
 const VS='︎';
 const P=$('P'),S=$('S');
