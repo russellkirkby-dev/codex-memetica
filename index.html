@@ -146,7 +146,7 @@ body.corrshow .lbl:not(.focus),body.corrshow .gl:not(.focus){opacity:0!important
 .tag,.ov,#pb .cdl dd{font-variant-emoji:text}
 .figsw{margin-top:6px}
 body.cube #bTurn,body.cube #bDia,body.cube #bDia+.bsep,body.cube .lbl,body.cube .pls{display:none!important}
-.cdir{font:italic 13px "Cormorant Garamond",serif;color:rgba(232,211,160,.55);letter-spacing:.06em;pointer-events:none;display:none}body.cube .cdir{display:block}
+.cdir{font:italic calc(17px*var(--ls,1)) "Cormorant Garamond",serif;color:rgba(232,211,160,.7);text-shadow:0 0 6px #000;letter-spacing:.06em;pointer-events:none;display:none}body.cube .cdir{display:block}
 .bsep{display:block;align-self:center;width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
 #pb .ctog{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:italic 14px "Cormorant Garamond",serif;color:var(--mute);cursor:pointer;width:max-content}
 #pb .ctog input{accent-color:#d8b46a;width:15px;height:15px;margin:0}#pb .ctog:hover{color:var(--ink)}
@@ -537,7 +537,7 @@ function buildCube(){for(const k in CUBEM){cubeG.remove(CUBEM[k]);const i=cubePi
 buildCube();
 /* corner nodes and direction words */
 [[1,1,1],[1,1,-1],[1,-1,1],[1,-1,-1],[-1,1,1],[-1,1,-1],[-1,-1,1],[-1,-1,-1]].forEach(c=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.09,16,12),new THREE.MeshBasicMaterial({color:'#e8d3a0'}));m.position.copy(cv(c));cubeG.add(m);});
-const CDIR=[];[['Above',[0,1.32,0]],['Below',[0,-1.32,0]],['East',[1.34,0,0]],['West',[-1.34,0,0]],['North',[0,0,-1.34]],['South',[0,0,1.34]]].forEach(([t,p])=>{const el=document.createElement('div');el.className='cdir';el.textContent=t;const o=new CSS2DObject(el);o.position.copy(cv(p));cubeG.add(o);CDIR.push(o);});
+const CDIR=[];[['Above',[0,2.6,0]],['Below',[0,-2.6,0]],['East',[2.15,0,0]],['West',[-2.15,0,0]],['North',[0,0,-2.15]],['South',[0,0,2.15]]].forEach(([t,p])=>{const el=document.createElement('div');el.className='cdir';el.textContent=t;const o=new CSS2DObject(el);o.position.copy(cv(p));cubeG.add(o);CDIR.push(o);});
 function cubeLabelPos(n){if(CAXIS[n]){const b=cv(CAXIS[n][1]).multiplyScalar(.55);return b.add(new THREE.Vector3(.18,.18,0));}if(CFACE[n])return cv(CFACE[n]).multiplyScalar(1.08);if(n===22)return new THREE.Vector3(0,-.42,0);const [a,b]=cubeSeg(n);return a.clone().add(b).multiplyScalar(.5).multiplyScalar(1.09);}
 function cubeWorld(n){const v=n===22?new THREE.Vector3():(()=>{const [a,b]=cubeSeg(n);return a.clone().add(b).multiplyScalar(.5);})();cubeG.updateMatrixWorld();return v.applyMatrix4(cubeG.matrixWorld);}
 /* fliers: one bar per path, flying between Tree and Cube */
