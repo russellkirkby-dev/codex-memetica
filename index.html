@@ -460,7 +460,10 @@ function focus(kind,n,toRear){
 }
 function setSide(r){if(r===rear)return;rear=r;document.body.classList.toggle('rear',r);$('bTurn').textContent=innerWidth<=700?(r?'Sephiroth':'Qliphoth'):(r?'Turn to the Sephiroth':'Turn to the Qliphoth');$('faceLbl').textContent=r?'Reverse · Qliphoth':'Obverse · Sephiroth';renderIndex();followSide();}
 $('bTurn').onclick=()=>turn(!rear);
-$('bReset').onclick=()=>resetView(rear);
+$('bReset').onclick=()=>{clearOverlay();closeIdx();closeDia();closeCol();closeCred();if(corrOn)setCorr(false);
+ document.body.classList.remove('nolabels');$('bLbl').setAttribute('aria-pressed','true');
+ if(scheme!=='flash'){scheme='flash';applyColours();try{localStorage.setItem('tol-scale','flash');}catch(e){}}
+ if(sel)closePanel();setSide(false);resetView(false);};
 $('bLbl').onclick=e=>{const on=document.body.classList.toggle('nolabels');e.currentTarget.setAttribute('aria-pressed',String(!on));};
 
 /* ---------- flash ---------- */
